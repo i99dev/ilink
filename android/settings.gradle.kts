@@ -26,7 +26,7 @@ plugins {
     // `kotlinOptions` DSL that Flutter plugins still emit. Holding
     // these at the last known-good combo until the ecosystem migrates.
     // Dependabot is configured to skip these bumps — see .github/dependabot.yml.
-    id("com.android.application") version "8.11.1" apply false
+    id("com.android.application") version "8.13.2" apply false
     id("org.jetbrains.kotlin.android") version "2.2.21" apply false
     // Protobuf codegen — pulls protoc as a managed artifact from Maven so
     // a system-wide protoc install isn't required.
