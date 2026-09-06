@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- AccessibilityService labels shown in BYD's "Installed services"
+         a11y panel. Keep them short (panel truncates ~40 chars). -->
+    <string name="a11y_remote_control_summary">Remote control of cluster apps</string>
+    <string name="a11y_remote_control_description">Lets iLINK mini-apps inject taps and swipes onto the instrument cluster (or another non-default display) on your behalf. Each gesture is gated by a per-action security cap.</string>
+    <string name="a11y_watchdog_summary">iLINK a11y watchdog</string>
+    <string name="a11y_watchdog_description">Companion service that detects when the cluster gesture-dispatch service has been silently disabled. Drains negligible battery — just confirms the gesture service is reachable.</string>
+</resources>

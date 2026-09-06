@@ -1,0 +1,5 @@
+arb-dir: lib/kernel/i18n
+template-arb-file: app_en.arb
+output-class: S
+output-dir: lib/kernel/i18n/generated
+nullable-getter: false

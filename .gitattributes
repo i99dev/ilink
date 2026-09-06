@@ -1,0 +1,25 @@
+# 3D model assets — binary glTF. Treat as binary so git-diff doesn't
+# attempt textual diffs on multi-MB embedded mesh + texture data.
+# We deliberately do NOT use Git LFS today: dev_only assets are
+# gitignored, and shipped per-model .glb files are <= 25 MB.
+# Re-evaluate LFS if the shipped catalog grows past ~10 cars.
+*.glb binary
+*.gltf binary
+*.bin binary
+*.ktx2 binary
+
+# Source 3D files (.blend, .fbx, .obj) are kept out of the runtime
+# repo entirely (artist's deliverable is the .glb), but mark them
+# binary in case a stray source file is committed to docs/ or
+# similar.
+*.blend binary
+*.fbx binary
+*.obj binary
+
+# Public offline bundles and standard wrapper must survive Windows checkouts.
+*.dex binary
+*.zip binary
+*.jar binary
+*.sh text eol=lf
+android/gradlew text eol=lf
+android/gradlew.bat text eol=crlf

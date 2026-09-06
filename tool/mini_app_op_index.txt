@@ -1,0 +1,58 @@
+# Mini-app op index — flat list of every (family.op) the runtime
+# routes through MiniAppDispatcher. Hand-maintained alongside the
+# textproto source-of-truth in .secrets/mini_app_table/.
+#
+# Each entry produces:
+#   * a Dart constant in lib/features/mini_apps/bridge/mini_app_op_tokens.g.dart
+#   * an `op_token` line that MUST match the textproto entry
+#
+# Token formula: sha256("mini_app_op:" + family + "." + op).take(16) hex.
+# Stable across builds — same input -> same token.
+#
+# Lines starting with `#` and blank lines are ignored.
+# Format: <family>.<op>
+
+pkg.launch_on_display
+pkg.stack_list
+pkg.stack_move_task
+pkg.cluster_placeholder_component
+
+# surface family — secondary-display rendering surface for cluster
+# mini-apps. The ops below template the two ADB shell commands the
+# `am-start` path issues (cluster activity launch with all extras +
+# amap slot eviction). The Presentation/overlay paths are pure Java
+# APIs with no encryptable string literals.
+surface.am_start_cluster
+surface.amap_force_stop
+
+# gesture family — synthetic touch dispatch. The primary path uses
+# AccessibilityService.dispatchGesture (pure Java APIs, nothing to
+# encrypt). The ADB fallback below issues `input -d N tap|swipe ...`
+# which is what we hide.
+gesture.input_tap
+gesture.input_swipe
+
+# display family — pure DisplayManager Java APIs. Only encryptable
+# IP is two heuristic substrings used to identify BYD's cluster
+# slots from `Display.name`. Each is a `name.contains(...)` check;
+# the encrypted op carries the marker string the runtime compares
+# against.
+display.cluster_name_marker
+display.amap_slot_marker
+
+# cursor family — INTENTIONALLY no entries.
+#  * CursorPlatformPlugin / CursorOverlayManager: pure WindowManager
+#    + Canvas APIs. `TYPE_APPLICATION_OVERLAY` and friends are int
+#    constants (inlined into classes.dex, not strings).
+#  * The `"dot" / "glow" / "ring"` style names are part of the
+#    SDK-facing wire contract — encrypting them would break the
+#    bridge.
+# Adding no-op ops here would add table noise without obfuscation
+# gain, so the family is skipped by design.
+
+# boot family — INTENTIONALLY no entries.
+#  * BootPlatformPlugin: SharedPreferences IO only.
+#  * BootCompletedReceiver: registers `android.intent.action.BOOT_COMPLETED`
+#    in AndroidManifest.xml — visible by definition, can't be hidden.
+# As issue #62 notes, this family has minimal leak surface and is
+# skipped by design.

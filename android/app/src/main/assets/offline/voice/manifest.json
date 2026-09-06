@@ -1,0 +1,13 @@
+{
+  "format": 1,
+  "models": [
+    {
+      "version": "en-0.15",
+      "file": "en-0.15.zip",
+      "bytes": 41205931,
+      "sha256": "30f26242c4eb449f948e42cb302dd7a686cb29a3423a8367f99ff41780942498",
+      "source": "https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip",
+      "license": "Apache-2.0"
+    }
+  ]
+}

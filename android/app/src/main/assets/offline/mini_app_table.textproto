@@ -1,0 +1,272 @@
+# Public offline dispatch data; packaged under the APK signature.
+# Schema: proto/mini_app_table.proto. See docs/offline-first/local-command-tables.md.
+
+version: "v1"
+
+# ── Family registry ────────────────────────────────────────────────
+families {
+  family_id: "pkg"
+  display_label: "Package launcher / mover"
+  required_scope: "pkg"
+}
+
+families {
+  family_id: "surface"
+  display_label: "Secondary-display rendering surface"
+  required_scope: "surface.write"
+}
+
+families {
+  family_id: "gesture"
+  display_label: "Synthetic touch dispatch"
+  required_scope: "gesture.dispatch"
+}
+
+families {
+  family_id: "display"
+  display_label: "Secondary display enumeration"
+  required_scope: "display.read"
+}
+
+# ── Op routes ──────────────────────────────────────────────────────
+#
+# Each op_token is sha256("mini_app_op:" + family + "." + op).take(16)
+# computed by tool/generate_op_tokens.dart. Stable across builds — same
+# input -> same token. The Phase 3 Dart-side caller passes only the
+# token; the Kotlin dispatcher resolves token -> OpRoute via byToken.
+
+# Multi-display ops below are gated to the Di5.1 generation. Di5.0 (5f
+# and other Android-12 BYD trims) ships with `ro.byd.ui.splitscreen=0`
+# and `ro.byd.ui.platformized=0` — the OS doesn't expose the secondary
+# task-stack APIs we exploit, so `am stack move-task --display N`
+# silently no-ops there. Routing the request to "unsupported on this
+# model" via the empty-route fallback gives a clean error toast
+# instead of a confusing partial behavior.
+
+ops {
+  family_id: "pkg"
+  op_id: "launch_on_display"
+  op_token: "dea75bdb7740be54"   # sha256("mini_app_op:pkg.launch_on_display")[..16]
+  kind: AM_START
+  arg_template: "am"
+  arg_template: "start-activity"
+  arg_template: "--activity-multiple-task"
+  arg_template: "--display"
+  arg_template: "{displayId}"
+  arg_template: "-n"
+  arg_template: "{component}"
+  required_scope: "pkg"
+  requires_stationary: false
+  model_match: "di5.1"
+}
+
+ops {
+  family_id: "pkg"
+  op_id: "stack_list"
+  op_token: "32d1fb949b60ac5c"   # sha256("mini_app_op:pkg.stack_list")[..16]
+  kind: SERVICE_CALL
+  arg_template: "am stack list"
+  required_scope: "pkg"
+  requires_stationary: false
+  model_match: "di5.1"
+}
+
+ops {
+  family_id: "pkg"
+  op_id: "stack_move_task"
+  op_token: "9f1caa65a5487473"   # sha256("mini_app_op:pkg.stack_move_task")[..16]
+  kind: SERVICE_CALL
+  arg_template: "am"
+  arg_template: "stack"
+  arg_template: "move-task"
+  arg_template: "{taskId}"
+  arg_template: "{rootTaskId}"
+  arg_template: "true"
+  required_scope: "pkg"
+  requires_stationary: false
+  model_match: "di5.1"
+}
+
+ops {
+  family_id: "pkg"
+  op_id: "cluster_placeholder_component"
+  op_token: "ababd346995ec412"   # sha256("mini_app_op:pkg.cluster_placeholder_component")[..16]
+  kind: AM_START
+  arg_template: "com.i99dev.ilink/.display.ClusterActivity"
+  required_scope: "pkg"
+  requires_stationary: false
+  model_match: "di5.1"
+}
+
+# ── surface family ─────────────────────────────────────────────────
+#
+# Two ADB shell-command shapes the surface family's am-start path
+# issues. The Presentation/overlay paths use pure Java APIs (no
+# encryptable string literals), so only these two ops appear here.
+
+ops {
+  family_id: "surface"
+  op_id: "am_start_cluster"
+  op_token: "8019535f3c5a486f"   # sha256("mini_app_op:surface.am_start_cluster")[..16]
+  kind: AM_START
+  arg_template: "am"
+  arg_template: "start-activity"
+  arg_template: "--activity-multiple-task"
+  # Hoist above amap. ADAS map (`com.example.amapservice`) wins
+  # z-order on the cluster display because it claims the BYD
+  # ContentProjection slot first; without REORDER, our task lands
+  # underneath. With REORDER + the singleInstance launchMode, we
+  # bubble to the top of the display's task stack on every launch.
+  arg_template: "--activity-reorder-to-front"
+  arg_template: "--display"
+  arg_template: "{displayId}"
+  arg_template: "-n"
+  arg_template: "{component}"
+  # Four ClusterActivity extras (read in onCreate by the receiving
+  # activity): bundleUri / route / surfaceId / appId. Each value is
+  # passed pre-quoted by MiniAppShellCommands (the renderer's `{key}`
+  # substitution doesn't strip wrapper chars, so quoting happens at
+  # the call site).
+  arg_template: "--es"
+  arg_template: "bundleUri"
+  arg_template: "{bundleUri}"
+  arg_template: "--es"
+  arg_template: "route"
+  arg_template: "{route}"
+  arg_template: "--es"
+  arg_template: "surfaceId"
+  arg_template: "{surfaceId}"
+  arg_template: "--es"
+  arg_template: "appId"
+  arg_template: "{appId}"
+  required_scope: "surface.write"
+  requires_stationary: false
+  # Multi-display dependent — see comment on pkg.* gating above.
+  model_match: "di5.1"
+}
+
+ops {
+  family_id: "surface"
+  op_id: "amap_force_stop"
+  op_token: "1774bb3e78e104a4"   # sha256("mini_app_op:surface.amap_force_stop")[..16]
+  kind: SERVICE_CALL
+  # L8 trim — Huawei ADAS map. Confirmed via the original L8 OTA
+  # extraction and verified on real Leopard 8 hardware. The package
+  # name `com.example.amapservice` is the IP-bearing literal; encrypting
+  # this op strips it from classes.dex.
+  arg_template: "am force-stop com.example.amapservice"
+  required_scope: "surface.write"
+  requires_stationary: false
+  model_match: "l8"
+}
+
+ops {
+  # L5L trim — BYD's own ADAS map. Derived from the 5f Di5.0 firmware
+  # APK extraction (BydAutoMap.apk → package=com.byd.naviauto, main
+  # MeterActivity has launchMode=singleInstance with taskAffinity
+  # "com.byd.naviauto.meter"). L5L runs the same Android base as L8
+  # (TP1A.220624.014) but with `post-ads-platform=default` instead of
+  # `huawei`, which means the cluster squatter is BYD's own naviauto
+  # rather than Huawei's amapservice. Force-stopping the package
+  # releases its singleInstance MeterActivity and the cluster slot
+  # becomes available for our ClusterActivity.
+  family_id: "surface"
+  op_id: "amap_force_stop"
+  op_token: "1774bb3e78e104a4"
+  kind: SERVICE_CALL
+  arg_template: "am force-stop com.byd.naviauto"
+  required_scope: "surface.write"
+  requires_stationary: false
+  model_match: "l5l"
+}
+
+ops {
+  # Coarse Di5.1 fallback when the trim discriminator hasn't resolved
+  # yet (first boot, OEM firmware variant we haven't profiled). Same
+  # template as L5L since BYD's `com.byd.naviauto` is the canonical
+  # default-ADAS squatter across the Di5.1 generation; the L8 entry
+  # above takes precedence when modelId == "l8".
+  family_id: "surface"
+  op_id: "amap_force_stop"
+  op_token: "1774bb3e78e104a4"
+  kind: SERVICE_CALL
+  arg_template: "am force-stop com.byd.naviauto"
+  required_scope: "surface.write"
+  requires_stationary: false
+  model_match: "di5.1"
+}
+
+# ── gesture family ─────────────────────────────────────────────────
+#
+# ADB-fallback paths only. The primary AccessibilityService
+# dispatchGesture path uses pure Java APIs (no string literals).
+# `-d` (display targeting) is the load-bearing detail: Leopard 8's
+# input shim accepts `-d` from shell uid but rejects it from app
+# uid, so this path only works via loopback ADB.
+
+ops {
+  family_id: "gesture"
+  op_id: "input_tap"
+  op_token: "050883fd55a266ac"   # sha256("mini_app_op:gesture.input_tap")[..16]
+  kind: SERVICE_CALL
+  arg_template: "input"
+  arg_template: "-d"
+  arg_template: "{displayId}"
+  arg_template: "tap"
+  arg_template: "{x}"
+  arg_template: "{y}"
+  required_scope: "gesture.dispatch"
+  requires_stationary: false
+}
+
+ops {
+  family_id: "gesture"
+  op_id: "input_swipe"
+  op_token: "b425c9821693e0e7"   # sha256("mini_app_op:gesture.input_swipe")[..16]
+  kind: SERVICE_CALL
+  arg_template: "input"
+  arg_template: "-d"
+  arg_template: "{displayId}"
+  arg_template: "swipe"
+  arg_template: "{fromX}"
+  arg_template: "{fromY}"
+  arg_template: "{toX}"
+  arg_template: "{toY}"
+  arg_template: "{durationMs}"
+  required_scope: "gesture.dispatch"
+  requires_stationary: false
+}
+
+# ── display family ─────────────────────────────────────────────────
+#
+# Two heuristic substrings used to identify BYD's cluster slots
+# from `Display.name`. Each is consumed via a `name.contains(...)`
+# check; encrypting them strips the BYD naming convention from
+# classes.dex.
+#
+# Single-token templates — no parameter substitution; the helper
+# returns argTemplate.firstOrNull(). Kind is SERVICE_CALL even
+# though no shell call is involved (these are string constants);
+# the existing dispatcher kinds don't model pure constants and
+# adding a new kind for two entries would be more churn than it's
+# worth.
+
+ops {
+  family_id: "display"
+  op_id: "cluster_name_marker"
+  op_token: "0398326b04a090ce"   # sha256("mini_app_op:display.cluster_name_marker")[..16]
+  kind: SERVICE_CALL
+  arg_template: "fission"
+  required_scope: "display.read"
+  requires_stationary: false
+}
+
+ops {
+  family_id: "display"
+  op_id: "amap_slot_marker"
+  op_token: "e6e68695d687ac7a"   # sha256("mini_app_op:display.amap_slot_marker")[..16]
+  kind: SERVICE_CALL
+  arg_template: "XDJAScreenProjection_0"
+  required_scope: "display.read"
+  requires_stationary: false
+}

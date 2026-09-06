@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- User-selected radio/TV streams may use plain HTTP. Internet consent is
+     enforced by the application; HTTPS uses the system trust store.
+     The retired owned-service certificate pin set has been removed. -->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>

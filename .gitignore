@@ -1,0 +1,94 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+#.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+/build/
+/coverage/
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Android Studio will place build artifacts here
+/android/app/debug
+/android/app/profile
+/android/app/release
+/android/.kotlin/
+
+# Per-developer environment overrides; see config/local.json.example
+/config/local.json
+
+# Keystore passwords + other release-build secrets. Read by
+# android/app/build.gradle.kts at configuration time. See .env.example
+# for the expected keys. Never commit the actual .env.
+/.env
+
+# Existing release keys live outside the repository. Guard against accidental copies.
+/android/key.properties
+/android/app/*.jks
+/android/app/*.keystore
+
+# Retired generated assets must not re-enter the standalone source.
+/android/app/src/main/assets/car_table.pb.enc
+/android/app/src/main/assets/adb_key.enc
+/android/app/src/main/assets/units/*.dex.enc
+/android/app/src/main/assets/units/manifest.json
+
+# Private research and archival material stay outside this repository.
+/docs/l8/
+/docs/L8/
+
+# Retired backend-generated API clients.
+/lib/core/api/generated/
+.wrangler/
+
+# Private material is external to public source and must never be committed.
+.secrets/
+*.jks
+*.keystore
+*.p12
+*.pfx
+*.pk8
+*.dpapi
+.claude/
+
+# Internal owner sign-off report; kept outside the public repository.
+/report.md
+
+# Gradle/JVM scratch that lands outside the ignored /build dir.
+/android/build/
+hsperfdata_*/
+kotlin-daemon*.log*
+*.log.lck
+kotlin-compiler-*
+

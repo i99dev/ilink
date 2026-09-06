@@ -1,0 +1,45 @@
+{
+    "units":  [
+                  {
+                      "sha256":  "e34f973f860715d498cc5c81790bcfcd9f350ae1f86486ccfbc71b1f3b8ff285",
+                      "name":  "acsettingsunit.dex"
+                  },
+                  {
+                      "sha256":  "20458fdcf23baeb2f573dc60c5a63401c4610ee0e9804c941341509ea471222d",
+                      "name":  "acunit.dex"
+                  },
+                  {
+                      "sha256":  "100674af5671dba951eadb93435d8957ef5cab9c9997d36ba7f5ed8ce113a69c",
+                      "name":  "doorunit.dex"
+                  },
+                  {
+                      "sha256":  "47d8ad64a88926cb21050387288013225c1b41fd8bb813cdfa97174252868cb9",
+                      "name":  "fragranceunit.dex"
+                  },
+                  {
+                      "sha256":  "97cabc6a8d6e8579cbf5dc30d0150c60e75841c72a6d782e193a4b1221e624bd",
+                      "name":  "lightexteriorunit.dex"
+                  },
+                  {
+                      "sha256":  "52724eb83147bbcb9f408d111daf01896b0dd7cb05002001730895c91a3c6644",
+                      "name":  "lightinteriorunit.dex"
+                  },
+                  {
+                      "sha256":  "93d6655e9cbd8f344d9c2fa613433a7db3da3ed15cb3bb78a6359e4633951555",
+                      "name":  "seatheatventunit.dex"
+                  },
+                  {
+                      "sha256":  "1cd9ded5f6c31e7197cfa7a6646cdc3ea0773a7efafe8582644fef3eec7d784c",
+                      "name":  "seatmassageunit.dex"
+                  },
+                  {
+                      "sha256":  "d6cabaa866e3a458a9e85d2a9c6d9e168ef0ca380d28a7186afd218ec83a9631",
+                      "name":  "trunkunit.dex"
+                  },
+                  {
+                      "sha256":  "5bf5ffa30ac7de9c20d3850ad66a716e20c5cba3f0162d2a79b6b08c9f57ca71",
+                      "name":  "windowunit.dex"
+                  }
+              ],
+    "format":  1
+}

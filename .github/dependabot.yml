@@ -1,0 +1,62 @@
+version: 2
+updates:
+  - package-ecosystem: "pub"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "deps"
+    open-pull-requests-limit: 5
+    labels: ["dependencies"]
+
+  - package-ecosystem: "gradle"
+    directory: "/android"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "deps"
+    open-pull-requests-limit: 3
+    labels: ["dependencies"]
+    # The Flutter ecosystem (3.47.2 + common plugins like audio_session)
+    # isn't ready for AGP 9 or Kotlin 2.3. Holding these until Flutter and
+    # plugins migrate to built-in Kotlin + the new DSL.
+    # AGP 9.x specifically introduces breaking changes (built-in Kotlin,
+    # new DSL, kotlinOptions removal) that Flutter's gradle plugin does
+    # not yet support — verified on Flutter 3.47.2. Patch + minor under
+    # the current majors still come through.
+    # Track https://docs.flutter.dev/release/breaking-changes/migrate-to-built-in-kotlin
+    #
+    # Gradle is capped at 9.5.x, which is tighter than "no majors". Gradle
+    # 9.6.0 removed the internal `org.gradle.api.problems.internal.
+    # InternalProblems` API that every AGP 8.x relies on, so 9.6+ fails the
+    # build outright:
+    #
+    #   Plugin 'com.android.internal.application' relies on
+    #   'org.gradle.api.problems.internal.InternalProblems', a Gradle internal
+    #   API that was removed in Gradle 9.6.0. ... or use Gradle 9.5.
+    #
+    # Because AGP is pinned to 8.x above, the two are coupled: Gradle cannot
+    # move past 9.5 until AGP 9 becomes viable. Nothing in CI catches this —
+    # ci.yml never runs Gradle — so a 9.6+ bump looks green and breaks every
+    # release build. Verified locally: Gradle 9.7.1 + AGP 8.13.2 fails,
+    # 9.3.1 + AGP 8.13.2 builds. Lift this together with the AGP 9 move.
+    ignore:
+      - dependency-name: "com.android.application"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "com.android.tools.build:gradle"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "org.jetbrains.kotlin.android"
+        update-types: ["version-update:semver-major", "version-update:semver-minor"]
+      - dependency-name: "org.jetbrains.kotlin:kotlin-gradle-plugin"
+        update-types: ["version-update:semver-major", "version-update:semver-minor"]
+      - dependency-name: "gradle"
+        versions: [">=9.6"]
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "ci"
+    open-pull-requests-limit: 3
+    labels: ["ci"]

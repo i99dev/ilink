@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  One floating app-shortcut button. Hosted by AppShortcutOverlayService
+  inside its own TYPE_APPLICATION_OVERLAY WindowManager window — one per
+  pinned package. The rounded scrim gives the icon a tappable "flat
+  button" body; the ImageView paints that app's launcher icon on top.
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="52dp"
+    android:layout_height="52dp"
+    android:background="@drawable/shortcut_button_bg"
+    android:elevation="6dp">
+
+    <ImageView
+        android:id="@+id/shortcut_icon"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerInside"
+        android:padding="8dp"
+        android:contentDescription="@null"/>
+</FrameLayout>

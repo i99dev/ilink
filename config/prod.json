@@ -1,0 +1,10 @@
+{
+  "_comment": "Standalone production configuration used by local release builds and CI. Daemon connections are loopback only. No hosted backend or issuer-key configuration is required.",
+  "APP_ENV": "prod",
+  "MOCK_CAR": false,
+  "DAEMON_HOST": "127.0.0.1",
+  "DAEMON_PORT": 58733,
+  "ADBD_PORT": 5555,
+  "LOG_LEVEL": "warn",
+  "APP_NATIVE_STORE_ENABLED": true
+}
