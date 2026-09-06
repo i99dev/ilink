@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Android 12+ (API 31+) backup/transfer policy.
+
+  Nothing this app stores may leave the device through Backup & Restore or
+  device-to-device transfer. Two reasons, both load-bearing:
+
+    1. Optional-service consent (`optional_services.v1` in
+       FlutterSharedPreferences) records whether the driver allowed catalogs,
+       radio/TV streaming and GitHub update checks. Those default to OFF and
+       the UI promises they are "off until you enable them". A restored
+       preferences file silently carries a previous grant onto a new install,
+       so the driver is never asked and the promise is broken.
+
+    2. flutter_secure_storage ciphertext is bound to an Android Keystore key
+       that is destroyed on uninstall and is NEVER part of a backup. Restoring
+       the ciphertext alone produces unreadable values and the runtime error
+       "Key mismatch detected during cipher initialization".
+
+  `android:allowBackup="false"` in AndroidManifest.xml covers cloud backup on
+  every API level; this file is required as well because on API 31+ the
+  device-transfer path is governed here rather than by allowBackup.
+
+  Consequence, accepted deliberately: favorites, themes and settings do not
+  migrate to a new device. Consent state is not something to silently inherit
+  in an app that can actuate a vehicle.
+-->
+<data-extraction-rules>
+    <cloud-backup>
+        <exclude domain="root" />
+        <exclude domain="file" />
+        <exclude domain="database" />
+        <exclude domain="sharedpref" />
+        <exclude domain="external" />
+        <exclude domain="device_root" />
+        <exclude domain="device_file" />
+        <exclude domain="device_database" />
+        <exclude domain="device_sharedpref" />
+    </cloud-backup>
+    <device-transfer>
+        <exclude domain="root" />
+        <exclude domain="file" />
+        <exclude domain="database" />
+        <exclude domain="sharedpref" />
+        <exclude domain="external" />
+        <exclude domain="device_root" />
+        <exclude domain="device_file" />
+        <exclude domain="device_database" />
+        <exclude domain="device_sharedpref" />
+    </device-transfer>
+</data-extraction-rules>

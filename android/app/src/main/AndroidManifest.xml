@@ -153,11 +153,22 @@
     <uses-permission android:name="android.permission.READ_LOGS"
         tools:ignore="ProtectedPermissions"/>
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
+    <!-- Backup is OFF on purpose. Restoring a previous install's preferences
+         carries optional-service CONSENT (catalogs, streaming, GitHub
+         updates) onto the new install, so the driver is never shown the
+         opt-in the UI promises ("off until you enable them"). It also
+         restores flutter_secure_storage ciphertext whose Keystore key is
+         gone, which fails at runtime with "Key mismatch detected".
+         allowBackup covers cloud backup on every API level;
+         @xml/data_extraction_rules is needed as well because API 31+ governs
+         device-to-device transfer there. -->
     <application
         android:label="iLINK"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:largeHeap="true"
+        android:allowBackup="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
         android:networkSecurityConfig="@xml/network_security_config">
         <!-- launchMode + taskAffinity tuning for chooser-delivered
              intents.
