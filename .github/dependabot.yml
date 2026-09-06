@@ -17,12 +17,12 @@ updates:
       prefix: "deps"
     open-pull-requests-limit: 3
     labels: ["dependencies"]
-    # The Flutter ecosystem (3.41.7 + common plugins like audio_session)
+    # The Flutter ecosystem (3.47.2 + common plugins like audio_session)
     # isn't ready for AGP 9, Kotlin 2.3, or Gradle 9. Holding these until
     # Flutter and plugins migrate to built-in Kotlin + the new DSL.
     # AGP 9.x specifically introduces breaking changes (built-in Kotlin,
     # new DSL, kotlinOptions removal) that Flutter's gradle plugin does
-    # not yet support — verified on Flutter 3.41.7. Patch + minor under
+    # not yet support — verified on Flutter 3.47.2. Patch + minor under
     # the current majors still come through.
     # Track https://docs.flutter.dev/release/breaking-changes/migrate-to-built-in-kotlin
     ignore:
