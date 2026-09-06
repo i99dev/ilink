@@ -352,9 +352,9 @@ dependencies {
     // decoder in the IVI's own process wedges this BYD/MT6983 unit; a
     // separate-process ExoPlayer is the proven path. -hls adds the HLS
     // source DefaultMediaSourceFactory auto-detects; -ui gives PlayerView.
-    implementation("androidx.media3:media3-exoplayer:1.4.1")
-    implementation("androidx.media3:media3-exoplayer-hls:1.4.1")
-    implementation("androidx.media3:media3-ui:1.4.1")
+    implementation("androidx.media3:media3-exoplayer:1.11.0")
+    implementation("androidx.media3:media3-exoplayer-hls:1.11.0")
+    implementation("androidx.media3:media3-ui:1.11.0")
     // Vosk (Kaldi) — on-device, offline speech recognition for the
     // "Hey BYD" wake word + the command grammar fast-path (Phase 1b).
     // Bundles libvosk.so + the JNA bridge (same engine the in-market
