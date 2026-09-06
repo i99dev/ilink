@@ -1,0 +1,641 @@
+{
+    "@@locale": "en",
+    "vehicle": "VEHICLE",
+    "battery": "BATTERY",
+    "interior": "INTERIOR",
+    "mode": "MODE",
+    "network": "NETWORK",
+    "daemon": "DAEMON",
+    "km": "km",
+    "climate": "CLIMATE",
+    "fan": "FAN",
+    "face": "FACE",
+    "feet": "FEET",
+    "defrost": "DEFR",
+    "on": "ON",
+    "off": "OFF",
+    "windows": "WINDOWS",
+    "windowDriver": "Driver",
+    "windowPassenger": "Passenger",
+    "windowRearLeft": "Rear-L",
+    "windowRearRight": "Rear-R",
+    "windowSunroof": "Sunroof",
+    "quickActions": "QUICK ACTIONS",
+    "unlock": "UNLOCK",
+    "lock": "LOCK",
+    "trunk": "TRUNK",
+    "headlights": "HEADLIGHTS",
+    "massage": "MASSAGE",
+    "seatHeat": "SEAT HEAT",
+    "seatVent": "SEAT VENT",
+    "fragrance": "FRAGRANCE",
+    "ambient": "AMBIENT",
+    "lights": "LIGHTS",
+    "screenHome": "Home",
+    "screenRadio": "Radio",
+    "screenMiniApps": "Apps",
+    "screenTv": "TV",
+    "railDriverMassage": "DRIVER MASSAGE",
+    "railDriverHeat": "DRIVER HEAT",
+    "railDriverVent": "DRIVER VENT",
+    "railAmbientLight": "AMBIENT LIGHT",
+    "railExterior": "EXTERIOR",
+    "levelMode1": "MODE 1",
+    "levelMode2": "MODE 2",
+    "levelMode3": "MODE 3",
+    "levelLight": "LIGHT",
+    "levelMid": "MID",
+    "levelDense": "DENSE",
+    "levelDim": "DIM",
+    "levelHigh": "HIGH",
+    "levelHead": "HEAD",
+    "levelFogFront": "FOG F",
+    "levelFogRear": "FOG R",
+    "assistantListening": "Listening…",
+    "assistantThinking": "Thinking…",
+    "settingsTitle": "Settings",
+    "welcome": "Welcome to Dash",
+    "welcomeHint": "Point Dash at your backend and car before continuing.",
+    "save": "Save",
+    "required": "Required",
+    "language": "Language",
+    "actionCancel": "Cancel",
+    "actionDone": "Done",
+    "actionRun": "Run",
+    "actionGotIt": "Got it",
+    "actionRefresh": "Refresh",
+    "actionSoon": "Soon",
+    "valueUnknown": "(unknown)",
+    "valueYes": "yes",
+    "valueNo": "no",
+    "sectionModelsTitle": "Voice commands",
+    "sectionModelsSubtitleShort": "On-device speech",
+    "sectionLanguageTitle": "Language",
+    "sectionLanguageSubtitleShort": "App language",
+    "sectionAppearanceTitle": "Appearance",
+    "sectionAppearanceSubtitleShort": "Theme + driver side",
+    "appearanceSystem": "System",
+    "appearanceSystemHelp": "Match the device's light or dark setting.",
+    "appearanceLight": "Light",
+    "appearanceLightHelp": "Always use the light palette.",
+    "appearanceDark": "Dark",
+    "appearanceDarkHelp": "Always use the dark dashboard palette — tuned for night driving.",
+    "appearanceDriverSideTitle": "Driver side",
+    "appearanceDriverSideLeft": "Left",
+    "appearanceDriverSideLeftHelp": "Mic anchors to the bottom-left — for left-hand-drive markets (USA, EU, China).",
+    "appearanceDriverSideRight": "Right",
+    "appearanceDriverSideRightHelp": "Mic anchors to the bottom-right — for right-hand-drive markets (UK, Australia, Japan, India).",
+    "appearanceVoiceSectionTitle": "Voice assistant",
+    "appearanceVoiceEnabledLabel": "Show the assistant",
+    "appearanceVoiceEnabledHelp": "Off hides every mic surface and turns off voice control. Turn back on whenever you want it.",
+    "sectionThemesTitle": "Themes",
+    "sectionThemesSubtitleShort": "Pick a look for your dashboard",
+    "themesGalleryHeader": "Choose a theme to restyle the whole dashboard. Built-in themes work offline; more can be added from the store.",
+    "themesBuiltInLabel": "Built-in",
+    "themesActiveLabel": "Active",
+    "themesApplyButton": "Apply",
+    "themesBetaLabel": "BETA",
+    "themesEmpty": "No themes available",
+    "themesLoadError": "Couldn't load themes",
+    "sectionPrivacyTitle": "Privacy",
+    "sectionPrivacySubtitleShort": "What this car shares",
+    "sectionClusterTitle": "Cluster apps",
+    "sectionClusterSubtitleShort": "Apps that open fresh on the driver cluster",
+    "clusterSectionHeader": "Some apps can't be moved to the driver cluster while running — they relaunch or crash on the screen change. The car opens these fresh on the cluster instead (a new instance). ReVanced-based apps are detected automatically; add any other app you've seen bounce or crash.",
+    "clusterSectionSearchHint": "Search apps",
+    "clusterSectionAuto": "Auto",
+    "clusterSectionAutoHelp": "Always opened fresh on the cluster (ReVanced-based)",
+    "clusterSectionToggleHelp": "Open this app fresh on the cluster instead of moving it",
+    "clusterSectionEmpty": "No apps found",
+    "clusterSectionError": "Couldn't load apps",
+    "sectionAboutTitle": "About",
+    "sectionAboutSubtitleShort": "Version + build info",
+    "aboutAppName": "App",
+    "aboutVersion": "Version",
+    "aboutPackage": "Package",
+    "aboutDevelopedBy": "Built by",
+    "aboutDevelopedByValue": "CubeTek",
+    "aboutSponsoredBy": "Sponsored by",
+    "aboutSponsoredByValue": "QEV",
+    "aboutCopy": "Copy",
+    "aboutCopied": "Copied",
+    "aboutCheckForUpdates": "Check for updates",
+    "aboutCheckUpToDate": "No update found. The release feed may be unavailable.",
+    "devFlightTestModeLabel": "Flight test mode",
+    "devFlightTestModeSub": "Show a dedicated Flight test tab on the Mini Apps screen with the beta builds you're invited to test. Off by default; turn on once a developer invites you.",
+    "modelsSubtitle": "Speech recognition runs on this device. Choose a speech model in Appearance settings.",
+    "diagnosticsTitle": "Diagnostics",
+    "diagnosticsAppCard": "App",
+    "diagnosticsMaintenanceCard": "Maintenance",
+    "diagnosticsKvVersion": "Version",
+    "diagnosticsKvPackage": "Package",
+    "diagnosticsKvName": "Name",
+    "diagnosticsExportLogs": "Export logs",
+    "diagnosticsExportLogsDesc": "Coming soon — log buffering not wired yet.",
+    "voiceConsentTitle": "Confirm action",
+    "voiceConsentBody": "The assistant wants to {action}.",
+    "@voiceConsentBody": {
+        "placeholders": {
+            "action": {
+                "type": "String"
+            }
+        }
+    },
+    "voiceConsentAllow": "Allow",
+    "voiceConsentDeny": "Deny",
+    "voiceShortcutsFavoritesTitle": "FAVOURITES",
+    "voiceShortcutsBrowseRadio": "Browse",
+    "voiceShortcutsFavoritesEmpty": "No favourites yet. Open Radio and tap ♡ on a station to pin it here.",
+    "voiceShortcutsFavoritesError": "Couldn't load favourites — pull to refresh.",
+    "integrityCheckFailedTitle": "Integrity check failed",
+    "integrityCheckFailedBody": "Car commands are paused until the next clean check.",
+    "settingsErrorPrefix": "Settings error: {error}",
+    "@settingsErrorPrefix": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "saveBarUnsaved": "Unsaved changes",
+    "saveBarSaved": "All changes saved",
+    "radioCategoryFavorites": "FAVORITES",
+    "radioFailedToLoad": "Failed to load stations:\n{error}",
+    "@radioFailedToLoad": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "radioNoStations": "No stations available",
+    "radioNoStationsHint": "Pull to refresh, or open Settings → Diagnostics → Refresh radio list.",
+    "radioNoResults": "No results for \"{query}\"",
+    "@radioNoResults": {
+        "placeholders": {
+            "query": {
+                "type": "String"
+            }
+        }
+    },
+    "radioLoading": "Loading {name}…",
+    "@radioLoading": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "radioPlaying": "Playing {name}",
+    "@radioPlaying": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "radioPaused": "Paused — {name}",
+    "@radioPaused": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "radioError": "Error: {message}",
+    "@radioError": {
+        "placeholders": {
+            "message": {
+                "type": "String"
+            }
+        }
+    },
+    "compatCardProbes": "PROBES",
+    "compatCardProbesSub": "Daemon, identity, and live readStatus.",
+    "compatCardScan": "SCAN",
+    "compatCardManualPress": "MANUAL PRESS",
+    "compatCardManualPressSub": "Tap a tile to fire the command, then mark the outcome.",
+    "compatCardFastActions": "FAST ACTIONS",
+    "compatCardFastActionsSub": "Fire each action with explicit args. Daemon return code is captured for the report.",
+    "compatCardBinderProbes": "AIDL BINDER PROBES",
+    "compatCardBinderProbesSub": "Pre-built service.method transacts. Useful when an action is unknown to the daemon but the binder is up.",
+    "compatCardReport": "REPORT",
+    "compatProbeDaemonAdb": "Daemon + ADB",
+    "compatProbeCarIdentity": "Car identity",
+    "compatProbeLiveTelemetry": "Live telemetry (readStatus)",
+    "compatProbeReread": "Re-read",
+    "compatBenchActionsLoaded": "Loaded {count} actions from the runtime table.",
+    "@compatBenchActionsLoaded": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "compatBenchPending": "Pending — refresh probes to load known actions.",
+    "compatBenchOk": "OK",
+    "compatBenchFail": "FAIL",
+    "compatBenchErr": "ERR",
+    "compatBenchTotal": "{total} run(s) total",
+    "@compatBenchTotal": {
+        "placeholders": {
+            "total": {
+                "type": "int"
+            }
+        }
+    },
+    "compatNothingToReport": "Nothing to report yet — run a scan or fire an action first.",
+    "compatKvBenchRuns": "Bench runs",
+    "compatKvBinderProbes": "Binder probes",
+    "compatScanning": "Scanning…",
+    "compatScanButton": "Scan",
+    "compatStatReachable": "Reachable",
+    "compatStatUnknown": "Unknown",
+    "compatStatInactive": "Inactive",
+    "compatNotesLabel": "Notes (optional)",
+    "compatNotesHint": "What else should the backend know about this car?",
+    "compatConfirmDangerTitle": "Run \"{label}\"?",
+    "@compatConfirmDangerTitle": {
+        "placeholders": {
+            "label": {
+                "type": "String"
+            }
+        }
+    },
+    "compatConfirmDangerBody": "This command moves hardware and should only be used while the car is stationary. Continue?",
+    "compatKvVinHash": "Device ID hash",
+    "compatKvWithheld": "(withheld)",
+    "compatKvDevice": "Device",
+    "compatKvDilink": "DiLink hint",
+    "compatKvDaemonOnline": "Daemon online",
+    "compatKvCommandsProbed": "Commands probed",
+    "compatKvVerdictsRecorded": "Verdicts recorded",
+    "cmdDoorLock": "Lock doors",
+    "cmdDoorUnlock": "Unlock doors",
+    "cmdDoorTrunkOpen": "Open trunk",
+    "cmdDoorTrunkClose": "Close trunk",
+    "cmdHoodOpen": "Open hood",
+    "cmdHoodClose": "Close hood",
+    "cmdHoodStop": "Stop hood",
+    "cmdClimatePower": "Climate power",
+    "cmdClimateTemp": "Set temperature",
+    "cmdClimateFan": "Fan speed",
+    "cmdClimateMode": "Wind mode",
+    "cmdClimateCycle": "Air recirculation",
+    "cmdClimateDefrostF": "Front defrost",
+    "cmdClimateDefrostR": "Rear defrost",
+    "cmdClimateCompressor": "AC compressor",
+    "cmdClimateMaxHot": "Max heat",
+    "cmdClimateMaxCool": "Max cool",
+    "cmdClimateComfortMode": "Comfort mode",
+    "cmdClimateRearLock": "Rear climate lock",
+    "cmdComfortMassage": "Massage",
+    "cmdComfortFragOn": "Fragrance on",
+    "cmdComfortFragOff": "Fragrance off",
+    "cmdComfortAtmos": "Ambient lighting",
+    "cmdWindowFlOpen": "Driver window open",
+    "cmdWindowFlClose": "Driver window close",
+    "cmdWindowFlStop": "Driver window stop",
+    "cmdWindowFlDown": "Driver window drop",
+    "cmdWindowFrOpen": "Passenger window open",
+    "cmdWindowFrClose": "Passenger window close",
+    "cmdWindowFrStop": "Passenger window stop",
+    "cmdWindowRlOpen": "Rear-left window open",
+    "cmdWindowRlClose": "Rear-left window close",
+    "cmdWindowRlStop": "Rear-left window stop",
+    "cmdWindowRrOpen": "Rear-right window open",
+    "cmdWindowRrClose": "Rear-right window close",
+    "cmdWindowRrStop": "Rear-right window stop",
+    "cmdWindowAllOpen": "Open all windows",
+    "cmdWindowAllClose": "Close all windows",
+    "cmdSunroofOpen": "Open sunroof",
+    "cmdSunroofClose": "Close sunroof",
+    "cmdSunroofTilt": "Tilt sunroof",
+    "cmdSunroofStop": "Stop sunroof",
+    "cmdSeatHeatDrv": "Driver seat heat",
+    "cmdSeatHeatPass": "Passenger seat heat",
+    "cmdSeatHeatRl": "Rear-left seat heat",
+    "cmdSeatHeatRr": "Rear-right seat heat",
+    "cmdSeatVentDrv": "Driver seat vent",
+    "cmdSeatVentPass": "Passenger seat vent",
+    "cmdSeatVentRl": "Rear-left seat vent",
+    "cmdSeatVentRr": "Rear-right seat vent",
+    "cmdLightHead": "Headlights",
+    "cmdLightHeadOn": "Headlights on",
+    "cmdLightHeadOff": "Headlights off",
+    "cmdLightFogF": "Front fog lights",
+    "cmdLightFogR": "Rear fog lights",
+    "cmdLightTurnLeft": "Left signal",
+    "cmdLightTurnRight": "Right signal",
+    "cmdLightFlash": "Flash lights",
+    "cmdLightFindCar": "Find car",
+    "cmdRadioPlayByName": "Play by name",
+    "cmdRadioPlayStation": "Play station",
+    "cmdRadioPause": "Pause radio",
+    "cmdRadioResume": "Resume radio",
+    "cmdRadioStop": "Stop radio",
+    "cmdRadioNextFav": "Next favorite station",
+    "cmdCarStatus": "Car status",
+    "profileSectionSecurity": "SECURITY",
+    "profilePinEnableLabel": "Enable PIN lock",
+    "profilePinEnableSub": "Require a 4-digit PIN before opening Profile.",
+    "profilePinChangeLabel": "Change PIN",
+    "pinLockTitle": "Enter PIN",
+    "pinLockSubtitle": "Enter your 4-digit PIN to access Profile",
+    "pinLockWrong": "Wrong PIN — try again",
+    "pinLockForgotCta": "Forgot PIN?",
+    "pinLockForgotTitle": "Reset PIN",
+    "pinLockForgotBody": "If you forget this device's PIN, clear the app's storage in Android Settings. This also removes your local settings and app data.",
+    "pinSetupEnterTitle": "Set a 4-digit PIN",
+    "pinSetupEnterSubtitle": "You'll need this PIN to open Profile.",
+    "pinSetupConfirmTitle": "Confirm PIN",
+    "pinSetupConfirmSubtitle": "Re-enter the same 4 digits.",
+    "pinSetupMismatch": "PINs didn't match — start over",
+    "pinSetupSavedSnack": "PIN enabled",
+    "pinDisabledSnack": "PIN disabled",
+    "onboardingTitle": "Welcome to iLINK",
+    "onboardingSubtitle": "Pick which features the app may use. You can change these later in Settings.",
+    "onboardingLocaleLabel": "Language",
+    "onboardingPermissionLocationTitle": "Location",
+    "onboardingPermissionLocationReason": "So the AI assistant can give you context-aware help — local weather, nearby places, navigation cues.",
+    "onboardingPermissionMicrophoneTitle": "Voice assistant",
+    "onboardingPermissionMicrophoneReason": "Lets you tap the mic to lock doors, set climate, ask questions, and more — Premier feature. You can turn it off any time from Settings → Appearance.",
+    "onboardingPermissionNotificationsTitle": "Notifications",
+    "onboardingPermissionNotificationsReason": "So radio playback can show in the car's notification panel.",
+    "onboardingPermissionGranted": "Granted",
+    "onboardingPermissionDenied": "Denied",
+    "onboardingPermissionSkipped": "Skipped",
+    "onboardingPermissionUnavailable": "Browser-handled",
+    "onboardingWebBanner": "On web, your browser asks for permissions when you actually use a feature. Your choices below are saved as preferences for when you install the app on a real device.",
+    "onboardingContinue": "Get started",
+    "onboardingFinishing": "Setting up…",
+    "onboardingRemoteHelpHint": "Need the assistant to fix something for you remotely? Open it from Profile → Remote help. You start the session, you can stop it any time.",
+    "sessionEndedDismiss": "Dismiss",
+    "miniAppsTabStore": "Store",
+    "miniAppsTabInstalled": "My Apps",
+    "miniAppsTabFlightTest": "Flight test",
+    "miniAppsTabNativeApps": "Native Apps",
+    "nativeAppsLoadError": "Couldn't load apps. Pull to refresh.",
+    "nativeAppsEmpty": "No apps available yet.",
+    "nativeAppsInstall": "Install",
+    "nativeAppsUpdate": "Update",
+    "nativeAppsConsentNote": "Third-party apps install with your confirmation. iLINK verifies each app before installing.",
+    "nativeAppsInstalling": "Finish installing {app} using the system prompt.",
+    "@nativeAppsInstalling": {
+        "placeholders": {
+            "app": {
+                "type": "String"
+            }
+        }
+    },
+    "nativeAppsInstallError": "Couldn't install {app}: {error}",
+    "@nativeAppsInstallError": {
+        "placeholders": {
+            "app": {
+                "type": "String"
+            },
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "nativeAppsUninstallConfirm": "Remove {app} from this car? You can reinstall it from the store.",
+    "@nativeAppsUninstallConfirm": {
+        "placeholders": {
+            "app": {
+                "type": "String"
+            }
+        }
+    },
+    "nativeAppsUninstalled": "{app} removed.",
+    "@nativeAppsUninstalled": {
+        "placeholders": {
+            "app": {
+                "type": "String"
+            }
+        }
+    },
+    "nativeAppsUninstallFailed": "Couldn't remove {app}.",
+    "@nativeAppsUninstallFailed": {
+        "placeholders": {
+            "app": {
+                "type": "String"
+            }
+        }
+    },
+    "miniAppsFlightTestEmptyTitle": "No active flight tests",
+    "miniAppsFlightTestEmptyBody": "When a developer invites you to a beta build, it appears here. Ask a developer for an invite or read the flight-test guide.",
+    "miniAppsFlightTestEmptyCta": "Read the flight-test guide",
+    "miniAppsFlightTestEmptyOpenDocsFailed": "Couldn't open the docs. Visit github.com/i99dev/ilink in a browser.",
+    "miniAppsInstall": "Install",
+    "miniAppsUninstall": "Uninstall",
+    "miniAppsEmptyStore": "No apps available yet. Pull to refresh.",
+    "miniAppsEmptyInstalled": "No apps installed yet. Browse the Store to add some.",
+    "favoritesTitle": "FAVOURITES",
+    "favoritesEmptyHint": "Long-press any mini-app and tap \"Add to favourites\" to pin it here.",
+    "miniAppsLoadError": "Couldn't load the catalog. Pull to refresh.",
+    "miniAppsSafeWhileDrivingBadge": "Safe while driving",
+    "miniAppsDrivingBlockedOk": "OK",
+    "miniAppsCouldNotOpen": "Couldn't open this mini-app.",
+    "miniAppsAddToHomeScreen": "Add to Home Screen",
+    "miniAppsAddToHomeScreenSuccess": "Added {name} to your home screen",
+    "@miniAppsAddToHomeScreenSuccess": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "miniAppsAddToHomeScreenPartial": "Added {name} with a default icon",
+    "@miniAppsAddToHomeScreenPartial": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "miniAppsAddToHomeScreenRefused": "Your launcher declined the shortcut",
+    "miniAppsAddToHomeScreenError": "Couldn't add this mini-app to the home screen",
+    "miniAppsDeepLinkUnknownApp": "This mini-app is no longer available",
+    "miniAppsBetaBadge": "BETA",
+    "miniAppsBetaSheetTitle": "Beta App",
+    "miniAppsBetaSheetBody": "This app is a beta version provided by the developer. It has not been reviewed by iLINK and may behave unexpectedly. Privileged actions are limited to those already approved on the public version.",
+    "miniAppsBetaSheetReleaseNotesLabel": "Release notes",
+    "miniAppsBetaSheetContinue": "Continue",
+    "miniAppsFlightTestBadge": "FLIGHT TEST",
+    "miniAppsPrivilegedBadge": "PRIVILEGED",
+    "miniAppsFlightTestReleaseNotesTitle": "What's new in this flight test",
+    "miniAppsBuildIdentifier": "v{version} · build {bundleShaPrefix}",
+    "@miniAppsBuildIdentifier": {
+        "placeholders": {
+            "version": {
+                "type": "String"
+            },
+            "bundleShaPrefix": {
+                "type": "String"
+            }
+        }
+    },
+    "otaUpdateAvailableTitle": "Update available",
+    "otaUpdateRequiredTitle": "Required update",
+    "otaInstallNow": "Install now",
+    "otaLater": "Later",
+    "otaExitApp": "Exit app",
+    "otaDownloadFailed": "Download failed. Tap \"Install now\" to retry.",
+    "homeTabAppsLabel": "Apps",
+    "homeTabMiniappsLabel": "Miniapps",
+    "installedAppsTitle": "APPS",
+    "installedAppsEmptyHint": "No apps installed on this car.",
+    "installedAppsLaunchFailed": "Couldn't launch this app.",
+    "toolsNetworkLabel": "Network",
+    "toolsNetworkRefresh": "Refresh",
+    "toolsNetworkWifi": "WiFi",
+    "toolsNetworkWifiOnNoSsid": "On",
+    "toolsNetworkWifiOff": "Off",
+    "toolsNetworkCellular": "Cellular Data",
+    "toolsNetworkCellularOn": "On",
+    "toolsNetworkCellularOff": "Off",
+    "toolsNetworkRoaming": "Data Roaming",
+    "toolsNetworkRoamingOn": "On",
+    "toolsNetworkRoamingOff": "Off",
+    "toolsNetworkBluetooth": "Bluetooth",
+    "toolsNetworkBluetoothOnNoDevice": "On",
+    "toolsNetworkBluetoothOff": "Off",
+    "toolsNetworkHotspot": "Hotspot",
+    "toolsNetworkHotspotOn": "On",
+    "toolsNetworkHotspotOff": "Off",
+    "toolsDoctorLabel": "Doctor",
+    "toolsFabLabel": "FAB",
+    "toolsNavHudLabel": "Nav-HUD",
+    "toolsWorkflowLabel": "Automations",
+    "toolsDoctorTitle": "Dashboard Doctor",
+    "doctorSubtitle": "One-tap fixes for a sluggish or unresponsive dashboard.",
+    "doctorCloseAppsLabel": "Close other apps",
+    "doctorCloseAppsWhy": "Force-stops other apps to free memory and recover a sluggish head unit. iLINK keeps running.",
+    "doctorClearClusterLabel": "Clear cluster",
+    "doctorClearClusterWhy": "Clears frozen or leftover apps from the instrument-cluster display.",
+    "doctorWakeDaemonLabel": "Wake car service",
+    "doctorWakeDaemonWhy": "Wakes the car-control service so voice commands can control the car — use if a voice action doesn't work right after launch.",
+    "doctorRunning": "Working…",
+    "doctorActionDone": "Done",
+    "doctorActionFailed": "Couldn't complete",
+    "doctorCloseAppsResult": "Closed {count} apps",
+    "@doctorCloseAppsResult": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "appActionsSheetTitle": "Manage",
+    "appActionEnable": "Enable",
+    "appActionDisable": "Disable",
+    "appActionDisableConfirmTitle": "Disable {label}?",
+    "@appActionDisableConfirmTitle": {
+        "placeholders": {
+            "label": {}
+        }
+    },
+    "appActionDisableConfirmBody": "This app will stop appearing in the launcher and won't auto-start. You can re-enable it any time.",
+    "appActionUninstall": "Uninstall",
+    "appActionUninstallConfirmTitle": "Uninstall {label}?",
+    "@appActionUninstallConfirmTitle": {
+        "placeholders": {
+            "label": {}
+        }
+    },
+    "appActionUninstallConfirmBody": "Removing this app deletes its local data. Re-installing won't restore it. Type the word UNINSTALL to confirm.",
+    "appActionUninstallTokenHint": "Type UNINSTALL (English, all caps)",
+    "appActionTransfer": "Move",
+    "appActionForceStop": "Force stop",
+    "appActionClearData": "Clear data",
+    "appActionClearDataConfirmTitle": "Clear data for {label}?",
+    "@appActionClearDataConfirmTitle": {
+        "placeholders": {
+            "label": {}
+        }
+    },
+    "appActionClearDataConfirmBody": "All local data — accounts, settings, cache — will be erased. The app stays installed.",
+    "appActionClearDataTokenHint": "Type CLEAR (English, all caps)",
+    "appActionWhitelist": "Whitelist",
+    "appActionConfirm": "Confirm",
+    "appActionCancel": "Cancel",
+    "appActionToastOk": "Done",
+    "appActionToastFailed": "Couldn't apply",
+    "homeRunningAppStop": "Stop app",
+    "homeRunningAppForceStopSub": "Force-stop {label}",
+    "@homeRunningAppForceStopSub": {
+        "placeholders": {
+            "label": {
+                "type": "String"
+            }
+        }
+    },
+    "voiceAccessOpenSettings": "Open Settings",
+    "voiceAccessMicPermissionBody": "The voice assistant needs microphone access to listen.",
+    "voiceAccessMicTitle": "Microphone access is off",
+    "voiceAccessMicPermanentlyDeniedBody": "You previously denied microphone access. Open Settings to grant it.",
+    "actionClose": "Close",
+    "actionDismiss": "Dismiss",
+    "miniAppActionsUpdateAvailable": "Update available",
+    "miniAppActionsReinstallToUpgrade": "Reinstall to upgrade",
+    "miniAppActionsUpdated": "Updated {name}",
+    "@miniAppActionsUpdated": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "miniAppActionsOpenHere": "Open here",
+    "miniAppActionsOnThisScreen": "On this screen",
+    "miniAppActionsOpening": "Opening {name} on {target}…",
+    "@miniAppActionsOpening": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            },
+            "target": {
+                "type": "String"
+            }
+        }
+    },
+    "miniAppActionsFailed": "Failed: {code}",
+    "@miniAppActionsFailed": {
+        "placeholders": {
+            "code": {
+                "type": "String"
+            }
+        }
+    },
+    "miniAppStoreUpdatesFailed": "Failed: {error}",
+    "@miniAppStoreUpdatesFailed": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "miniAppStoreUpToDate": "All apps up to date",
+    "miniAppStoreUpdatesList": "Updates: {names}",
+    "@miniAppStoreUpdatesList": {
+        "placeholders": {
+            "names": {
+                "type": "String"
+            }
+        }
+    },
+    "miniAppStoreUpdatesAvailableTitle": "Updates available",
+    "miniAppStoreUpdatesTip": "Tap \"Reinstall\" on My Apps to update",
+    "aboutOpenDiagnostics": "Open diagnostics",
+    "vehicleSupportLabel": "Vehicle support",
+    "vehicleSupportTierFull": "Full integration",
+    "vehicleSupportTierStock": "Stock APIs only",
+    "vehicleSupportTierUnsupported": "Unsupported",
+    "vehicleSupportQuirksHeading": "Known quirks on this vehicle",
+    "vehicleSupportNoQuirks": "No known quirks for this vehicle.",
+    "vehicleSupportHuVendorRow": "Head unit",
+    "vehicleSupportVariantRow": "Vehicle",
+    "launcherBydLockedTitle": "Stock BYD locks default home",
+    "launcherBydLockedBody": "BYD's vendor build prevents Android from changing the default home app to anything other than BYD MyCar. The home alias is enabled correctly — iLINK will appear in any home-picker that does open — but on stock BYD the system silently rejects the request. Workarounds: (1) install on a rooted BYD HU, (2) use a custom ROM, or (3) disable com.byd.mycar manually via adb (advanced)."
+}

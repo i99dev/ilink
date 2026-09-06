@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+# ilink (Flutter) pre-commit gate. Mirrors .github/workflows/ci.yml so
+# CI-failing changes bounce locally before push.
+#
+# Policy:
+#   - dart format     → whole repo (matches CI's --set-exit-if-changed).
+#   - flutter analyze → whole repo (matches CI; fails on info+ by default).
+#   - audit_hex       → ``tool/audit_hex.dart`` — feature-ID hex must
+#                        live in the encrypted dispatch table only.
+#   - flutter test    → full suite (matches CI). Slowest gate (~10s)
+#                        but the only one that catches behaviour
+#                        regressions; cheap enough to run on every
+#                        commit that touches Dart.
+#
+# Skip with ``git commit --no-verify`` only in genuine emergencies —
+# CI still gates. Or set ``SKIP_PRECOMMIT=1`` for a one-off bypass.
+set -uo pipefail
+
+cd "$(git rev-parse --show-toplevel)"
+
+if [ "${SKIP_PRECOMMIT:-}" = "1" ]; then
+    echo "[pre-commit] SKIP_PRECOMMIT=1 — skipping all checks"
+    exit 0
+fi
+
+# Collect staged Dart sources so we can short-circuit when no Dart
+# code is touched (e.g. a docs- or workflow-only commit).
+STAGED_DART=()
+while IFS= read -r f; do
+    [ -n "$f" ] && STAGED_DART+=("$f")
+done < <(git diff --cached --name-only --diff-filter=ACMR | grep -E '\.dart$' || true)
+
+if [ ${#STAGED_DART[@]} -eq 0 ]; then
+    echo "[pre-commit] no .dart files staged — skipping checks"
+    exit 0
+fi
+
+run_step() {
+    name="$1"; shift
+    echo
+    echo "[pre-commit] ── $name ──"
+    if ! "$@"; then
+        echo
+        echo "[pre-commit] ✗ $name failed — commit blocked."
+        echo "[pre-commit]   Fix the issue above and re-stage, or"
+        echo "[pre-commit]   set SKIP_PRECOMMIT=1 to bypass (CI still gates)."
+        exit 1
+    fi
+}
+
+# `dart format` walks `build/` recursively if you pass `.`, which on
+# Windows trips a PathNotFoundException when Gradle leaves dangling
+# symlinks under `build/flutter_inappwebview_android/.transforms/…`.
+# Scoping to the staged set is also faster (~50ms vs ~1.5s on cold
+# cache) and cross-platform.
+run_step "dart format (check, staged Dart files)" \
+    dart format --set-exit-if-changed --output=none "${STAGED_DART[@]}"
+run_step "flutter analyze (whole repo)" flutter analyze
+run_step "audit stray feature-ID hex" dart run tool/audit_hex.dart
+run_step "flutter test (full suite)" flutter test
+
+echo
+echo "[pre-commit] ✓ all checks passed"

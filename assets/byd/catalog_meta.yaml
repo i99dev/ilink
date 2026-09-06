@@ -1,0 +1,212 @@
+# BYD catalog metadata — sparse overrides for catalog.tsv entries.
+#
+# Format: one entry per catalog name. Only document features that
+# need a description / unit / value-semantics override beyond what
+# the SDK can derive from the name itself. Untouched entries surface
+# with a humanised name as the description and `int` as the type.
+#
+# Adding an entry:
+#   - Find the catalog name in `catalog.tsv`.
+#   - Add a YAML key here with at least `desc:` (one-line human
+#     description). All other fields are optional.
+#
+# Fields:
+#   desc:          short human-readable label ("Battery state of charge")
+#   unit:          UI display unit ("%", "°C", "kPa", "km")
+#   value_kind:    `int` (default) | `double` | `bytes` | `int_array`
+#   semantics:     enum or scale notes for non-numeric values
+#                  (e.g., "1=on, 2=off" or "kPa×10")
+#   dt_hint:       BYD device_type the framework dispatches under
+#                  (saves runtime probing — see catalog.tsv comment)
+#   read_only:     true (default) | false
+#                  When false, the SDK exposes the feature via the
+#                  write API in addition to read.
+#   category:      UI grouping hint ("doors", "climate", "battery")
+#                  Defaults to the namespace prefix.
+#
+# Verified live entries get a `_verified: <date> on <trim>` tag so
+# we know which ones survived a cross-trim test.
+
+# ── Battery / charging ────────────────────────────────────────────
+"Statistic.STATISTIC_SOC_BATTERY_PERCENTAGE":
+  desc: Battery state of charge
+  unit: "%"
+  category: battery
+  _verified: "2026-05-12 on Leopard 8 (DiLink5.1)"
+
+"Statistic.STATISTIC_ELEC_DRIVING_RANGE":
+  desc: EV driving range
+  unit: km
+  category: battery
+
+"Statistic.STATISTIC_FUEL_DRIVING_RANGE":
+  desc: Fuel driving range (PHEV / ICE)
+  unit: km
+  category: battery
+
+"Charging.CHARGING_POWER":
+  desc: Current charging power
+  unit: kW
+  category: charging
+
+# ── Doors / lock ──────────────────────────────────────────────────
+"Door.DOOR_LOCK_COMMAND_AREA_LEFT_FRONT":
+  desc: Vehicle lock state (master via driver-door actuator)
+  semantics: "1=locked, 2=unlocked"
+  category: doors
+  _verified: "2026-05-12 on Leopard 8"
+
+"Bodywork.BODYWORK_LEFT_HAND_FRONT_DOOR":
+  desc: Driver door open state
+  semantics: "0=closed, 1=open"
+  category: doors
+
+"Bodywork.BODYWORK_RIGHT_HAND_FRONT_DOOR":
+  desc: Passenger door open state
+  semantics: "0=closed, 1=open"
+  category: doors
+
+"Bodywork.BODYWORK_LEFT_HAND_REAR_DOOR":
+  desc: Rear-left door open state
+  semantics: "0=closed, 1=open"
+  category: doors
+
+"Bodywork.BODYWORK_RIGHT_HAND_REAR_DOOR":
+  desc: Rear-right door open state
+  semantics: "0=closed, 1=open"
+  category: doors
+
+"Bodywork.BODYWORK_LUGGAGE_DOOR":
+  desc: Trunk open state
+  semantics: "0=closed, 1=open"
+  category: doors
+
+# ── Climate / AC ──────────────────────────────────────────────────
+"Ac.AC_TEMP_INSIDE":
+  desc: Cabin temperature
+  unit: "°C"
+  category: climate
+
+"Instrument.INSTRUMENT_DD_OUT_TEMP":
+  desc: Outside ambient temperature
+  unit: "°C"
+  category: climate
+
+"Ac.AC_TEMP_MAIN":
+  desc: AC setpoint (driver zone)
+  unit: "°C"
+  category: climate
+
+"Ac.AC_POWER_STATE":
+  desc: AC system power state
+  semantics: "0=off, 1=on"
+  category: climate
+
+"Ac.AC_WIND_LEVEL":
+  desc: Fan speed level
+  semantics: "0=off, 1-7=intensity"
+  category: climate
+
+"Ac.AC_WIND_MODE":
+  desc: Wind direction mode
+  semantics: "1=face, 2=face+feet, 3=feet, 4=feet+defrost, 5=defrost"
+  category: climate
+
+# ── Lights ────────────────────────────────────────────────────────
+"Light.LIGHT_LOW_BEAM_LIGHT":
+  desc: Low-beam headlight
+  semantics: "0=off, 1=on"
+  category: lights
+
+"Light.LIGHT_HIGH_BEAM_LIGHT":
+  desc: High-beam headlight
+  semantics: "0=off, 1=on"
+  category: lights
+
+"Light.LIGHT_FRONT_FOG_LIGHT":
+  desc: Front fog light
+  semantics: "0=off, 1=on"
+  category: lights
+
+"Light.LIGHT_REAR_FOG_LIGHT":
+  desc: Rear fog light
+  semantics: "0=off, 1=on"
+  category: lights
+
+"Instrument.INSTRUMENT_SMART_KEY_SYS_WARN_LIGHT":
+  desc: Headlight master indicator (DRL / position / smart-key warn)
+  semantics: "0=off, >0=on (combined indicator state)"
+  category: lights
+
+# ── Powertrain ────────────────────────────────────────────────────
+"Statistic.STATISTIC_SPEED_SIG_VDIS":
+  desc: Vehicle speed (speedometer display value)
+  unit: km/h
+  category: powertrain
+  _verified: "2026-05-12 on Leopard 8 — returns 0 parked"
+
+"Instrument.INSTRUMENT_EV_MODE_INDICATORE":
+  desc: EV drive mode active indicator
+  semantics: "0=off, 1=on"
+  category: powertrain
+
+"Instrument.INSTRUMENT_HEV_MODE_INDICATORE":
+  desc: HEV drive mode active indicator
+  semantics: "0=off, 1=on"
+  category: powertrain
+
+# ── Seats ─────────────────────────────────────────────────────────
+"Ac.AC_MAIN_DRIVE_SEAT_HEATING_LEVEL":
+  desc: Driver seat heat level
+  semantics: "0=off, 1-3=intensity"
+  category: seats
+
+"Ac.AC_PASSENGER_SEAT_HEATING_LEVEL":
+  desc: Passenger seat heat level
+  semantics: "0=off, 1-3=intensity"
+  category: seats
+
+"Ac.AC_REAR_LEFT_SEAT_HEATING_LEVEL":
+  desc: Rear-left seat heat level
+  semantics: "0=off, 1-3=intensity"
+  category: seats
+
+"Ac.AC_REAR_RIGHT_SEAT_HEATING_LEVEL":
+  desc: Rear-right seat heat level
+  semantics: "0=off, 1-3=intensity"
+  category: seats
+
+"Ac.AC_MAIN_DRIVE_SEAT_VENTILATING_LEVEL":
+  desc: Driver seat ventilation level
+  semantics: "0=off, 1-3=intensity"
+  category: seats
+
+"Ac.AC_PASSENGER_SEAT_VENTILATING_LEVEL":
+  desc: Passenger seat ventilation level
+  semantics: "0=off, 1-3=intensity"
+  category: seats
+
+# ── Tyres (TPMS) ──────────────────────────────────────────────────
+"Instrument.INSTRUMENT_2IN1_LF_TYRE_PRESSURE":
+  desc: Tyre pressure (left front)
+  unit: kPa
+  semantics: "kPa × 10 — divide by 10 for actual kPa"
+  category: tyres
+
+"Instrument.INSTRUMENT_2IN1_RF_TYRE_PRESSURE":
+  desc: Tyre pressure (right front)
+  unit: kPa
+  semantics: "kPa × 10"
+  category: tyres
+
+"Instrument.INSTRUMENT_2IN1_LB_TYRE_PRESSURE":
+  desc: Tyre pressure (left rear)
+  unit: kPa
+  semantics: "kPa × 10"
+  category: tyres
+
+"Instrument.INSTRUMENT_2IN1_RB_TYRE_PRESSURE":
+  desc: Tyre pressure (right rear)
+  unit: kPa
+  semantics: "kPa × 10"
+  category: tyres

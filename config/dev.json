@@ -1,0 +1,10 @@
+{
+  "APP_ENV": "dev",
+  "MOCK_CAR": false,
+  "DAEMON_HOST": "127.0.0.1",
+  "DAEMON_PORT": 58733,
+  "ADBD_PORT": 5555,
+  "LOG_LEVEL": "debug",
+  "APP_NATIVE_STORE_ENABLED": true,
+  "APP_NATIVE_DEMO_PACKAGES": ""
+}

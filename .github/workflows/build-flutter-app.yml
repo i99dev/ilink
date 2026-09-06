@@ -1,0 +1,228 @@
+name: Build Flutter App (reusable)
+
+# Reusable workflow callable from any number of trigger workflows
+# (release-build for prod, future staging-build for staging, etc.).
+# Owns the entire pipeline:
+#   external keystore restore -> signing verify -> build -> GitHub release.
+#   composite action → rename → SHA + size → release notes → upload
+#   artifact → attach signed APK and OTA metadata to GitHub Release.
+#
+# Each caller passes the per-environment specifics (which environment
+# to bind the job to, which dart-define file to load, what version /
+# tag to publish under) and inherits the secrets it needs.
+#
+# Why a reusable workflow + composite action:
+#   * The composite action `.github/actions/build-flutter-apk/`
+#     wraps the actual `flutter build` invocation — narrow, used
+#     by every variant.
+#   * THIS workflow wraps everything around that build (signing,
+#     packaging, publishing) — broad, used by every callable trigger.
+#   * Future staging.yml will be ~10 lines: declare a trigger, point
+#     at this workflow with `environment: staging`. Zero copy-paste.
+#
+# Secrets are inherited (`secrets: inherit` on the caller). The
+# environment-scoped secrets (DASH_KEY_ALIAS) come from
+# the GitHub Environment named in `inputs.environment`.
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: |
+          GitHub Environment name (`prod`, future `staging`, etc.).
+          Per-environment secrets (DASH_KEY_ALIAS) are
+          scoped here.
+        required: true
+        type: string
+      version:
+        description: |
+          Display version (e.g. `0.0.2-b+1`). Used in the APK
+          filename + release notes. Caller derives this from
+          release-please's payload or pubspec.yaml.
+        required: true
+        type: string
+      tag:
+        description: |
+          Git tag to check out and attach the release asset to.
+          Caller derives this from release-please.
+        required: true
+        type: string
+      dart-define-file:
+        description: |
+          Path to the JSON file the composite action loads via
+          `--dart-define-from-file`. Single source of truth shared
+          with developers: ``config/prod.json`` for production,
+          ``config/staging.json`` for staging, etc. Same files used
+          by ``scripts/run-prod.sh`` + ``build-prod-apk.sh``.
+        required: false
+        type: string
+        default: config/prod.json
+      flutter-build-mode:
+        description: '`apk` (default) or `appbundle` for AAB.'
+        required: false
+        type: string
+        default: apk
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    steps:
+      # Full checkout provides the requested release tag. Version codes are explicit.
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.tag }}
+          fetch-depth: 0
+
+      - uses: ./.github/actions/setup-flutter
+
+      # Repair step: release-please-action's Dart release-type corrupts
+      # pre-release versions — it writes e.g. `0.0.1-b+-b+1` instead of
+      # `0.0.1-b+1`. Each subsequent release re-mangles ("0.0.6-b+-b+-b+1"
+      # after two cycles), so the regex collapses *all* injected `+-pre`
+      # segments before the trailing `+N` build number. No-op on
+      # well-formed versions.
+      #
+      # TODO(release-please-workaround): test removing this block once
+      # release-please-action fixes the upstream bug. Tracked in
+      # .github/SECRETS.md → "Known gaps to fix later".
+      - name: Repair pubspec.yaml if release-please mangled a pre-release version
+        run: |
+          before=$(grep '^version:' pubspec.yaml)
+          sed -i -E 's/^(version: [0-9.]+-[a-zA-Z0-9.]+)(\+-[^+]+)+(\+[0-9]+)$/\1\3/' pubspec.yaml
+          after=$(grep '^version:' pubspec.yaml)
+          if [ "$before" != "$after" ]; then
+            echo "repaired pubspec.yaml: '$before' -> '$after'"
+          fi
+
+      # Never derive Android versionCode from the new repository's history.
+      - name: Guard explicit standalone versionCode
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 scripts/ci/check-release-version.py
+
+      - name: Restore the existing release keystore outside the checkout
+        env:
+          RELEASE_KEYSTORE_B64: ${{ secrets.DASH_RELEASE_KEYSTORE_B64 }}
+        run: |
+          umask 077
+          test -n "$RELEASE_KEYSTORE_B64" || { echo "Existing release keystore is required"; exit 1; }
+          printf '%s' "$RELEASE_KEYSTORE_B64" | base64 --decode > "$RUNNER_TEMP/dash-release.jks"
+          echo "DASH_KEYSTORE_PATH=$RUNNER_TEMP/dash-release.jks" >> "$GITHUB_ENV"
+
+      - name: Verify signing inputs
+        env:
+          DASH_KEY_ALIAS: ${{ secrets.DASH_KEY_ALIAS }}
+          DASH_KEYSTORE_PASSWORD: ${{ secrets.DASH_KEYSTORE_PASSWORD }}
+          DASH_KEY_PASSWORD: ${{ secrets.DASH_KEY_PASSWORD }}
+        run: bash scripts/prepare-signing.sh
+
+      # Verify bundled local assets and derive the existing signer pin for
+      # BuildConfig. This does not generate or replace any signing key.
+      - name: Verify local assets and prepare the existing signer pin
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.DASH_KEYSTORE_PASSWORD }}
+          KEYSTORE_ALIAS:    ${{ secrets.DASH_KEY_ALIAS }}
+        run: bash scripts/ci/prepare-offline-release.sh
+
+      # Build via the shared composite action. Single source of truth
+      # for the `flutter build` command + dart-define wiring; this
+      # is the layer THIS workflow defers to.
+      - name: Build signed APK
+        id: apk-build
+        uses: ./.github/actions/build-flutter-apk
+        env:
+          # Signing env vars stay here at the workflow level — the
+          # Gradle plugin reads them at build time. The composite
+          # action doesn't need to know about signing; it just runs
+          # `flutter build`, which invokes Gradle, which reads these.
+          DASH_KEYSTORE_PASSWORD: ${{ secrets.DASH_KEYSTORE_PASSWORD }}
+          DASH_KEY_PASSWORD:      ${{ secrets.DASH_KEY_PASSWORD }}
+          DASH_KEY_ALIAS:         ${{ secrets.DASH_KEY_ALIAS }}
+        with:
+          dart-define-file: ${{ inputs.dart-define-file }}
+          flutter-build-mode: ${{ inputs.flutter-build-mode }}
+      # The public updater deliberately selects only this universal APK name.
+      # App bundles are not installable by the device's package installer.
+      - name: Prepare universal APK release asset
+        id: apk
+        run: |
+          SRC="${{ steps.apk-build.outputs.apk-path }}"
+          test "${{ inputs.flutter-build-mode }}" = "apk" || { echo "OTA requires an APK, not an app bundle"; exit 1; }
+          OUT="$(dirname "$SRC")/ilink.apk"
+          mv "$SRC" "$OUT"
+          echo "path=$OUT"            >> "$GITHUB_OUTPUT"
+          echo "name=$(basename "$OUT")" >> "$GITHUB_OUTPUT"
+
+      - name: Compute SHA-256 + size
+        id: sha
+        run: |
+          APK="${{ steps.apk.outputs.path }}"
+          SHA=$(sha256sum "$APK" | awk '{print $1}')
+          BYTES=$(stat -c%s "$APK")
+          MB=$(awk -v b="$BYTES" 'BEGIN{printf "%.1f", b/1048576}')
+          echo "sha=$SHA"     >> "$GITHUB_OUTPUT"
+          echo "bytes=$BYTES" >> "$GITHUB_OUTPUT"
+          echo "mb=$MB"       >> "$GITHUB_OUTPUT"
+
+      - name: Compose release notes
+        run: |
+          awk '/^## \[/{if(++c==2) exit} c==1' CHANGELOG.md > release-notes.md
+          cat >> release-notes.md <<EOF
+
+          ---
+
+          ### Verify download
+
+          \`\`\`sh
+          sha256sum ${{ steps.apk.outputs.name }}    # macOS: shasum -a 256 ${{ steps.apk.outputs.name }}
+          \`\`\`
+
+          **SHA-256:** \`${{ steps.sha.outputs.sha }}\`
+          **Size:** ${{ steps.sha.outputs.mb }} MB (${{ steps.sha.outputs.bytes }} bytes)
+          EOF
+
+      # Also expose the APK on the Actions run page for debugging. GitHub
+      # wraps artifact downloads in a zip regardless of what's inside — the
+      # extracted file is the real signed APK.
+      - name: Upload APK as run artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: ilink-${{ inputs.version }}-${{ inputs.environment }}-apk
+          path: ${{ steps.apk.outputs.path }}
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Prepare public GitHub OTA metadata
+        env:
+          RELEASE_TAG: ${{ inputs.tag }}
+          APK_SHA256: ${{ steps.sha.outputs.sha }}
+          APK_SIZE: ${{ steps.sha.outputs.bytes }}
+        run: |
+          VERSION=$(sed -n 's/^version: *//p' pubspec.yaml | tr -d '\r')
+          VERSION_NAME="${VERSION%+*}"
+          VERSION_CODE="${VERSION##*+}"
+          test "$RELEASE_TAG" = "v$VERSION_NAME" || { echo "Tag must match v<versionName>"; exit 1; }
+          jq -n \
+            --arg versionName "$VERSION_NAME" \
+            --argjson versionCode "$VERSION_CODE" \
+            --arg sha256 "$APK_SHA256" \
+            --argjson sizeBytes "$APK_SIZE" \
+            '{$versionName, $versionCode, $sha256, $sizeBytes}' > ilink-release.json
+
+      - name: Attach APK and OTA metadata to GitHub Release
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: ${{ inputs.tag }}
+          files: |
+            ${{ steps.apk.outputs.path }}
+            ilink-release.json
+          body_path: release-notes.md
+          append_body: true
+
+      - name: Remove temporary signing material
+        if: always()
+        run: rm -f "$RUNNER_TEMP/dash-release.jks"

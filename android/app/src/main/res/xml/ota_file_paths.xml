@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!-- OTA APK downloads live in the app's cache temp directory. -->
+    <cache-path name="ota" path="ota/"/>
+</paths>

@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  pull_request:
+
+# Read-only token: these checks never write to the repo. On a public
+# repository this keeps fork PRs to the narrowest grant that still lets
+# actions/checkout fetch the merge ref.
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup-flutter
+      - run: flutter pub get
+      - run: dart format --set-exit-if-changed .
+      - run: flutter analyze
+      - run: flutter test
+
+      # Hex-literal audit. Fails the PR if any 0x[0-9a-fA-F]{4,} that
+      # looks like a feature ID lives outside the bundled dispatch
+      # table (android/app/src/main/assets/offline/car_table.textproto). Color literals,
+      # ADB protocol opcodes, Unicode codepoints, and bitmasks are
+      # allowlisted by context in tool/audit_hex.dart.
+      - name: Audit stray feature-ID hex
+        run: dart run tool/audit_hex.dart
+
+      # Every PR re-validates the standalone prod
+      # dart-define file. Catches a future regression where someone
+      # (a) breaks the JSON shape, (b) drops a key
+      # `lib/kernel/config/app_config.dart` reads, or (c) renames the
+      # file path away from what `release-build.yml` expects.
+      #
+      # Originally tried ``flutter analyze --dart-define-from-file=…``
+      # but that flag is only honored by ``flutter build``/``run``;
+      # ``analyze`` exits 64 on it. The validator script JSON-parses
+      # prod.json and asserts the required keys are present + correctly
+      # typed — same intent, ~1s vs the 4-min APK build alternative.
+      # No backend connection or backend secret is required.
+      - name: Validate prod dart-define config loads
+        run: dart run tool/validate_prod_config.dart

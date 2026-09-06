@@ -1,0 +1,728 @@
+# Public offline dispatch data; packaged under the APK signature.
+# Schema: proto/car_table.proto. See docs/offline-first/local-command-tables.md.
+
+version: "1.0.0"
+
+fast_actions {
+  action_id: "door.lock"
+  device_type: 1001  # DT_BODY
+  feature_name: "Bodywork.BODYWORK_FOUR_DOOR_SET"
+  value {
+    constant: 2
+  }
+}
+
+fast_actions {
+  action_id: "door.unlock"
+  device_type: 1001  # DT_BODY
+  feature_name: "Bodywork.BODYWORK_FOUR_DOOR_SET"
+  value {
+    constant: 1
+  }
+}
+
+fast_actions {
+  action_id: "door.trunk.open"
+  device_type: 1001  # DT_BODY
+  feature_name: "Bodywork.BODYWORK_LUGGAGE_SETTING_SET"
+  value {
+    constant: 1
+  }
+}
+
+fast_actions {
+  action_id: "door.trunk.close"
+  device_type: 1001  # DT_BODY
+  feature_name: "Bodywork.BODYWORK_LUGGAGE_SETTING_SET"
+  value {
+    constant: 0
+  }
+}
+
+fast_actions {
+  action_id: "hood.open"
+  device_type: 1001  # DT_BODY
+  feature_name: "Setting.SETTING_ELECTRIC_FORECABIN_SWITCH_SET"
+  value {
+    constant: 1
+  }
+}
+
+fast_actions {
+  action_id: "hood.close"
+  device_type: 1001  # DT_BODY
+  feature_name: "Setting.SETTING_ELECTRIC_FORECABIN_SWITCH_SET"
+  value {
+    constant: 3
+  }
+}
+
+fast_actions {
+  action_id: "hood.stop"
+  device_type: 1001  # DT_BODY
+  feature_name: "Setting.SETTING_ELECTRIC_FORECABIN_SWITCH_SET"
+  value {
+    constant: 2
+  }
+}
+
+fast_actions {
+  action_id: "window.fl"
+  device_type: 1001  # DT_BODY
+  feature_name: "Bodywork.BODYWORK_LF_WINDOW_CTRL_SET"
+  value {
+    arg_int {
+      arg_name: "value"
+      default_value: 0
+    }
+  }
+}
+
+fast_actions {
+  action_id: "window.rf"
+  device_type: 1001  # DT_BODY
+  feature_name: "Bodywork.BODYWORK_RF_WINDOW_CTRL_SET"
+  value {
+    arg_int {
+      arg_name: "value"
+      default_value: 0
+    }
+  }
+}
+
+fast_actions {
+  action_id: "window.rl"
+  device_type: 1001  # DT_BODY
+  feature_name: "Bodywork.BODYWORK_LR_WINDOW_CTRL_SET"
+  value {
+    arg_int {
+      arg_name: "value"
+      default_value: 0
+    }
+  }
+}
+
+fast_actions {
+  action_id: "window.rr"
+  device_type: 1001  # DT_BODY
+  feature_name: "Bodywork.BODYWORK_RR_WINDOW_CTRL_SET"
+  value {
+    arg_int {
+      arg_name: "value"
+      default_value: 0
+    }
+  }
+}
+
+fast_actions {
+  action_id: "sunroof.ctl"
+  device_type: 1001  # DT_BODY
+  feature_name: "Bodywork.BODYWORK_MOON_ROOF_CTL_SET"
+  value {
+    arg_int {
+      arg_name: "value"
+      default_value: 0
+    }
+  }
+}
+
+fast_actions {
+  action_id: "sunroof.percent"
+  device_type: 1001  # DT_BODY
+  feature_name: "Bodywork.BODYWORK_MOON_ROOF_OPEN_PERCENT_SET"
+  value {
+    arg_int {
+      arg_name: "value"
+      default_value: 0
+    }
+  }
+}
+
+fast_actions {
+  action_id: "climate.power"
+  device_type: 1000  # DT_AC
+  feature_name: "Ac.AC_POWER_STATE_SET"
+  value {
+    arg_bool {
+      arg_name: "on"
+      on_value: 1
+      off_value: 0
+    }
+  }
+}
+
+fast_actions {
+  action_id: "climate.fan"
+  device_type: 1000  # DT_AC
+  feature_name: "Ac.AC_WIND_LEVEL_SET"
+  value {
+    arg_int {
+      arg_name: "value"
+      default_value: 3
+    }
+  }
+}
+
+fast_actions {
+  action_id: "climate.temp"
+  device_type: 1000  # DT_AC
+  feature_name: "Ac.AC_TEMP_MAIN_SET"
+  value {
+    arg_int {
+      arg_name: "value"
+      default_value: 22
+    }
+  }
+}
+
+fast_actions {
+  action_id: "climate.mode"
+  device_type: 1000  # DT_AC
+  feature_name: "Ac.AC_WIND_MODE_SET"
+  value {
+    arg_int {
+      arg_name: "value"
+      default_value: 1
+    }
+  }
+}
+
+fast_actions {
+  action_id: "climate.cycle"
+  device_type: 1000  # DT_AC
+  feature_name: "Ac.AC_CYCLE_MODE_SET"
+  value {
+    arg_int {
+      arg_name: "value"
+      default_value: 0
+    }
+  }
+}
+
+fast_actions {
+  action_id: "climate.defrost_f"
+  device_type: 1000  # DT_AC
+  feature_name: "Ac.AC_DEFROST_FRONT_STATE_SET"
+  value {
+    arg_bool {
+      arg_name: "on"
+      on_value: 1
+      off_value: 0
+    }
+  }
+}
+
+fast_actions {
+  action_id: "climate.defrost_r"
+  device_type: 1000  # DT_AC
+  feature_name: "Ac.AC_DEFROST_REAR_STATE_SET"
+  value {
+    arg_bool {
+      arg_name: "on"
+      on_value: 1
+      off_value: 0
+    }
+  }
+}
+
+fast_actions {
+  action_id: "climate.compressor"
+  device_type: 1000  # DT_AC
+  feature_name: "Ac.AC_COMPRESSOR_MODE_SET"
+  value {
+    arg_bool {
+      arg_name: "on"
+      on_value: 1
+      off_value: 0
+    }
+  }
+}
+
+fast_actions {
+  action_id: "climate.max_hot"
+  device_type: 1000  # DT_AC
+  feature_name: "Ac.AC_WARM_STATE_SET"
+  value {
+    arg_bool {
+      arg_name: "on"
+      on_value: 1
+      off_value: 2
+    }
+  }
+}
+
+fast_actions {
+  action_id: "climate.max_cool"
+  device_type: 1000  # DT_AC
+  feature_name: "Ac.AC_MAX_COOLING_STATE_SET"
+  value {
+    arg_bool {
+      arg_name: "on"
+      on_value: 1
+      off_value: 0
+    }
+  }
+}
+
+fast_actions {
+  action_id: "massage.drv.mode"
+  device_type: 1023  # DT_SETTING
+  feature_name: "Setting.SET_MAIN_DRIVER_SEAT_MASSAGE_WORKING_MODE_SET"
+  value {
+    arg_int {
+      arg_name: "value"
+      default_value: 0
+    }
+  }
+}
+
+fast_actions {
+  action_id: "massage.drv.level"
+  device_type: 1023  # DT_SETTING
+  feature_name: "Setting.SET_MAIN_DRIVING_SEAT_MASSAGE_WORK_INTENSUTY_SET"
+  value {
+    arg_int {
+      arg_name: "value"
+      default_value: 0
+    }
+  }
+}
+
+fast_actions {
+  action_id: "massage.co.mode"
+  device_type: 1023  # DT_SETTING
+  feature_name: "Setting.SET_CO_DRIVER_SEAT_MASSAGE_WORKING_MODE_SET"
+  value {
+    arg_int {
+      arg_name: "value"
+      default_value: 0
+    }
+  }
+}
+
+fast_actions {
+  action_id: "massage.co.level"
+  device_type: 1023  # DT_SETTING
+  feature_name: "Setting.SET_CO_DRIVING_SEAT_MASSAGE_WORK_INTENSUTY_SET"
+  value {
+    arg_int {
+      arg_name: "value"
+      default_value: 0
+    }
+  }
+}
+
+# INSTRUMENT_HEADLIGHT_CONTROL_SET is a 4-value enum from BYD's own
+# CarExternalLightServiceImpl.setHeadlightMode: 1=HIGH, 2=AUTO, 3=ON, 4=OFF.
+fast_actions {
+  action_id: "light.head"
+  device_type: 1001  # DT_BODY
+  feature_name: "Instrument.INSTRUMENT_HEADLIGHT_CONTROL_SET"
+  value {
+    arg_bool {
+      arg_name: "on"
+      on_value: 3
+      off_value: 4
+    }
+  }
+}
+
+fast_actions {
+  action_id: "light.head.on"
+  device_type: 1001  # DT_BODY
+  feature_name: "Instrument.INSTRUMENT_HEADLIGHT_CONTROL_SET"
+  value {
+    constant: 3
+  }
+}
+
+fast_actions {
+  action_id: "light.head.off"
+  device_type: 1001  # DT_BODY
+  feature_name: "Instrument.INSTRUMENT_HEADLIGHT_CONTROL_SET"
+  value {
+    constant: 4
+  }
+}
+
+# Fog lamps: OEM uses INSTRUMENT_*_FOG_LAMPS_SWITCH_SET (0x4C109030/34) with
+# 1=on, 2=off — not the old LIGHT_*_FOG_LIGHT_SET keys.
+fast_actions {
+  action_id: "light.fog_f"
+  device_type: 1001  # DT_BODY
+  feature_name: "Instrument.INSTRUMENT_FRONT_FOG_LAMPS_SWITCH_SET"
+  value {
+    arg_bool {
+      arg_name: "on"
+      on_value: 1
+      off_value: 2
+    }
+  }
+}
+
+fast_actions {
+  action_id: "light.fog_r"
+  device_type: 1001  # DT_BODY
+  feature_name: "Instrument.INSTRUMENT_REAR_FOG_LAMPS_SWITCH_SET"
+  value {
+    arg_bool {
+      arg_name: "on"
+      on_value: 1
+      off_value: 2
+    }
+  }
+}
+
+fast_actions {
+  action_id: "light.turn_left"
+  device_type: 1001  # DT_BODY
+  feature_name: "Bodywork.BODYWORK_LEFT_TURN_LIGHT_STATE_SET"
+  value {
+    arg_bool {
+      arg_name: "on"
+      on_value: 1
+      off_value: 2
+    }
+  }
+}
+
+fast_actions {
+  action_id: "light.turn_right"
+  device_type: 1001  # DT_BODY
+  feature_name: "Bodywork.BODYWORK_RIGHT_TURN_LIGHT_STATE_SET"
+  value {
+    arg_bool {
+      arg_name: "on"
+      on_value: 1
+      off_value: 2
+    }
+  }
+}
+
+unit_actions {
+  action_id: "comfort.frag.on"
+  unit_name: "fragrance"
+  arg_template: "on"
+  arg_template: "{level:2}"
+}
+
+unit_actions {
+  action_id: "comfort.frag.off"
+  unit_name: "fragrance"
+  arg_template: "off"
+}
+
+unit_actions {
+  action_id: "frag.select"
+  unit_name: "fragrance"
+  arg_template: "select"
+  arg_template: "{slot:1}"
+}
+
+unit_actions {
+  action_id: "frag.status"
+  unit_name: "fragrance"
+  arg_template: "status"
+}
+
+fast_actions {
+  action_id: "light.find_car"
+  device_type: 1001  # DT_BODY
+  feature_name: "Light.LIGHTS_FIND_CAR_WELCOME_SWITCH_SET"
+  value {
+    constant: 1
+  }
+}
+
+unit_actions {
+  action_id: "comfort.atmos.on"
+  unit_name: "light_int"
+  arg_template: "on"
+}
+
+unit_actions {
+  action_id: "comfort.atmos.off"
+  unit_name: "light_int"
+  arg_template: "off"
+}
+
+unit_actions {
+  action_id: "comfort.atmos.bright"
+  unit_name: "light_int"
+  arg_template: "bright"
+  arg_template: "{value:80}"
+}
+
+unit_actions {
+  action_id: "comfort.atmos.color"
+  unit_name: "light_int"
+  arg_template: "color"
+  arg_template: "{value:0}"
+}
+
+# Find-car welcome flash. On-car probing (2026-05-31) showed this car
+# REJECTS LIGHTS_FLASHING_LIGHT_AND_HORN (code -2147482648) but ACCEPTS
+# LIGHTS_FIND_CAR_WELCOME_SWITCH_SET=1324634174 (code 0). Was a broken
+# unit_action (set lturn 1 — a stuck left blinker); now the same direct
+# fast_action path as door.lock.
+fast_actions {
+  action_id: "light.flash"
+  device_type: 1001  # DT_BODY
+  feature_name: "Light.LIGHTS_FIND_CAR_WELCOME_SWITCH_SET"
+  value {
+    constant: 1
+  }
+}
+
+unit_actions {
+  action_id: "seat.heat.drv"
+  unit_name: "seat_heat_vent"
+  arg_template: "heat"
+  arg_template: "drv"
+  arg_template: "{value:0}"
+}
+
+unit_actions {
+  action_id: "seat.heat.pass"
+  unit_name: "seat_heat_vent"
+  arg_template: "heat"
+  arg_template: "pass"
+  arg_template: "{value:0}"
+}
+
+unit_actions {
+  action_id: "seat.heat.rl"
+  unit_name: "seat_heat_vent"
+  arg_template: "heat"
+  arg_template: "rl"
+  arg_template: "{value:0}"
+}
+
+unit_actions {
+  action_id: "seat.heat.rr"
+  unit_name: "seat_heat_vent"
+  arg_template: "heat"
+  arg_template: "rr"
+  arg_template: "{value:0}"
+}
+
+unit_actions {
+  action_id: "seat.vent.drv"
+  unit_name: "seat_heat_vent"
+  arg_template: "vent"
+  arg_template: "drv"
+  arg_template: "{value:0}"
+}
+
+units {
+  name: "door"
+  dex_filename: "doorunit.dex"
+  class_name: "DoorUnit"
+}
+
+units {
+  name: "trunk"
+  dex_filename: "trunkunit.dex"
+  class_name: "TrunkUnit"
+}
+
+units {
+  name: "ac"
+  dex_filename: "acunit.dex"
+  class_name: "AcUnit"
+}
+
+units {
+  name: "window"
+  dex_filename: "windowunit.dex"
+  class_name: "WindowUnit"
+}
+
+units {
+  name: "massage"
+  dex_filename: "seatmassageunit.dex"
+  class_name: "SeatMassageUnit"
+}
+
+units {
+  name: "fragrance"
+  dex_filename: "fragranceunit.dex"
+  class_name: "FragranceUnit"
+}
+
+units {
+  name: "light_ext"
+  dex_filename: "lightexteriorunit.dex"
+  class_name: "LightExteriorUnit"
+}
+
+units {
+  name: "light_int"
+  dex_filename: "lightinteriorunit.dex"
+  class_name: "LightInteriorUnit"
+}
+
+units {
+  name: "seat_heat_vent"
+  dex_filename: "seatheatventunit.dex"
+  class_name: "SeatHeatVentUnit"
+}
+
+units {
+  name: "ac_settings"
+  dex_filename: "acsettingsunit.dex"
+  class_name: "AcSettingsUnit"
+}
+
+
+# Telemetry reads — populated from BYD Test app's BYDMgmt.getInt sweep
+# (verified live on Leopard 8, 29 Apr 2026). Labels MUST match the
+# keys CarState.mergeBridge() reads in dash/lib/core/car/state/car_state.dart.
+# Adding a key here makes that field's home-screen tile come alive on
+# the next readStatus() poll (~10 s cadence).
+
+# Doors — original hardcoded hex values (0x2940004E…0x29400054) were
+# wrong; the catalog reverse-lookup landed on unrelated subsystem fields
+# (BODYWORK_POWER_LEVEL, BODYWORK_RIGHT_HAND_REAR_DOOR for door_lf, etc.)
+# so the Gate probe values stayed at 0 even when doors physically opened.
+# Verified live 12 May 2026 on Leopard 8 — these are the active read keys:
+#   Door.DOOR_LOCK_COMMAND_AREA_LEFT_FRONT (driver-door lock = vehicle lock)
+#   Bodywork.BODYWORK_*_HAND_*_DOOR (per-door open/close state)
+status_keys { label: "trunk"      device_type: 1001 feature_name: "Bodywork.BODYWORK_LUGGAGE_DOOR" }   # 0x2940005A LUGGAGE
+
+status_keys { label: "ac_power"       device_type: 1000 feature_name: "Ac.AC_POWER_STATE" }  # 0x40400110 AC/POWER
+status_keys { label: "ac_fan"         device_type: 1000 feature_name: "Ac.AC_WIND_LEVEL" }  # 0x4040011C AC/WIND_LEVEL
+status_keys { label: "ac_wind_mode"   device_type: 1000 feature_name: "Ac.AC_WIND_MODE" }  # 0x40400118 AC/WIND_MODE
+status_keys { label: "ac_cycle"       device_type: 1000 feature_name: "Ac.AC_CYCLE_MODE" }  # 0x40400114 AC/CYCLE_MODE
+status_keys { label: "ac_target_temp" device_type: 1000 feature_name: "Ac.AC_TEMP_MAIN" }  # 0x40400028 AC/TARGET_TEMP — verified live 5 May 2026 on Leopard 5 (DiLink5.0): set 22→25 via 0x1DE00028 echoed back at this read prop
+status_keys { label: "ac_cabin_temp"  device_type: 1000 feature_name: "Ac.AC_TEMP_INSIDE" }  # 0x3D800030 AC/CABIN_TEMP_INT
+status_keys { label: "ac_temp_out"    device_type: 1001 feature_name: "Instrument.INSTRUMENT_DD_OUT_TEMP" }  # 0x4A503040 INSTRUMENT_DD_OUT_TEMP — re-verified live 30 Apr 2026 (returned 36 °C)
+
+status_keys { label: "headlight"  device_type: 1001 feature_name: "Instrument.INSTRUMENT_SMART_KEY_SYS_WARN_LIGHT" }   # 0x12D00068 HEADLIGHT
+status_keys { label: "low_beam"   device_type: 1001 feature_name: "Light.LIGHT_LOW_BEAM_LIGHT" }   # 0x3880204A LOW_BEAM
+status_keys { label: "high_beam"  device_type: 1001 feature_name: "Light.LIGHT_HIGH_BEAM_LIGHT" }   # 0x3880204C HIGH_BEAM
+status_keys { label: "front_fog"  device_type: 1001 feature_name: "Light.LIGHT_FRONT_FOG_LIGHT" }   # 0x132E000E FRONT_FOG
+status_keys { label: "rear_fog"   device_type: 1001 feature_name: "Light.LIGHT_REAR_FOG_LIGHT" }   # 0x132E000F REAR_FOG
+
+# Battery / range / EV-mode block — re-verified live on 30 Apr 2026
+# (Leopard 8). The previous decimals (1144750128 etc.) had drifted
+# from the documented hex; live `getInt` returned -10011 UNAVAILABLE.
+# After resyncing decimals to match the inline hex, every BMS / IC
+# property except `speed_kmh` returns real data while parked.
+# `speed_kmh` is gated by ignition state (READY mode) and stays
+# UNAVAILABLE until the IC bus wakes up — this is a car-state
+# limitation, not a wrong-hex one.
+status_keys { label: "battery_pct"   device_type: 1001 feature_name: "Statistic.STATISTIC_SOC_BATTERY_PERCENTAGE" } # 0x44400030 DischargeVehicleSoc
+status_keys { label: "range_ev_km"   device_type: 1001 feature_name: "Statistic.STATISTIC_ELEC_DRIVING_RANGE" } # 0x4A50203E STATISTIC_ELEC_DRIVING_RANGE
+status_keys { label: "range_fuel_km" device_type: 1001 feature_name: "Statistic.STATISTIC_FUEL_DRIVING_RANGE" } # 0x4A504038 STATISTIC_FUEL_DRIVING_RANGE
+status_keys { label: "ev_mode"       device_type: 1001 feature_name: "Instrument.INSTRUMENT_EV_MODE_INDICATORE" } # 0x3D91102E INSTRUMENT_EV_MODE_INDICATORE
+status_keys { label: "hev_mode"      device_type: 1001 feature_name: "Instrument.INSTRUMENT_HEV_MODE_INDICATORE" } # 0x3D91102F INSTRUMENT_HEV_MODE_INDICATORE
+# speed_kmh — original hex 0x12D00064 not in DiLink5.1 catalog (returned
+# -10011). Live-tested 12 May 2026 on Leopard 8: the speedometer-display
+# value lives at `Statistic.STATISTIC_SPEED_SIG_VDIS` (returns 0 when
+# parked, populates with real km/h once the car enters READY mode and
+# the IC bus wakes up).
+status_keys { label: "sunroof_state"    device_type: 1001 feature_name: "Bodywork.BODYWORK_SUNROOF_STATE" }  # 0x41A00020 Sunroof/STATE
+status_keys { label: "sunroof_position" device_type: 1001 feature_name: "Bodywork.BODYWORK_SUNROOF_POSITION" }  # 0x41A00030 Sunroof/POSITION
+
+# ── Reflection-resolved (BYDAutoFeatureIds) ─────────────────────────────
+# Entries below use `feature_name` instead of `key`. The host resolves
+# each name through BydAutoFeatureIdsCatalog (reflection on
+# `android.hardware.bydauto.BYDAutoFeatureIds`) at first read. Names
+# absent on a trim drop silently — those rows render grey on the
+# gate-probe screen, which is the correct behaviour: the trim doesn't
+# expose that ID.
+#
+# Why this path: ~150 BYD feature IDs live only in the framework jar
+# — we don't have the integer values at build time. Reflection
+# resolution per device is forward-compatible with future ROM
+# updates that add or renumber constants.
+#
+# Live-validated on Leopard 8 dev unit: ~149 of these resolve to
+# real values; the rest stay grey (hardware not fitted, sentinel
+# returns, or wrong device-type guess).
+
+# ── Closures / per-door locks ────────────────────────────────────────
+# ── Climate (AC) — keys not in the integer-list above ────────────────
+# ── Lights — extras ──────────────────────────────────────────────────
+# ── Tires (TPMS) ─────────────────────────────────────────────────────
+# ── Charging (EV) ────────────────────────────────────────────────────
+# ── Seats (heat / vent / belts) ──────────────────────────────────────
+# Seat heat/vent — switched from `_STATUS` (always returns 2 = "feature
+# available", not actual state) to `_LEVEL` (0 = off, 1-3 = intensity).
+# Verified live 12 May 2026 on DiLink5.1: STATUS always read 2 even when
+# the seat heater was physically OFF, while LEVEL returned 0/1/2/3
+# matching the actual control state. UI interprets `level > 0` as
+# "on" — single source of truth for both binary on/off display and
+# the intensity gauge.
+# belt_row_l/mid showed gray on Gate probe with the legacy
+# `SAFETY_BELT_COMMAND_AREA_SECOND_ROW_SEAT_*` names — verified live
+# 12 May 2026 on DiLink5.1: those features unbound for L+MID (RIGHT
+# remained bound, returns 0). Switched to the `Setting.SETTING_*_REAR_ROW
+# _SAFETYBELT_STATUS` variants under device 1023, which BYD's newer
+# rear-seat reminder system uses.
+# ── Comfort — atmos / wipers / interior light ────────────────────────
+# Global atmos_color / atmos_bright — Leopard 8 splits the atmos lamp
+# into separate FRONT + BACK zones; the legacy global
+# `SET_INTERIOR_ATMOSPHERE_LAMP_COLOR/BRIGHTNESS` keys (and their _SET
+# variants) returned -10011 on this trim. Mirror the FRONT zone as the
+# global label so the UI's hardcoded "Atmos color/brightness" rows
+# render live values; per-zone labels below give the full picture.
+# Seat massage state — driver = front-left, co-driver = front-right
+# per BYD's smart-cabin convention. MODE = pattern enum (kneading,
+# wave, etc.), LEVEL = intensity (0=off, 1-3=strength).
+# inside_light — `_STATE_SET` returned 65535. The READ-side STATE
+# (without _SET) is the live key on this trim.
+# ── Sensors (cabin) ──────────────────────────────────────────────────
+# ── Powertrain — engine / motor / gearbox ───────────────────────────
+# `ENGINE_REAR_MOTOR_TORQUE` returned 65535 on this trim. `_F` (filtered)
+# variant is the bound key on DiLink5.1 PHEV / EV configurations.
+# ── Dynamics ─────────────────────────────────────────────────────────
+# ── Statistics — rolling trip stats ──────────────────────────────────
+# ── Radar / parking sensors ──────────────────────────────────────────
+# ── Phase-5 catch-up: remaining Dudu names ──────────────────────────────
+# Source: byd/BYD_FEATURE_IDS_FROM_DUDE.md (175-name reverse-engineered
+# catalog). Of those 175, 149 were already covered above; a further 12
+# overlap with legacy hex-keyed entries earlier in this file (AC_POWER_STATE
+# ≡ ac_power, AC_WIND_LEVEL ≡ ac_fan, LIGHT_*_LIGHT ≡ low_beam/high_beam/
+# front_fog/rear_fog, STATISTIC_*_DRIVING_RANGE ≡ range_ev_km/range_fuel_km,
+# AC_TEMP_MAIN ≡ ac_target_temp, AC_TEMP_OUT ≡ ac_temp_out, AC_WIND_MODE
+# ≡ ac_wind_mode, AC_CYCLE_MODE ≡ ac_cycle) — those are NOT duplicated
+# here to avoid label collisions. Names absent on a given trim drop
+# silently via BydAutoFeatureIdsCatalog.resolve() returning null.
+
+# ── AC — quick-clean diagnostics ─────────────────────────────────────
+# `door_*_state` removed — were duplicates of `door_lf/rf/lr/rr` after
+# the door entries were repointed to the correct
+# Bodywork.BODYWORK_*_HAND_*_DOOR keys. Same for `trunk_state` =
+# duplicate of `trunk`. `body_power_lvl` removed — internal Bodywork
+# diagnostics signal, no UI consumer.
+
+# ── Charging — ETA delta event ───────────────────────────────────────
+# ── Energy — IC-side mode indicator (parallel to ev_mode/hev_mode
+#    integer keys; this name routes through the ENERGY subsystem) ──
+# ── Location ─────────────────────────────────────────────────────────
+# ── OTA — 12V auxiliary battery voltage ─────────────────────────────
+# ── Panorama / 360-camera ───────────────────────────────────────────
+# Panorama — `_WORK_STATE` returned 65535. `_WORK_MODE` is the active
+# enum (off/start/working) on this DiLink5.1 trim.
+# ── PM2.5 — value-changed event signal ──────────────────────────────
+# ── Radar — probe-state (presence/health), parallel to the obstacle-
+#    distance entries above ────────────────────────────────────────
+# ── Safety belt — passenger-command path (distinct from the
+#    *_COMMAND_AREA_* main path on lines 715-719; passenger path is
+#    rear-row buckle state read from passenger-cabin CAN) ─────────
+# `seat_heat_drv_lvl` / `seat_heat_pass_lvl` removed — they're now
+# redundant with seat_heat_drv / seat_heat_pass on lines 712-715, which
+# both map to `Ac.AC_*_HEATING_LEVEL`. Single source of truth: the
+# LEVEL field (0 = off, 1-3 = intensity) encodes both binary on/off
+# AND intensity in one read.
+
+# ── Statistic — alternate battery-% path through STATISTIC subsystem
+#    (the integer-keyed battery_pct on line 606 uses BMS
+#    DischargeVehicleSoc; this one comes from the trip-statistic
+#    aggregator and may differ by 1-2 % on some trims) ────────────
+# ── Tyre pressure — alternate TYRE_* path, distinct from the
+#    INSTRUMENT_2IN1_*_TYRE_PRESSURE on lines 683-686. Some BYD trims
+#    expose pressures only via TYRE_*; others only via INSTRUMENT_*.
+#    Both rows resolve via the catalog; whichever exists wins. ─────

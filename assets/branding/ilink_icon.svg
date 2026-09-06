@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="I99DASH">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#15346F"/>
+      <stop offset="0.55" stop-color="#0E2756"/>
+      <stop offset="1" stop-color="#091B3D"/>
+    </linearGradient>
+    <radialGradient id="centerGlow" cx="0.5" cy="0.45" r="0.5">
+      <stop offset="0" stop-color="#5BB6FF" stop-opacity="0.16"/>
+      <stop offset="0.7" stop-color="#5BB6FF" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="topGloss" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.10"/>
+      <stop offset="0.55" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="glyph" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#BAD4FF"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="512" height="512" rx="104" ry="104" fill="url(#bg)"/>
+  <rect width="512" height="512" rx="104" ry="104" fill="url(#centerGlow)"/>
+  <rect width="512" height="512" rx="104" ry="104" fill="url(#topGloss)"/>
+
+  <g transform="rotate(-22 256 256)" stroke-linecap="round">
+    <path d="M 76 217 A 208 78 0 1 1 436 295"
+          fill="none" stroke="#5BB6FF" stroke-opacity="0.5" stroke-width="4"/>
+    <circle cx="436" cy="295" r="6" fill="#5BB6FF"/>
+  </g>
+
+  <path fill="url(#glyph)" fill-rule="evenodd" d="
+    M 191 141 A 55 55 0 0 1 246 196 L 246 350 A 8 8 0 0 1 238 358 L 222 358 A 8 8 0 0 1 214 350 L 214 246 A 55 55 0 1 1 191 141 Z
+    M 191 172 A 24 24 0 1 0 191 220 A 24 24 0 1 0 191 172 Z
+    M 321 141 A 55 55 0 0 1 376 196 L 376 350 A 8 8 0 0 1 368 358 L 352 358 A 8 8 0 0 1 344 350 L 344 246 A 55 55 0 1 1 321 141 Z
+    M 321 172 A 24 24 0 1 0 321 220 A 24 24 0 1 0 321 172 Z"/>
+</svg>

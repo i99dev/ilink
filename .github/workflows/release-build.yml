@@ -1,0 +1,42 @@
+name: Release Build
+
+# Production trigger. release-please.yml emits a `release` dispatch
+# after merging a release PR — we forward it into the reusable
+# `build-flutter-app` workflow with `environment: prod`.
+#
+# Adding a new environment is a new trigger workflow that defers to
+# the same callable. See `.github/workflows/build-flutter-app.yml`
+# for the pipeline body and `.github/SECRETS.md` for the env-secret
+# inventory.
+
+on:
+  repository_dispatch:
+    types: [release]
+  # Manual fallback for an out-of-band hotfix that doesn't go through
+  # release-please. Builds the same APK against an operator-supplied
+  # ref. Use sparingly — the canonical path is release-please's PR
+  # merge.
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag matching pubspec versionName (e.g. v3.22.0-b)"
+        required: true
+        type: string
+      version:
+        description: "Version label for the artifact (omit the leading v)"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    uses: ./.github/workflows/build-flutter-app.yml
+    secrets: inherit
+    with:
+      environment: prod
+      version: ${{ github.event.client_payload.version || inputs.version }}
+      tag:     ${{ github.event.client_payload.tag || inputs.tag }}
+      # The same standalone configuration is used by local release builds.
+      dart-define-file: config/prod.json

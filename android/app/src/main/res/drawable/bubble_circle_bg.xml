@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Circular background for the floating chat-head bubble. Uses the same
+  navy as the adaptive launcher icon so the bubble visually matches the
+  app's installed icon. Composed at runtime in bubble_overlay_view.xml
+  with the foreground layer (ic_launcher_foreground) painted on top.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="@color/ic_launcher_background"/>
+</shape>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Floating "chat head" view. Hosted by BubbleOverlayService inside a
+  TYPE_APPLICATION_OVERLAY WindowManager window. The outer FrameLayout
+  is a circular drawable matching the app's adaptive-icon background;
+  the inner ImageView paints the launcher foreground glyph on top so
+  the bubble reads as a smaller, on-screen version of the installed
+  launcher icon. Elevation gives a subtle shadow on API 21+.
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="44dp"
+    android:layout_height="44dp"
+    android:background="@drawable/bubble_circle_bg"
+    android:elevation="4dp"
+    android:clipToOutline="true">
+
+    <!--
+      11dp padding == 25% of the 44dp side. Mirrors the inset the
+      adaptive-icon system applies to ic_launcher_foreground when the
+      OS launcher renders the installed icon. Without this the glyph
+      paints edge-to-edge inside the circle and visually overwhelms
+      the bubble. With 25% inset the bubble matches how the launcher
+      itself draws our icon — same glyph proportions, smaller container.
+    -->
+    <ImageView
+        android:id="@+id/bubble_icon"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_launcher_foreground"
+        android:scaleType="centerInside"
+        android:padding="11dp"
+        android:contentDescription="@null"/>
+</FrameLayout>

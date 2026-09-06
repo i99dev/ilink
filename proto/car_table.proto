@@ -1,0 +1,480 @@
+syntax = "proto3";
+
+// CarTable: the single source of truth for every reverse-engineered
+// constant dash uses to talk to a BYD head unit. Built by CI from a
+// plaintext source kept in the private `byd-dash-secrets` repo, encrypted
+// with a signer-SHA-derived AES-256-GCM key, and shipped as
+// assets/car_table.pb.enc. Decrypted once at daemon startup into NDK-owned
+// native memory and never materialised in managed heap.
+//
+// Phase 2 scaffold: the schema is fixed here so code generators and the
+// build pipeline can be implemented against a stable contract. Population
+// of the table blob and the wire to UnitDispatcher/AutoFeatureService is
+// blocked on CI secret-store setup — see
+// ~/.claude/plans/let-us-review-car-magical-swan.md Phase 2 section.
+
+package com.i99dev.ilink.car;
+
+// Keep generated Java classes in one outer class (CarTableProto) so the
+// protoc-generated `CarTable` message doesn't collide with the filename-
+// derived wrapper class, and the generated `FastAction` / `UnitAction` /
+// `UnitSpec` inner classes don't collide with our hand-written Kotlin
+// data classes of the same names in com.i99dev.ilink.car.
+option java_package = "com.i99dev.ilink.car";
+option java_outer_classname = "CarTableProto";
+option java_multiple_files = false;
+
+// Single top-level message loaded once at boot. Keep it flat — no nested
+// groups — so the native-side parser is trivial and no field lives in a
+// position where it'd be harder to zero on shutdown.
+message CarTable {
+  // Dispatcher tables (FAST_ACTIONS + UNIT_ACTIONS in today's Kotlin
+  // UnitDispatcher). Keyed by action id string (e.g. "door.lock").
+  repeated FastAction fast_actions = 1;
+  repeated UnitAction unit_actions = 2;
+
+  // Telemetry reads aggregated into car.status.
+  repeated StatusKey status_keys = 3;
+
+  // Binder / AIDL routing. Descriptor strings, service tokens, transaction
+  // codes — everything AcFeatureService.kt hardcodes today.
+  repeated BinderRoute binder_routes = 4;
+
+  // Device-type numeric constants (DT_AC, DT_BODY, DT_SETTING, …).
+  map<string, int32> device_types = 5;
+
+  // Dex filename + class name for every spawnable unit referenced by a
+  // UnitAction.unit_name. Separate from UnitAction because a single unit
+  // DEX ("fragrance") backs several actions (fragOn, fragOff, fragSelect…).
+  repeated UnitSpec units = 6;
+
+  // BYD ContentProvider URIs for read-only family snapshots
+  // (vehicle_environment AQI/PM2.5/light, vehicle_diagnostics tire/gear/odo,
+  // climate cabin/setpoint/fan, etc.). Encrypted in-table so authority
+  // strings + paths don't sit in cleartext in the APK. Read by
+  // ``CarStatusProviderSource.kt`` via ``ContentResolver.query`` and
+  // by the matching ``ContentObserver`` registration for the push path
+  // (see ``ObserverChannel``).
+  repeated ContentProviderUri content_provider_uris = 7;
+
+  // Observer channels — pair an URI with the projection columns the
+  // ``ContentObserver`` should publish back to the SDK on every
+  // ``notifyChange()``. One channel per logical family; the host's
+  // CarChannel multiplexes them onto the ``<family>.subscribe`` stream
+  // the mini-app SDK consumes.
+  repeated ObserverChannel observer_channels = 8;
+
+  // Macros — multi-step intents that fan out to several wire actions.
+  // Replace the legacy Dart `CommandResolve` callback pattern; macros
+  // are first-class wire actions from the caller's perspective and
+  // appear in knownActions() alongside fast/unit actions. See
+  // docs/car-sdk-layers/command-methodology.md.
+  repeated Macro macros = 9;
+
+  // "literal-v1" / "encrypted-1.0.0" / etc. Surfaces through
+  // CarTableSource.version() so dispatch logs can be traced to the source
+  // that produced them. Bumped when the contents change materially.
+  string version = 99;
+}
+
+// Phase-9: BYD ContentProvider URI for a read-only family snapshot.
+// Encrypted alongside the action / status-key tables so the authority
+// (`com.byd.carStatusProvider`, `carsettings`, …) and path (`car_status`,
+// `vehicle_state`, `climate_state`, …) are not visible in the APK's
+// strings dump. The runtime decrypts once at boot and stores the
+// resolved Uri in NDK-resident memory the same way as the rest of the
+// table.
+message ContentProviderUri {
+  // Logical family name. Mirrors the SDK's family namespace so the
+  // platform channel can route by string ("vehicle.environment",
+  // "vehicle.diagnostics", "climate", …).
+  string family = 1;
+  // Authority component: ``content://<authority>/<path>`` →
+  // ``com.byd.carStatusProvider`` etc.
+  string authority = 2;
+  // Path component (no leading slash). Empty path is allowed for
+  // root-level providers.
+  string path = 3;
+  // Columns the family-specific projection wants. Empty = ``null``
+  // (all columns) which is fine for tiny providers but expensive
+  // for ``car_status`` rows; populate it for every production entry.
+  repeated string projection = 4;
+  // Optional row filter, e.g. ``"key IN ('aqi','pm25','ambient_lux')"``.
+  // Most BYD providers return a single state row so a selection is
+  // rarely needed; leave empty when not applicable.
+  string selection = 5;
+  // Field-by-field mapping: ProviderColumn → SDK snapshot field.
+  // E.g. ``"pm25_ugm3" → "pm25"`` so the Kotlin reader can build the
+  // Dart-side map keyed exactly the way the snapshot schema expects.
+  map<string, string> column_to_field = 6;
+}
+
+// Pairs a ``ContentProviderUri`` with the host's push-channel name.
+// The host registers ``ContentResolver.registerContentObserver(uri,
+// true, observer)`` once per channel; on every ``notifyChange()`` the
+// observer reads the freshly-changed row, applies the same
+// ``column_to_field`` mapping, and emits the snapshot through
+// ``CarChannel`` to the SDK's ``<family>.subscribe`` stream.
+message ObserverChannel {
+  // Logical family name (matches ContentProviderUri.family).
+  string family = 1;
+  // Whether to also observe descendant URIs. BYD providers vary; the
+  // ``carStatusProvider`` notifies on the row URI which means we want
+  // ``descendants = true`` to catch column-level updates that bubble.
+  bool notify_for_descendants = 2;
+  // Throttle window in ms — the host coalesces bursts of
+  // ``notifyChange()`` events into a single emission to keep the JS
+  // bridge from flooding. 200ms covers the common "many CAN frames
+  // per second" case without losing the eventual-consistent end state.
+  int32 throttle_ms = 3;
+}
+
+// FAST path: direct daemon setInt with (dt, key, computed value).
+message FastAction {
+  string action_id = 1;            // ActionIds.* string, e.g. "door.lock"
+  int32 device_type = 2;           // DT_BODY, DT_AC, DT_SETTING
+  reserved 3;                      // was `int32 key` — removed 12 May 2026
+  reserved "key";                  // every entry now uses feature_name
+  ValueSpec value = 4;             // how to derive the int to write
+  bool requires_stationary = 5;    // safety gate — enforced in router
+  RateClass rate_class = 6;        // rate-limiter bucket selector
+  // BYDAutoFeatureIds field name resolved at runtime via
+  // BydAutoFeatureIdsCatalog.resolve(name) → integer the framework's
+  // setInt(dt, key, …) accepts. The framework class is reflection-loaded
+  // at boot — when BYD renames a feature's int between ROMs the name
+  // stays stable, so this catalog is the single source of truth across
+  // DiLink versions. Tag 9 (7=subsystem, 8=area).
+  string feature_name = 9;         // required — every action MUST set this
+
+  // Subsystem grouping for the SDK facade — lets `lib/sdk/l8/doors.dart`
+  // iterate "all DOORS actions" without hard-coding the action_id list.
+  // Default UNSPECIFIED = "doesn't fit any subsystem" (rare; only legacy
+  // entries should land here).
+  SubsystemId subsystem = 7;
+
+  // AC zone targeting — matches BYDAuto's `area` parameter on Path B
+  // setInt calls. 0 = unset (most actions are global). When set, the
+  // dispatcher passes this through to the daemon's setInt(dt, key,
+  // value, area) overload. Common values from docs/l8/06-controls/ac.md:
+  //   256 (0x100) = MAIN_DRIVE
+  //   272 (0x110) = PASSENGER
+  //   512 (0x200) = MIDDLE_LEFT (rear)
+  //   528 (0x210) = MIDDLE_RIGHT (rear)
+  int32 area = 8;
+
+  // Optional precondition gate. When set, UnitDispatcher reads the
+  // named status feature from AutoCarRegistry before issuing the write.
+  // If the live value doesn't satisfy `equals`, the dispatcher either
+  // auto-satisfies (when `auto_satisfy` is populated) or returns a
+  // structured PRECONDITION_NOT_MET error to the caller. Eliminates
+  // the "fan-level write arrives at framework but cabin doesn't react
+  // because AC is off" class of bug — see
+  // docs/car-sdk-layers/command-methodology.md.
+  Precondition precondition = 10;
+}
+
+// Status-feature gate for a FastAction. Read this feature, compare
+// against `equals`, refuse / auto-satisfy as configured.
+message Precondition {
+  // Catalog name (resolved via BydAutoFeatureIdsCatalog) of the
+  // status signal that gates the write. Typically a `_STATE` or read-
+  // side feature for the same subsystem (e.g. `Ac.AC_POWER_STATE`
+  // gating `Ac.AC_WIND_LEVEL_SET`).
+  string feature_name = 1;
+
+  // Live value the feature must report for the write to proceed.
+  // The dispatcher reads AutoCarRegistry.get(feature_name).value
+  // and compares with ==. If the registry has no entry for the name
+  // (cold boot, non-BYD ROM), the precondition is treated as MET —
+  // we'd rather attempt the write than block on a missing read.
+  int32 equals = 2;
+
+  // Optional recovery — when populated, the dispatcher fires this
+  // action first, waits `settle_ms`, then retries the precondition
+  // check once. If still unmet, returns PRECONDITION_NOT_MET.
+  // When null, an unmet precondition is a hard failure.
+  AutoSatisfy auto_satisfy = 3;
+}
+
+// Action to dispatch when a precondition isn't met but is satisfiable
+// (e.g. "turn AC on so fan can be set").
+message AutoSatisfy {
+  // Wire id of the satisfying action — must itself be in fast_actions
+  // or macros. Recursion is bounded to one hop; nested auto-satisfy
+  // is not supported (would explode the failure-mode surface).
+  string action_id = 1;
+
+  // Static args passed to the satisfying action. Use this when the
+  // satisfier is a parameterised write (e.g. set window to a position).
+  // For binary on/off satisfiers, ArgBool callers pass `bool_value:
+  // true` in this map.
+  map<string, ArgValue> args = 2;
+
+  // Delay between auto-satisfy dispatch and the primary write.
+  // Default 250 ms — enough for the underlying CAN signal to settle
+  // and AutoCarRegistry to receive the push frame confirming the
+  // new state.
+  int32 settle_ms = 3;
+}
+
+// Polymorphic arg value for AutoSatisfy and Macro.steps. Mirrors the
+// Map<String, Any?> shape Dart's invoke() sends, but typed so the
+// authoring textproto can express each kind unambiguously.
+message ArgValue {
+  oneof kind {
+    int32  int_value  = 1;
+    bool   bool_value = 2;
+    string string_value = 3;
+    // Passthrough: take the value from the caller's args under this
+    // key. Used by Macro.steps to forward user-supplied args into
+    // child actions (e.g. macro `comfort.massage.start` declares
+    // `level` and forwards it to `massage.${seat}.level`).
+    string passthrough = 4;
+  }
+}
+
+// Macro: a single user-intent that fans out to multiple wire actions
+// in sequence. Replaces the `CommandResolve` callback pattern in
+// Dart. Each step is itself a wire action_id (fast_action or another
+// macro — recursion bounded to depth 3 in the dispatcher).
+//
+// Macros appear in knownActions() alongside fast/unit actions; from
+// the caller's perspective they're indistinguishable from a single
+// write. The parity test enforces every Dart CarCommand.id ∈
+// knownActions() ∪ macros[*].macro_id.
+message Macro {
+  string macro_id = 1;             // e.g. "comfort.massage.start"
+
+  // Steps execute in order. The dispatcher aborts on first failure
+  // and returns the failed step's reply with `failed_step` set.
+  // For idempotent macros (the common case — climate, lights), the
+  // caller can safely retry the whole macro.
+  repeated MacroStep steps = 2;
+
+  // Optional declared-args schema for callers + UI introspection.
+  // The voice tool manifest builder reads this to know what params
+  // the macro accepts.
+  repeated MacroArg declared_args = 3;
+
+  bool requires_stationary = 4;
+  RateClass rate_class = 5;
+  SubsystemId subsystem = 6;
+}
+
+message MacroStep {
+  // Wire id of the action this step dispatches. Supports the same
+  // ${args.name} placeholder syntax as `arg_template` in UnitAction
+  // so a single step can target one of several wire actions based
+  // on the caller's args (e.g. `massage.${args.seat}.level`).
+  string action_id_template = 1;
+
+  // Args passed to the resolved action. Each ArgValue can be a
+  // literal (int/bool/string) or a `passthrough` reference to one
+  // of the macro's declared_args.
+  map<string, ArgValue> args = 2;
+
+  // Wait this long after this step before the next. Default 0.
+  // Use for sequences that need CAN to settle between writes
+  // (e.g. AC power-on → set fan needs ~250 ms gap).
+  int32 settle_ms = 3;
+}
+
+message MacroArg {
+  string arg_name = 1;
+  // Exactly one of the below; mirrors ValueSpec.kind.
+  oneof kind {
+    ArgInt    arg_int    = 2;
+    ArgBool   arg_bool   = 3;
+    ArgLevel  arg_level  = 4;
+    ArgPercent arg_percent = 5;
+    OneOfArg  one_of     = 6;
+  }
+}
+
+// String-enum arg — for macro args like "seat: drv | co | rl | rr"
+// that don't fit an int range.
+message OneOfArg {
+  repeated string values = 1;
+  string default_value = 2;
+}
+
+// UNIT path: sideloaded DEX + class name + templated argv.
+message UnitAction {
+  string action_id = 1;
+  string unit_name = 2;            // e.g. "fragrance" → fragranceunit.dex
+  repeated string arg_template = 3; // supports "{key:default}" placeholders
+  bool requires_stationary = 4;
+  RateClass rate_class = 5;
+  SubsystemId subsystem = 6;
+}
+
+// Logical unit → dex filename + main class name. Referenced from
+// UnitAction.unit_name so we don't repeat dex/class in every action.
+message UnitSpec {
+  string name = 1;        // logical name used by UnitAction.unit_name
+  string dex_filename = 2; // e.g. "fragranceunit.dex"
+  string class_name = 3;   // e.g. "FragranceUnit"
+}
+
+// Discriminator for the value type a status key carries on the wire.
+// Default UNSPECIFIED == INT for back-compat — every existing entry
+// (which omits this field) keeps its int semantics. Phase 2 expanded
+// the daemon's get-surface to also speak DOUBLE / BYTES / INT_ARRAY;
+// authoring a status key with a non-default value_kind tells
+// `EncryptedCarTableSource.statusKeysCached` to call the matching
+// `getDouble` / `getBuffer` / `getIntArray` op instead of `getInt`.
+enum ValueKind {
+  VALUE_KIND_UNSPECIFIED = 0;     // = INT (back-compat default)
+  VALUE_KIND_DOUBLE      = 1;     // double — temperatures, pressures, %
+  VALUE_KIND_BYTES       = 2;     // byte[] — media metadata, DTC blobs
+  VALUE_KIND_INT_ARRAY   = 3;     // int[]  — multi-zone reads
+}
+
+// Telemetry key for car.status batch.
+//
+// Two ways to specify the BYD feature ID:
+//
+//   * `key` (int32) — for IDs we know at build time. Same path as
+//     pre-2026-05 entries; integer goes straight to the daemon.
+//   * `feature_name` (string) — for IDs we DON'T know at build time
+//     because they live only in the framework jar
+//     (`android.hardware.bydauto.BYDAutoFeatureIds`). The host
+//     resolves the name via reflection at boot
+//     (`BydAutoFeatureIdsCatalog`); rows whose name isn't on the
+//     trim drop silently. Use this path when adding new fields
+//     without integer values to bake in.
+//
+// Exactly one of `key` or `feature_name` should be populated per
+// entry. If both are set, `feature_name` wins (forward-compatible).
+// If neither is set, the row is dropped at parse time.
+//
+// `value_kind` defaults to INT (omitted == VALUE_KIND_UNSPECIFIED ==
+// INT semantics). Set it explicitly when the underlying signal is a
+// double / byte buffer / int array — the encrypted-source loader
+// branches on it to dispatch to the right daemon op.
+message StatusKey {
+  string label = 1;                // output map key ("door_lock", "ac_fan")
+  int32 device_type = 2;
+  reserved 3;                      // was `int32 key` — removed 12 May 2026
+  reserved "key";                  // every entry now uses feature_name
+  string feature_name = 4;         // required — resolved at boot via
+                                   // BydAutoFeatureIdsCatalog.resolve(name)
+                                   // → integer the framework's getInt(dt, key)
+                                   // accepts. Single source of truth across
+                                   // DiLink ROMs (BYD keeps names stable
+                                   // when re-numbering ints between trims).
+  ValueKind value_kind = 5;        // INT (default) | DOUBLE | BYTES | INT_ARRAY
+}
+
+// Binder destination for acTransact. Used by climate.comfort_mode,
+// climate.rear_lock, fragrance status, seat heat/vent binder writes.
+// NOTE: named `aidl_descriptor` instead of `descriptor` because protobuf
+// generates a `getDescriptor()` method on every Message class (for the
+// proto type descriptor) which would collide with a field-getter named
+// `getDescriptor()`.
+message BinderRoute {
+  string route_id = 1;             // logical name ("ac.set", "frag.status")
+  string service_token = 2;        // "AC_AIRCONDITIONER_SERVICE" etc.
+  string aidl_descriptor = 3;      // "com.byd.ac.IAcAirConditioner" etc.
+  int32 transaction_code = 4;      // 2=read, 3=write, varies by service
+}
+
+// How to derive the value written to the car from the args map.
+message ValueSpec {
+  oneof kind {
+    int32 constant = 1;            // constVal(v) — always write v
+    ArgInt arg_int = 2;            // argInt("value", default) — read arg, fallback default
+    ArgBool arg_bool = 3;          // argBool("on", 1, 0) — bool arg to on/off ints
+    ArgPercent arg_percent = 4;    // 0–100 clamp (e.g. window position, sunroof %)
+    ArgLevel arg_level = 5;        // 0..N enum (seat heat 0–3, fan 0–7)
+    ArgColor24 arg_color24 = 6;    // 0xRRGGBB ambient lamp packed color
+    ArgPackedArray arg_packed_array = 7;  // atomic multi-key writes (seat heat status+level)
+  }
+}
+
+message ArgInt {
+  string arg_name = 1;
+  int32 default_value = 2;
+}
+
+message ArgBool {
+  string arg_name = 1;
+  int32 on_value = 2;
+  int32 off_value = 3;
+}
+
+// Percent value, clamped to [min..max]. The dispatcher rejects out-of-range
+// args at runtime — invalid percent values must never hit the daemon.
+message ArgPercent {
+  string arg_name = 1;
+  int32 min = 2;                   // typically 0
+  int32 max = 3;                   // typically 100; some props use 0–127
+  int32 default_value = 4;
+}
+
+// Discrete level (e.g. seat heat 0–3, fan speed 0–7). Same role as ArgInt
+// but with explicit min/max so the SDK facade can publish valid ranges.
+message ArgLevel {
+  string arg_name = 1;
+  int32 min = 2;
+  int32 max = 3;
+  int32 default_value = 4;
+}
+
+// Ambient lamp 24-bit packed color (0xRRGGBB). The dispatcher accepts
+// either a single int arg (already packed) or a {r, g, b} triple (packed
+// here). Ships as one int to match the BYD setInt(dt, key, int) signature.
+message ArgColor24 {
+  string arg_name = 1;             // typically "color" — accepts either 0xRRGGBB int or {r,g,b} map
+  int32 default_value = 2;         // fallback color (e.g. 0xFFFFFF white)
+}
+
+// Atomic packed-array write — used by features where two keys must change
+// together (seat heat: status_key + level_key) to avoid the car flashing
+// a partial state. Resolves to setIntArray({status_key, level_key},
+// {status_value, level_value}) at the daemon.
+message ArgPackedArray {
+  repeated PackedSlot slots = 1;
+}
+
+message PackedSlot {
+  int32 key = 1;                   // companion hex key (the FastAction.key is the first slot)
+  ValueSpec value = 2;             // value spec for THIS slot — recursive on ValueSpec
+}
+
+// Rate-limiter classes — every command belongs to one. Bucket sizes live in
+// the RateLimiter itself, not here, so policy can change without a rebuild
+// of the encrypted table.
+enum RateClass {
+  RATE_CLASS_UNSPECIFIED = 0;
+  RATE_CLASS_ACTUATOR = 1;    // lock/unlock, trunk, windows, sunroof, hood
+  RATE_CLASS_CLIMATE = 2;     // climate.*, seat heat/vent, comfort
+  RATE_CLASS_LIGHT = 3;       // light.*, atmos
+  RATE_CLASS_STATUS_READ = 4; // car.status reads
+  RATE_CLASS_MEDIA = 5;       // radio.*, fragrance (side-effect-free-ish)
+}
+
+// Subsystem grouping. Drives both the SDK facade structure
+// (lib/sdk/l8/{subsystem}.dart) and the per-subsystem split of the
+// authoring textproto (android/app/src/main/assets/offline/car_table.textproto).
+// Add new values at the END only — protobuf field-number stability rules
+// apply; renumbering breaks every shipped APK that decrypts an older
+// table format.
+enum SubsystemId {
+  SUBSYSTEM_UNSPECIFIED = 0;
+  SUBSYSTEM_DOORS = 1;        // door.lock/unlock, trunk, hood, per-door sensors
+  SUBSYSTEM_WINDOWS = 2;      // four windows, motor control, position
+  SUBSYSTEM_CLIMATE = 3;      // AC power/fan/temp/mode/cycle/defrost
+  SUBSYSTEM_SEATS = 4;        // heat, vent, massage, position adjust
+  SUBSYSTEM_LIGHTS = 5;       // headlights, fog, turn signals, ambient/atmos
+  SUBSYSTEM_MIRRORS = 6;      // fold, heat, position
+  SUBSYSTEM_SUNROOF = 7;      // ctl, percent
+  SUBSYSTEM_FRAGRANCE = 8;    // on/off, slot select, type
+  SUBSYSTEM_AIR_QUALITY = 9;  // PM2.5, AQI, ionizer
+  SUBSYSTEM_TELEMETRY = 10;   // speed, RPM, battery, gear, range
+  SUBSYSTEM_ADAS = 11;        // AEB, BSD, AVH, lane assist
+  SUBSYSTEM_INSTRUMENT = 12;  // backlight, call display, calls
+  SUBSYSTEM_CHARGING = 13;    // appointment, AC charging current
+  SUBSYSTEM_AUDIO = 14;       // volume, EQ, source select
+  SUBSYSTEM_BODY = 15;        // misc body functions not covered above
+}

@@ -1,0 +1,627 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <!-- Loopback TCP to the local adbd (127.0.0.1:5555) to bootstrap the daemon. -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- Location permissions kept for voice-assistant context (routing,
+         weather, "where am I"). Don't drop — the AI surfaces these.
+         BACKGROUND_LOCATION gives continuous fixes when the user
+         switches to another app (maps, music) while the voice session
+         is still running. AdbBootstrap v6 grants it via `pm grant`;
+         the manifest declaration is the prerequisite for that grant
+         to be accepted (without it the OS rejects the runtime flip). -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
+    <!-- Voice assistant: mic capture + audio routing. ACCESS_NETWORK_STATE
+         + CHANGE_NETWORK_STATE feed the network indicator and let
+         connectivity_plus observe transport changes. BLUETOOTH_CONNECT
+         lets the head unit route audio through a paired headset if the
+         driver has one connected. -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+    <!-- READ_PHONE_STATE backs the cellular-generation indicator
+         (TelephonyManager.dataNetworkType) on devices below API 30.
+         Above API 30 getDataNetworkType() requires READ_BASIC_PHONE_STATE
+         which is normal-protection and granted at install. We don't
+         actually call any user-identifying APIs (IMEI etc.) — just the
+         radio-tech accessor. -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
+    <!-- Foreground service keeps the voice session alive while the user is
+         in another app (maps, music). FOREGROUND_SERVICE_MICROPHONE is the
+         type-specific permission required on Android 14+ for mic-owning
+         services; without it startForeground throws SecurityException. -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE"/>
+    <!-- Type-specific FGS permission for radio playback. Required on Android
+         14+ when just_audio_background starts its AudioService, alongside
+         the generic FOREGROUND_SERVICE above. -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"/>
+    <!-- Type-specific FGS permission for the Nav-HUD Waze arrow capture
+         (WazeArrowCaptureService, foregroundServiceType=mediaProjection). Required
+         on Android 14+ or startForeground throws SecurityException. -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION"/>
+    <!-- Type-specific FGS permission for the geolocator's foreground
+         service. Without this, Android 14+ silently throttles the
+         continuous LocationManager subscription so the GNSS chip
+         never wakes for our package — verified on the BYD HU
+         (2-day-old cached fix in the wrong country, our app present
+         in ``dumpsys location`` listeners but never receiving
+         emissions). The geolocator package starts the foreground
+         service when ``foregroundNotificationConfig`` is set on
+         ``AndroidSettings``; this permission is what un-throttles
+         it on the strict-FGS-type ROMs. -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION"/>
+    <!-- Type-specific FGS permission for the floating "chat head" bubble.
+         Required on Android 14+ for FOREGROUND_SERVICE_TYPE_SPECIAL_USE
+         (BubbleOverlayService); the manifest <service> declaration ships
+         the matching PROPERTY_SPECIAL_USE_FGS_SUBTYPE = "bubble_overlay". -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <!-- WAKE_LOCK is required by just_audio_background's AudioService.
+         The background player acquires a partial wake lock to keep
+         audio playing when the screen turns off; without this
+         permission ExoPlayer throws ``SecurityException: Neither
+         user X nor current process has android.permission.WAKE_LOCK``
+         on the second playback attempt in a session and the app
+         crashes. Declaring it costs nothing (it's a normal-level
+         permission, granted at install time, no runtime prompt). -->
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <!-- OTA self-update: user taps Install, system installer opens our APK. -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+    <!-- Native-capability surface (Phase A). SurfacePlatformPlugin's
+         overlay fallback uses TYPE_APPLICATION_OVERLAY when
+         Presentation.show() is denied on XDJA-owned virtual displays
+         (Leopard 8 cluster). Special-access permission, not auto-
+         granted on install — flipped to "allow" at runtime by the
+         AdbBootstrap loopback-ADB sequence (`appops set ...
+         SYSTEM_ALERT_WINDOW allow`). The declaration here is the
+         piece that lets that grant succeed; without it, both `pm
+         grant` and `appops set` reject because the system has no
+         record that this package wanted the perm. See
+         AdbBootstrap.kt for the runtime grant flow. -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <!-- Phase B — gesture.dispatch family. WRITE_SECURE_SETTINGS lets
+         AdbBootstrap v3 stamp `enabled_accessibility_services` so the
+         user doesn't have to click through BYD's a11y panel every
+         install. Granted via `pm grant` over loopback ADB; not a
+         runtime-prompt permission. -->
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS"
+        tools:ignore="ProtectedPermissions"/>
+    <!-- BIND_ACCESSIBILITY_SERVICE is required for the
+         AccessibilityService entries below to be enable-able from the
+         system a11y panel. Doesn't grant runtime input — that needs
+         the user to flip the toggle (or AdbBootstrap to
+         `settings put secure enabled_accessibility_services`). -->
+    <uses-permission android:name="android.permission.BIND_ACCESSIBILITY_SERVICE"
+        tools:ignore="ProtectedPermissions"/>
+    <!-- Phase C — pkg + boot families. -->
+    <!-- PACKAGE_USAGE_STATS backs `pkg.usage` and the cross-version
+         foreground-app detector inside `pkg.foreground` (post-API-21
+         path uses UsageStatsManager.queryEvents). Special-access
+         permission, not auto-granted: AdbBootstrap v5 flips the
+         appop to allow over loopback ADB. -->
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions"/>
+    <!-- QUERY_ALL_PACKAGES lets `pkg.list` see every installed
+         package's launcher metadata without per-package queries.
+         Auto-granted at install time on Leopard 8 (sideload, no
+         Play Store policy gate). -->
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"/>
+    <!-- GET_TASKS is deprecated on modern Android (post-API-21
+         returns only the caller's tasks) but on the Leopard 8
+         vendor build it still surfaces the foreground task — gives
+         `pkg.foreground` a fast path that doesn't need the usage
+         stats permission. Manifest-only declaration; install-time. -->
+    <uses-permission android:name="android.permission.GET_TASKS"
+        tools:ignore="GetTaskPermissions"/>
+    <!-- Phase C — `boot.write` cold-start replay. The receiver
+         registered below stages a one-shot flag on BOOT_COMPLETED;
+         the host reads it on first MainActivity launch and replays
+         every (user, vin)'s boot_apps rows via the same am-start
+         path pkg.launch uses. RECEIVE_BOOT_COMPLETED is normal-
+         protection, granted at install time, no runtime prompt. -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <!-- ──────────────────────────────────────────────────────────────
+         Launcher-mode permissions (Phase L1).
+         Declared here so AdbBootstrap can `pm grant` them when the
+         user opts into launcher mode. Until that opt-in, the runtime
+         does NOT exercise any of these — declaration alone changes no
+         behaviour. The HomeActivityAlias below is the matching
+         component declaration, also default-DISABLED so install does
+         not try to compete for HOME role.
+
+         * READ_LOGS — required for the upcoming launcher-mode
+           Diagnostics view that surfaces the HU's logcat tail (parity
+           with Dudu's diagnostic surface). Privileged, never
+           runtime-prompt; flipped via `pm grant` over loopback ADB.
+         * REQUEST_IGNORE_BATTERY_OPTIMIZATIONS — lets the user
+           whitelist ilink so the OS does not park the foreground
+           service while idle on the home screen. Special-access; the
+           settings panel deep link prompts the user once, no ADB
+           required.
+
+         NOT declared here on purpose: MEDIA_CONTENT_CONTROL. It is
+         signature|privileged on Android — `pm grant` rejects with
+         ``not a changeable permission type``, verified on the L8
+         (2026-05-10). Third-party apps cannot hold it; the upcoming
+         music-aggregation feature uses NotificationListenerService
+         + MediaSessionManager.getActiveSessions instead, which is
+         the OS-sanctioned path for non-privileged installs. -->
+    <uses-permission android:name="android.permission.READ_LOGS"
+        tools:ignore="ProtectedPermissions"/>
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
+    <application
+        android:label="iLINK"
+        android:name="${applicationName}"
+        android:icon="@mipmap/ic_launcher"
+        android:largeHeap="true"
+        android:networkSecurityConfig="@xml/network_security_config">
+        <!-- launchMode + taskAffinity tuning for chooser-delivered
+             intents.
+
+             The previous custom taskAffinity ("${applicationId}.main")
+             didn't match the default (which is the package name) and
+             caused Android's intent resolver to spawn a SECOND
+             MainActivity for cross-app ACTION_VIEW intents
+             (NEW_TASK | CLEAR_TOP | RESET_TASK_IF_NEEDED from a
+             chooser) instead of routing through onNewIntent on the
+             existing one. The duplicate then attached to the cached
+             FlutterEngine and evicted the original ("FlutterActivity
+             ... evicted by another attaching activity") — blank
+             screen.
+
+             Setting taskAffinity to the package name lets the chooser's
+             NEW_TASK find our existing task and reuse it via singleTask
+             + onNewIntent (which now also calls setIntent — see
+             MainActivity.kt).
+
+             singleInstance (also tried) keeps a single instance but
+             on this BYD ROM removes the activity from the chooser's
+             resolver list for typed intents (cmd package
+             query-activities returns no match) — unusable. -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:taskAffinity="com.i99dev.ilink"
+            android:resizeableActivity="false"
+            android:theme="@style/LaunchTheme"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustResize">
+            <!-- Specifies an Android theme to apply to this Activity as soon as
+                 the Android process has started. This theme is visible to the user
+                 while the Flutter UI initializes. After that, this theme continues
+                 to determine the Window background behind the Flutter UI. -->
+            <meta-data
+              android:name="io.flutter.embedding.android.NormalTheme"
+              android:resource="@style/NormalTheme"
+              />
+            <!-- REQUIRED for app_links on Flutter 3.24+. Without this,
+                 Flutter's built-in deep-link handling intercepts every
+                 ACTION_VIEW URI before `app_links` sees it and tries to
+                 push it as a Navigator route — for our M3U intents that
+                 yields a blank screen because no matching route exists.
+                 https://github.com/llfbandit/app_links — Android Setup. -->
+            <meta-data
+              android:name="flutter_deeplinking_enabled"
+              android:value="false"
+              />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+            <!-- Steering-wheel voice key + generic assistant intents route
+                 to MainActivity; VoiceChannel forwards them to Dart so
+                 VoiceController can start a session without the user
+                 needing to tap the in-app mic. -->
+            <intent-filter>
+                <action android:name="android.intent.action.VOICE_COMMAND"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.ASSIST"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <!-- Compatibility for old pinned shortcuts targeting this package.
+                 No autoVerify: Android must not contact a hosted assetlinks endpoint.
+                 New shortcuts use the local custom scheme below. -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:scheme="https"
+                    android:host="app.i99dash.com"
+                    android:pathPrefix="/m/"/>
+            </intent-filter>
+            <!-- Local mini-app shortcut URI; no hosted verification endpoint. -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:scheme="car-ilink"
+                    android:host="mini-app"/>
+            </intent-filter>
+            <!-- "Open with ilink" for M3U / M3U8 playlists.
+                 Three filters because Android intent matching does a
+                 UNION across each <data> attribute within a single
+                 filter — splitting by axis (mime vs scheme+pathPattern
+                 vs http+pathPattern) is the conventional way to combine
+                 without accidentally cross-narrowing the match.
+                 The Dart side picks up the URI via DeepLinkListener
+                 (`lib/platform/deep_link/`) and routes it through
+                 `M3uPlaylistLinkHandler` into the BYO importer. -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:mimeType="audio/x-mpegurl"/>
+                <data android:mimeType="audio/mpegurl"/>
+                <data android:mimeType="application/x-mpegurl"/>
+                <data android:mimeType="application/vnd.apple.mpegurl"/>
+            </intent-filter>
+            <!-- Fallback for file managers that don't set a mime type:
+                 match by extension on file:// and content:// URIs.
+                 `mimeType="*/*"` is required so the filter still matches
+                 when the launcher DOES set a (non-M3U) mime — without
+                 it, the scheme + pathPattern axes alone won't accept
+                 intents that carry any mime at all. -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="file"/>
+                <data android:scheme="content"/>
+                <data android:host="*"/>
+                <data android:mimeType="*/*"/>
+                <data android:pathPattern=".*\\.m3u"/>
+                <data android:pathPattern=".*\\.m3u8"/>
+            </intent-filter>
+            <!-- Bonus: tapping an M3U URL from a browser / share sheet
+                 lands the import without a manual download step. -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="http"/>
+                <data android:scheme="https"/>
+                <data android:host="*"/>
+                <data android:pathPattern=".*\\.m3u"/>
+                <data android:pathPattern=".*\\.m3u8"/>
+            </intent-filter>
+        </activity>
+        <!-- Voice session foreground service — keeps the Flutter engine
+             and WebRTC peer connection alive while the user is in
+             another app. Dart owns the session; this service's job is to
+             hold audio focus + the foreground notification. -->
+        <service
+            android:name="com.i99dev.ilink.voice.VoiceSessionService"
+            android:exported="false"
+            android:foregroundServiceType="microphone"
+            android:label="iLINK voice assistant"/>
+        <!-- Always-on "car online" keep-alive. Anchors the process at
+             foreground-service priority so the head unit's standby
+             memory reclaim can't kill us. A normal car start resumes
+             the IVI from suspend (no BOOT_COMPLETED), so without this
+             the process is reaped during standby and the dash/presence
+             is dead on resume until the driver taps the icon. specialUse
+             FGS (perm declared above); subtype below for Android 14+.
+             See ConnectivityService.kt. Gated by a pref (default ON). -->
+        <service
+            android:name="com.i99dev.ilink.connectivity.ConnectivityService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="online_presence_keepalive"/>
+        </service>
+        <!-- Resume-from-suspend watchdog. Fired by a system-held repeating
+             AlarmManager tick (survives our process death), so it can
+             revive the app on car-on when a long off killed the FGS and
+             the IVI resumed without a BOOT_COMPLETED. exported=false —
+             only our own alarm PendingIntent reaches it. See
+             WatchdogReceiver.kt / ConnectivityService.scheduleWatchdog. -->
+        <receiver
+            android:name="com.i99dev.ilink.connectivity.WatchdogReceiver"
+            android:exported="false"/>
+        <!-- Floating "chat head" overlay. Hosted by a TYPE_APPLICATION_OVERLAY
+             window (SYSTEM_ALERT_WINDOW granted at runtime by AdbBootstrap).
+             Runs as a foreground service so the OS doesn't kill the overlay
+             while the app is backgrounded. The "specialUse" type matches
+             FOREGROUND_SERVICE_SPECIAL_USE; the property below is the
+             Android 14+ required subtype declaration. -->
+        <service
+            android:name="com.i99dev.ilink.bubble.BubbleOverlayService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="bubble_overlay"/>
+        </service>
+        <!-- Floating per-app shortcut buttons. Independent TYPE_APPLICATION_OVERLAY
+             windows (SYSTEM_ALERT_WINDOW, granted at runtime by AdbBootstrap),
+             one per pinned package; tap launches that app. Same specialUse FGS
+             posture as the bubble; subtype below for Android 14+. -->
+        <service
+            android:name="com.i99dev.ilink.shortcut.AppShortcutOverlayService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="app_shortcut_overlay"/>
+        </service>
+        <!-- Nav-HUD universal notification source. Reads ongoing turn-by-turn
+             notifications from any known nav app (NavAppRegistry) and parses
+             them into cluster guidance — the "support most maps" path. Bound by
+             the OS only after the user grants notification access; inert and
+             harmless otherwise (the a11y sources still work). See nav/ingest. -->
+        <service
+            android:name="com.i99dev.ilink.nav.ingest.NavNotifListenerService"
+            android:exported="false"
+            android:label="iLINK Nav-HUD"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService"/>
+            </intent-filter>
+        </service>
+        <!-- Nav-HUD Waze arrow capture. MediaProjection-mirrors Waze's maneuver
+             arrow (a bitmap, not text), perceptual-hash matched into a maneuver
+             code for the cluster. Started only after the user grants projection
+             consent; mediaProjection FGS type required on Android 14+. -->
+        <service
+            android:name="com.i99dev.ilink.nav.ingest.WazeArrowCaptureService"
+            android:exported="false"
+            android:foregroundServiceType="mediaProjection"/>
+        <!-- One-time MediaProjection consent for the Waze arrow capture. Transparent,
+             no UI; launched from the Nav-HUD path when armed + Waze foreground. -->
+        <activity
+            android:name="com.i99dev.ilink.nav.ingest.WazeCaptureConsentActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:taskAffinity=""
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        <!-- just_audio_background's AudioService: hosts the MediaSession for
+             in-app radio playback so the OS shows the lock-screen transport
+             controls and Android Auto picks up "now playing". Required by
+             the package; see pub.dev/packages/just_audio_background. -->
+        <service
+            android:name="com.ryanheise.audioservice.AudioService"
+            android:exported="true"
+            android:foregroundServiceType="mediaPlayback"
+            tools:ignore="Instantiatable">
+            <intent-filter>
+                <action android:name="android.media.browse.MediaBrowserService"/>
+            </intent-filter>
+        </service>
+        <receiver
+            android:name="com.ryanheise.audioservice.MediaButtonReceiver"
+            android:exported="true"
+            tools:ignore="Instantiatable">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON"/>
+            </intent-filter>
+        </receiver>
+        <!-- Native-capability surface (Phase A) — cluster route.
+             Hosts a sandboxed WebView for a mini-app bundle. Launched
+             onto a non-default display via loopback ADB
+             (am start-activity, see SurfacePlatformPlugin.kt).
+             ActivityManager-mediated launch is the only path XDJA's
+             cluster composer accepts from a non-system app on
+             Leopard 8 (Presentation.show / overlay windows owned by
+             our uid get silently dropped). exported=true is required
+             so the shell uid can reach us; the action filter exists
+             for manual adb-shell testing. taskAffinity="" plus
+             excludeFromRecents put each cluster surface in its own
+             task so finishing one doesn't ripple to the IVI's
+             MainActivity. -->
+        <activity
+            android:name=".display.ClusterActivity"
+            android:exported="true"
+            android:taskAffinity=""
+            android:excludeFromRecents="true"
+            android:hardwareAccelerated="true"
+            android:launchMode="singleInstance"
+            android:resizeableActivity="false"
+            android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|density|uiMode|fontScale"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+            <intent-filter>
+                <action android:name="com.i99dev.ilink.action.OPEN_CLUSTER_SURFACE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <!-- Live-TV passenger-display player. Runs in its OWN process
+             (:tvpassenger) so its ExoPlayer decoder can coexist with the
+             IVI's video_player on this BYD/MT6983 unit — a second decoder
+             in the main process wedges the IVI to black (verified on-car).
+             Launched onto the FSE display (display 2) via loopback ADB
+             `am start-activity` (pinned with the display flag) from
+             TvPassengerPlugin — the only path a non-system app can pin a
+             launch to a non-default display (setLaunchDisplayId needs the
+             INTERNAL_SYSTEM_WINDOW permission, which we lack).
+             exported=true so the shell uid can reach us; taskAffinity=""
+             + excludeFromRecents keep it in its own task so finishing it
+             never ripples to the IVI's MainActivity. Mirrors
+             ClusterActivity. -->
+        <activity
+            android:name=".tv.PassengerPlayerActivity"
+            android:process=":tvpassenger"
+            android:exported="true"
+            android:taskAffinity=""
+            android:excludeFromRecents="true"
+            android:hardwareAccelerated="true"
+            android:launchMode="singleInstance"
+            android:resizeableActivity="true"
+            android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|density|uiMode|fontScale"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+            <intent-filter>
+                <action android:name="com.i99dev.ilink.action.OPEN_TV_PASSENGER"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <!-- Native full-screen IVI live-TV player. Embedded Flutter video
+             (texture OR hybrid SurfaceView) goes black on this BYD ROM once
+             its surface is recreated; only a separate top-level Activity
+             renders reliably (same as PassengerPlayerActivity). Launched
+             from Flutter via TvIviPlugin on the default display; Back/close
+             returns to the channel browser. Not exported (internal launch).
+             Default taskAffinity so it stacks on MainActivity's task. -->
+        <activity
+            android:name=".tv.TvIviPlayerActivity"
+            android:exported="false"
+            android:hardwareAccelerated="true"
+            android:launchMode="singleTop"
+            android:resizeableActivity="true"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|screenLayout|density|uiMode"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/>
+        <!-- Phase B Approach 2 — slot-host hijack alias.
+             When the cluster's projection-manager service issues
+             `Intent(startBottomEmptyActivity)` to fill the BYD slot,
+             PackageManager's resolver picks the highest-priority
+             registered handler. amap declares the same action with
+             priority=0 (default); our alias registers priority=100
+             and wins.
+             Default state: DISABLED. SurfacePlatformPlugin enables
+             it just before issuing am-start for an XDJA display,
+             and disables it after surface.destroy so amap reclaims
+             the slot. Without the toggle, we'd hijack amap forever. -->
+        <activity-alias
+            android:name=".display.ClusterSlotAlias"
+            android:targetActivity=".display.ClusterActivity"
+            android:exported="true"
+            android:enabled="false">
+            <intent-filter android:priority="100">
+                <action android:name="com.byd.cluster.projectionmanager.service.startBottomEmptyActivity"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <intent-filter android:priority="100">
+                <action android:name="com.byd.cluster.projectionmanager.service.startTopEmptyActivity"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity-alias>
+        <!-- Phase L1 — launcher-mode HOME registration.
+             Default state: DISABLED. Until the user opts into launcher
+             mode (Settings → Launcher → "Make ilink the home app"),
+             this alias is invisible to PackageManager and the system
+             home picker; install therefore competes for nothing.
+             When enabled (PackageManager.setComponentEnabledSetting
+             from the launcher-mode controller, or AdbBootstrap on
+             behalf of a power user), the system surfaces it in the
+             home chooser; once selected as default, this is the
+             activity launched on Home key + first-boot.
+
+             Why an alias and not extra intent-filters on MainActivity:
+             keeps the "user-app open" identity separate from the
+             "device home" role. Disabling launcher mode flips the
+             alias off without touching MainActivity, so deep links,
+             voice intents, and the regular launcher icon stay
+             unaffected. Mirrors the ClusterSlotAlias pattern above.
+
+             Aftermarket-HU action aliases declared so fleets running
+             Shinco / HK / acloud / NWD aftermarket head-unit chassis
+             pick this up via the same selector — those chassis ship
+             the BYD-style DiLink ROM but route the home key through a
+             non-standard action. Set verified against the Dudu
+             Launcher Pro manifest (the reference launcher for the
+             same hardware) so coverage matches. Cost: zero on
+             standard BYD HUs (the actions simply never fire).
+
+             Intentionally NOT included:
+               * android.intent.category.HOME_ONLY — kiosk semantics
+                 ("only home activity on the device"). Would conflict
+                 with the user being able to flip back to BYD's stock
+                 home via the Disable-launcher button. -->
+        <activity-alias
+            android:name=".launcher.HomeActivityAlias"
+            android:targetActivity=".MainActivity"
+            android:exported="true"
+            android:enabled="false"
+            android:label="iLINK">
+            <intent-filter android:priority="1">
+                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="shinco.intent.action.LAUNCHER"/>
+                <action android:name="com.hk.LAUNCHER"/>
+                <action android:name="com.acloud.action.home"/>
+                <action android:name="com.nwd.action.ACTION_GOHOME"/>
+                <category android:name="android.intent.category.HOME"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity-alias>
+        <!-- Phase B accessibility services. Two services that travel
+             together: RemoteControl does gesture dispatch; Watchdog is
+             a heartbeat used to detect when BYD's a11y panel has
+             silently disabled one of them. Both are exported because
+             that is the contract for a11y services bound by the
+             system. permission=BIND_ACCESSIBILITY_SERVICE means only
+             the system can bind us, even though we are exported. -->
+        <service
+            android:name=".input.RemoteControlAccessibilityService"
+            android:exported="true"
+            android:label="@string/a11y_remote_control_summary"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/a11y_remote_control"/>
+        </service>
+        <service
+            android:name=".input.WatchdogAccessibilityService"
+            android:exported="true"
+            android:label="@string/a11y_watchdog_summary"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/a11y_watchdog"/>
+        </service>
+        <!-- Phase C — `boot.write` cold-start replay receiver. Wakes
+             on BOOT_COMPLETED and writes a one-shot flag that the
+             host reads on first MainActivity launch. The actual
+             replay (reading boot_apps + firing am-start for each
+             row) is Dart-side because that's where BootStore
+             lives — see lib/features/mini_apps/boot/boot_launcher.dart. -->
+        <receiver
+            android:name=".boot.BootCompletedReceiver"
+            android:exported="true"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </receiver>
+        <!-- FileProvider for OTA APK installs on API 24+. Shares the
+             cache/ota/ directory with the system installer under a
+             stable authority so Intent.FLAG_GRANT_READ_URI_PERMISSION
+             works without world-readable files. -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.ota_fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/ota_file_paths"/>
+        </provider>
+        <!-- Don't delete the meta-data below.
+             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
+        <meta-data
+            android:name="flutterEmbedding"
+            android:value="2" />
+    </application>
+    <queries>
+        <!-- Flutter engine's ProcessTextPlugin needs this. -->
+        <intent>
+            <action android:name="android.intent.action.PROCESS_TEXT"/>
+            <data android:mimeType="text/plain"/>
+        </intent>
+    </queries>
+</manifest>
