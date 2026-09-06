@@ -395,7 +395,7 @@ dependencies {
     // return null/0, so any code that parses/builds JSON (PatchRegistry)
     // can't be host-tested against the stub. This shadows the stub at test
     // runtime with a working implementation.
-    testImplementation("org.json:json:20250517")
+    testImplementation("org.json:json:20260814")
 }
 
 flutter {
