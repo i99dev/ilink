@@ -325,7 +325,7 @@ androidComponents {
 // When the asset flips to binary wire format, we can revisit lite.
 protobuf {
     protoc {
-        artifact = "com.google.protobuf:protoc:4.34.1"
+        artifact = "com.google.protobuf:protoc:4.36.1"
     }
     generateProtoTasks {
         all().forEach { task ->
@@ -340,7 +340,7 @@ dependencies {
     // Full Java runtime — includes TextFormat.merge for parsing the
     // textproto asset. ~1.5 MB APK cost; acceptable for the first
     // release, revisit when we switch to binary wire format.
-    implementation("com.google.protobuf:protobuf-java:4.34.1")
+    implementation("com.google.protobuf:protobuf-java:4.36.1")
     // MediaSessionCompat — used by PttMediaSession to capture
     // steering-wheel media buttons (MEDIA_PREVIOUS/NEXT) system-wide,
     // so the voice toggle works even when the Activity is backgrounded
