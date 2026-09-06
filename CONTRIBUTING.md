@@ -18,7 +18,7 @@ Use a focused branch such as `fix/local-model-loading`, `feat/radio-search` or `
 
 ## Flutter and Android setup
 
-- Install **Flutter 3.41.7 stable**, which includes Dart. Use the version pinned in the [setup action](.github/actions/setup-flutter/action.yml).
+- Install **Flutter 3.47.2 stable**, which includes Dart. Use the version pinned in the [setup action](.github/actions/setup-flutter/action.yml).
 - Install Android Studio or the Android command-line tools, an Android SDK and platform tools, and a **JDK 17** environment for Gradle.
 - Install Android SDK Platform **36**, **NDK 28.2.13676358** and **CMake 3.22.1** through the SDK Manager. Compile SDK follows the pinned Flutter SDK; NDK/CMake and Java versions are set in [Android build configuration](android/app/build.gradle.kts).
 - Run `flutter doctor -v` and resolve Android toolchain issues. Accept SDK licenses with `flutter doctor --android-licenses`.
