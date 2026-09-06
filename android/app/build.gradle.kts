@@ -362,7 +362,7 @@ dependencies {
     // — it's provisioned out-of-band into filesDir (adb-push for dev, the
     // app_release CDN for the fleet), so the APK stays lean and the model
     // is retrainable without an app rebuild. See VoskModelStore.kt.
-    implementation("com.alphacephei:vosk-android:0.3.47")
+    implementation("com.alphacephei:vosk-android:0.3.75")
     // BYD framework SDK stubs — compileOnly so the jar never reaches
     // the runtime APK. At runtime the BYD-shipped framework provides
     // the real `android.hardware.bydauto.AbsBYDAutoDevice` /
