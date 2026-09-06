@@ -42,7 +42,7 @@ dependencies:
   dio: ^5.9.2
   uuid: ^4.5.3
   flutter_svg: ^2.0.10+1
-  flutter_cache_manager: ^3.4.0
+  flutter_cache_manager: ^3.4.2
   intl: ^0.20.2
   just_audio: ^0.10.0
   just_audio_background: ^0.0.1-beta.17
