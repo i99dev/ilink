@@ -137,12 +137,12 @@ class AppearanceSection extends ConsumerWidget {
               value: wakeWordEnabled,
               onChanged: (next) => _pickWakeWord(ref, next),
             ),
+
             // Language picker — selects which on-device Vosk model to use;
             // the car downloads it on first use / on switch. Relevant whenever
             // the offline model is used: hands-free wake word OR on-device-only
             // mode (where it's the only engine + we provision it on toggle, so
             // the download progress must be visible here).
-
             _VoiceLanguageTile(
               lang: settings?.voiceModelLang ?? kDefaultVoiceLang,
               state: voiceState,
