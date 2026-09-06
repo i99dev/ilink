@@ -2,6 +2,13 @@
 
 This repository starts with the standalone codebase. Historical release notes are retained with the private archive of the previous repository. Future release entries are managed by release-please from Conventional Commits.
 
+## [3.22.3-b](https://github.com/i99dev/ilink/compare/v3.22.2-b...v3.22.3-b) (2026-09-06)
+
+
+### Bug Fixes
+
+* **privacy:** stop Android backup restoring optional-service consent ([0b813f4](https://github.com/i99dev/ilink/commit/0b813f4a71f60814a9e4bdc99b8f2039c50fa081))
+
 ## [3.22.2-b](https://github.com/i99dev/ilink/releases/tag/v3.22.2-b) (2026-09-06)
 
 First release published from the standalone iLINK repository.
