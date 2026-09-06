@@ -1,0 +1,59 @@
+# Analyzer + lint config.
+#
+# Baseline: `package:flutter_lints/flutter.yaml` (Flutter team's recommended
+# rules). Below we layer additional rules that match this codebase's
+# conventions — surfacing them in the IDE catches drift before it lands.
+#
+# To suppress a single line:  `// ignore: rule_name`
+# To suppress a whole file:    `// ignore_for_file: rule_name`
+#
+# Reference: https://dart.dev/lints
+
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  language:
+    # Refuse implicit `dynamic → T` and unparameterised generics. Catches
+    # the class of bug that used to surface as runtime "type 'X' is not a
+    # subtype of 'Y'" — the same shape that hit billing_checkout, weather,
+    # and data_families before the explicit casts landed.
+    strict-casts: true
+    strict-raw-types: true
+  errors:
+    # Treat the always-on patterns as errors so CI fails fast instead
+    # of accumulating warnings.
+    avoid_print: error
+    unused_import: warning
+    unused_local_variable: warning
+  exclude:
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
+
+linter:
+  rules:
+    # Logging — `debugPrint` is fine when intentional + gated; raw
+    # `print` is never appropriate in this codebase. The central
+    # `Logger` (lib/core/logging/logger.dart) is the right path.
+    avoid_print: true
+
+    # Const correctness — cuts widget-rebuild allocations.
+    prefer_const_constructors: true
+    prefer_const_constructors_in_immutables: true
+    prefer_const_declarations: true
+    prefer_const_literals_to_create_immutables: true
+
+    # Async hygiene.
+    avoid_void_async: true
+    unawaited_futures: true
+
+    # Code-quality nits.
+    prefer_final_locals: true
+    prefer_single_quotes: true
+    use_super_parameters: true
+    sort_child_properties_last: true
+
+    # Public API surface — keep imports tidy. Relative imports are
+    # the convention inside lib/ (no `package:car_ilink/...` mixing).
+    avoid_relative_lib_imports: true

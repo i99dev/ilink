@@ -1,0 +1,51 @@
+name: Bug Report
+description: Report a bug in Dash
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to file a bug. Please fill in the fields below.
+  - type: input
+    id: version
+    attributes:
+      label: Dash version
+      description: Check Settings → Diagnostics.
+      placeholder: "1.2.3"
+    validations:
+      required: true
+  - type: input
+    id: car
+    attributes:
+      label: Car model + head-unit firmware
+      placeholder: "Leopard 8 / DiLink 5.1"
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open the app
+        2. Tap "..."
+        3. See error
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behaviour
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: Paste relevant logcat output or screenshots.
+      render: shell

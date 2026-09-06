@@ -1,0 +1,47 @@
+version: 2
+updates:
+  - package-ecosystem: "pub"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "deps"
+    open-pull-requests-limit: 5
+    labels: ["dependencies"]
+
+  - package-ecosystem: "gradle"
+    directory: "/android"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "deps"
+    open-pull-requests-limit: 3
+    labels: ["dependencies"]
+    # The Flutter ecosystem (3.41.7 + common plugins like audio_session)
+    # isn't ready for AGP 9, Kotlin 2.3, or Gradle 9. Holding these until
+    # Flutter and plugins migrate to built-in Kotlin + the new DSL.
+    # AGP 9.x specifically introduces breaking changes (built-in Kotlin,
+    # new DSL, kotlinOptions removal) that Flutter's gradle plugin does
+    # not yet support — verified on Flutter 3.41.7. Patch + minor under
+    # the current majors still come through.
+    # Track https://docs.flutter.dev/release/breaking-changes/migrate-to-built-in-kotlin
+    ignore:
+      - dependency-name: "com.android.application"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "com.android.tools.build:gradle"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "org.jetbrains.kotlin.android"
+        update-types: ["version-update:semver-major", "version-update:semver-minor"]
+      - dependency-name: "org.jetbrains.kotlin:kotlin-gradle-plugin"
+        update-types: ["version-update:semver-major", "version-update:semver-minor"]
+      - dependency-name: "gradle"
+        update-types: ["version-update:semver-major"]
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "ci"
+    open-pull-requests-limit: 3
+    labels: ["ci"]

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Background for a floating app-shortcut button. A rounded square scrim
+  behind the app's launcher icon so it reads as a distinct flat button
+  floating over whatever app is on screen (not just a bare icon). The
+  app icon is painted on top in app_shortcut_button.xml.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="#CC202124"/>
+    <corners android:radius="14dp"/>
+</shape>

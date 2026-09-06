@@ -1,0 +1,596 @@
+{
+    "@@locale": "ru",
+    "vehicle": "АВТОМОБИЛЬ",
+    "battery": "АККУМУЛЯТОР",
+    "interior": "САЛОН",
+    "mode": "РЕЖИМ",
+    "network": "СЕТЬ",
+    "daemon": "ДЕМОН",
+    "km": "км",
+    "climate": "КЛИМАТ",
+    "fan": "ВЕНТ",
+    "face": "ЛИЦО",
+    "feet": "НОГИ",
+    "defrost": "ОБОГР",
+    "on": "ВКЛ",
+    "off": "ВЫКЛ",
+    "windows": "ОКНА",
+    "windowDriver": "Водитель",
+    "windowPassenger": "Пассажир",
+    "windowRearLeft": "Зад-Л",
+    "windowRearRight": "Зад-П",
+    "windowSunroof": "Люк",
+    "quickActions": "БЫСТРЫЕ ДЕЙСТВИЯ",
+    "unlock": "ОТКР",
+    "lock": "ЗАМОК",
+    "trunk": "БАГАЖ",
+    "headlights": "ФАРЫ",
+    "massage": "МАССАЖ",
+    "seatHeat": "ПОДОГРЕВ СИД",
+    "seatVent": "ВЕНТ СИД",
+    "fragrance": "АРОМАТ",
+    "ambient": "ПОДСВЕТ",
+    "lights": "СВЕТ",
+    "screenHome": "Главная",
+    "screenRadio": "Радио",
+    "screenMiniApps": "Приложения",
+    "screenTv": "ТВ",
+    "railDriverMassage": "МАССАЖ ВОДИТЕЛЯ",
+    "railDriverHeat": "ПОДОГРЕВ ВОДИТЕЛЯ",
+    "railDriverVent": "ВЕНТ ВОДИТЕЛЯ",
+    "railAmbientLight": "ПОДСВЕТКА",
+    "railExterior": "ВНЕШНИЙ",
+    "levelMode1": "РЕЖИМ 1",
+    "levelMode2": "РЕЖИМ 2",
+    "levelMode3": "РЕЖИМ 3",
+    "levelLight": "ЛЁГКИЙ",
+    "levelMid": "СРЕДНИЙ",
+    "levelDense": "ПЛОТНЫЙ",
+    "levelDim": "ТУСКЛ",
+    "levelHigh": "ЯРКИЙ",
+    "levelHead": "БЛИЖНИЙ",
+    "levelFogFront": "ПТФ ПЕР",
+    "levelFogRear": "ПТФ ЗАД",
+    "assistantListening": "Слушаю…",
+    "assistantThinking": "Думаю…",
+    "settingsTitle": "Настройки",
+    "welcome": "Добро пожаловать в Dash",
+    "welcomeHint": "Укажите Dash на ваш сервер и автомобиль перед продолжением.",
+    "save": "Сохранить",
+    "required": "Обязательно",
+    "language": "Язык",
+    "actionCancel": "Отмена",
+    "actionDone": "Готово",
+    "actionRun": "Запуск",
+    "actionGotIt": "Понятно",
+    "actionRefresh": "Обновить",
+    "actionSoon": "Скоро",
+    "valueUnknown": "(неизвестно)",
+    "valueYes": "да",
+    "valueNo": "нет",
+    "sectionModelsTitle": "Голосовые команды",
+    "sectionModelsSubtitleShort": "Распознавание на устройстве",
+    "sectionLanguageTitle": "Язык",
+    "sectionLanguageSubtitleShort": "Язык приложения",
+    "sectionAppearanceTitle": "Оформление",
+    "sectionAppearanceSubtitleShort": "Тема и сторона водителя",
+    "appearanceSystem": "Системная",
+    "appearanceSystemHelp": "Соответствует светлой или тёмной настройке устройства.",
+    "appearanceLight": "Светлая",
+    "appearanceLightHelp": "Всегда использовать светлую палитру.",
+    "appearanceDark": "Тёмная",
+    "appearanceDarkHelp": "Всегда использовать тёмную палитру панели — для ночной езды.",
+    "appearanceDriverSideTitle": "Сторона водителя",
+    "appearanceDriverSideLeft": "Слева",
+    "appearanceDriverSideLeftHelp": "Микрофон закреплён внизу слева — для рынков с левосторонним рулём (США, ЕС, Китай).",
+    "appearanceDriverSideRight": "Справа",
+    "appearanceDriverSideRightHelp": "Микрофон закреплён внизу справа — для рынков с правосторонним рулём (Великобритания, Австралия, Япония, Индия).",
+    "appearanceVoiceSectionTitle": "Голосовой ассистент",
+    "appearanceVoiceEnabledLabel": "Показывать ассистента",
+    "appearanceVoiceEnabledHelp": "Выкл скрывает все элементы микрофона и отключает голосовое управление. Включите снова, когда захотите.",
+    "sectionThemesTitle": "Темы",
+    "sectionThemesSubtitleShort": "Выберите оформление панели",
+    "themesGalleryHeader": "Выберите тему, чтобы изменить оформление всей панели. Встроенные темы работают офлайн; больше тем можно добавить из магазина.",
+    "themesBuiltInLabel": "Встроенная",
+    "themesActiveLabel": "Активна",
+    "themesApplyButton": "Применить",
+    "themesBetaLabel": "БЕТА",
+    "themesEmpty": "Нет доступных тем",
+    "themesLoadError": "Не удалось загрузить темы",
+    "sectionPrivacyTitle": "Приватность",
+    "sectionPrivacySubtitleShort": "Что машина передаёт",
+    "sectionClusterTitle": "Приложения на щитке",
+    "sectionClusterSubtitleShort": "Приложения, открываемые заново на щитке водителя",
+    "clusterSectionHeader": "Некоторые приложения нельзя перенести на щиток водителя во время работы — при смене экрана они перезапускаются или падают. Поэтому система открывает их на щитке заново (новый экземпляр). Приложения на основе ReVanced определяются автоматически; добавьте любое другое приложение, которое отскакивает или падает.",
+    "clusterSectionSearchHint": "Поиск приложений",
+    "clusterSectionAuto": "Авто",
+    "clusterSectionAutoHelp": "Всегда открывается заново на щитке (на основе ReVanced)",
+    "clusterSectionToggleHelp": "Открывать это приложение заново на щитке, а не переносить",
+    "clusterSectionEmpty": "Приложения не найдены",
+    "clusterSectionError": "Не удалось загрузить приложения",
+    "sectionAboutTitle": "О приложении",
+    "sectionAboutSubtitleShort": "Версия и информация о сборке",
+    "aboutAppName": "Приложение",
+    "aboutVersion": "Версия",
+    "aboutPackage": "Пакет",
+    "aboutDevelopedBy": "Разработано",
+    "aboutDevelopedByValue": "CubeTek",
+    "aboutSponsoredBy": "Спонсор",
+    "aboutSponsoredByValue": "QEV",
+    "aboutCopy": "Копировать",
+    "aboutCopied": "Скопировано",
+    "aboutCheckForUpdates": "Проверить обновления",
+    "aboutCheckUpToDate": "Обновление не найдено. Источник обновлений может быть недоступен.",
+    "devFlightTestModeLabel": "Режим лётных испытаний",
+    "devFlightTestModeSub": "Показать отдельную вкладку лётных испытаний на экране Mini Apps с бета-сборками, к тестированию которых вы приглашены. Выкл по умолчанию; включите, когда разработчик пригласит вас.",
+    "modelsSubtitle": "Распознавание речи работает на этом устройстве. Выберите речевую модель в настройках внешнего вида.",
+    "diagnosticsTitle": "Диагностика",
+    "diagnosticsAppCard": "Приложение",
+    "diagnosticsMaintenanceCard": "Обслуживание",
+    "diagnosticsKvVersion": "Версия",
+    "diagnosticsKvPackage": "Пакет",
+    "diagnosticsKvName": "Имя",
+    "diagnosticsExportLogs": "Экспортировать журналы",
+    "diagnosticsExportLogsDesc": "Скоро — буферизация журналов ещё не подключена.",
+    "voiceConsentTitle": "Подтвердите действие",
+    "voiceConsentBody": "Ассистент хочет: {action}.",
+    "@voiceConsentBody": {
+        "placeholders": {
+            "action": {
+                "type": "String"
+            }
+        }
+    },
+    "voiceConsentAllow": "Разрешить",
+    "voiceConsentDeny": "Отклонить",
+    "voiceShortcutsFavoritesTitle": "ИЗБРАННОЕ",
+    "voiceShortcutsBrowseRadio": "Обзор",
+    "voiceShortcutsFavoritesEmpty": "Пока нет избранного. Откройте Радио и нажмите ♡ на станции, чтобы закрепить её здесь.",
+    "voiceShortcutsFavoritesError": "Не удалось загрузить избранное — потяните для обновления.",
+    "integrityCheckFailedTitle": "Проверка целостности не пройдена",
+    "integrityCheckFailedBody": "Команды автомобиля приостановлены до следующей успешной проверки.",
+    "settingsErrorPrefix": "Ошибка настроек: {error}",
+    "@settingsErrorPrefix": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "saveBarUnsaved": "Несохранённые изменения",
+    "saveBarSaved": "Все изменения сохранены",
+    "radioCategoryFavorites": "ИЗБРАННОЕ",
+    "radioFailedToLoad": "Не удалось загрузить станции:\n{error}",
+    "@radioFailedToLoad": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "radioNoStations": "Станций нет",
+    "radioNoStationsHint": "Потяните для обновления или откройте Настройки → Диагностика → Обновить список радио.",
+    "radioNoResults": "Нет результатов для «{query}»",
+    "@radioNoResults": {
+        "placeholders": {
+            "query": {
+                "type": "String"
+            }
+        }
+    },
+    "radioLoading": "Загрузка {name}…",
+    "@radioLoading": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "radioPlaying": "Играет {name}",
+    "@radioPlaying": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "radioPaused": "Пауза — {name}",
+    "@radioPaused": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "radioError": "Ошибка: {message}",
+    "@radioError": {
+        "placeholders": {
+            "message": {
+                "type": "String"
+            }
+        }
+    },
+    "compatCardProbes": "ПРОБЫ",
+    "compatCardProbesSub": "Демон, идентификация и live readStatus.",
+    "compatCardScan": "СКАН",
+    "compatCardManualPress": "РУЧНОЕ НАЖАТИЕ",
+    "compatCardManualPressSub": "Нажмите плитку, чтобы выполнить команду, затем отметьте результат.",
+    "compatCardFastActions": "БЫСТРЫЕ ДЕЙСТВИЯ",
+    "compatCardFastActionsSub": "Выполняйте каждое действие с явными аргументами. Код возврата демона записывается в отчёт.",
+    "compatCardBinderProbes": "ПРОБЫ AIDL BINDER",
+    "compatCardBinderProbesSub": "Готовые транзакции service.method. Полезны, когда демон не знает действие, но binder активен.",
+    "compatCardReport": "ОТЧЁТ",
+    "compatProbeDaemonAdb": "Демон + ADB",
+    "compatProbeCarIdentity": "Идентификация авто",
+    "compatProbeLiveTelemetry": "Живая телеметрия (readStatus)",
+    "compatProbeReread": "Перечитать",
+    "compatBenchActionsLoaded": "Загружено {count} действий из таблицы выполнения.",
+    "@compatBenchActionsLoaded": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "compatBenchPending": "Ожидание — обновите пробы для загрузки известных действий.",
+    "compatBenchOk": "ОК",
+    "compatBenchFail": "СБОЙ",
+    "compatBenchErr": "ОШИБ",
+    "compatBenchTotal": "Всего запусков: {total}",
+    "@compatBenchTotal": {
+        "placeholders": {
+            "total": {
+                "type": "int"
+            }
+        }
+    },
+    "compatNothingToReport": "Пока нечего сообщать — сначала запустите сканирование или действие.",
+    "compatKvBenchRuns": "Запусков на стенде",
+    "compatKvBinderProbes": "Пробы binder",
+    "compatScanning": "Сканирование…",
+    "compatScanButton": "Сканировать",
+    "compatStatReachable": "Доступно",
+    "compatStatUnknown": "Неизвестно",
+    "compatStatInactive": "Неактивно",
+    "compatNotesLabel": "Заметки (необязательно)",
+    "compatNotesHint": "Что ещё серверу следует знать об этом автомобиле?",
+    "compatConfirmDangerTitle": "Выполнить «{label}»?",
+    "@compatConfirmDangerTitle": {
+        "placeholders": {
+            "label": {
+                "type": "String"
+            }
+        }
+    },
+    "compatConfirmDangerBody": "Эта команда приводит в движение оборудование и должна использоваться только на стоящем автомобиле. Продолжить?",
+    "compatKvVinHash": "Хеш ID устройства",
+    "compatKvWithheld": "(скрыто)",
+    "compatKvDevice": "Устройство",
+    "compatKvDilink": "Подсказка DiLink",
+    "compatKvDaemonOnline": "Демон онлайн",
+    "compatKvCommandsProbed": "Команд проверено",
+    "compatKvVerdictsRecorded": "Вердиктов записано",
+    "cmdDoorLock": "Запереть двери",
+    "cmdDoorUnlock": "Открыть двери",
+    "cmdDoorTrunkOpen": "Открыть багажник",
+    "cmdDoorTrunkClose": "Закрыть багажник",
+    "cmdHoodOpen": "Открыть капот",
+    "cmdHoodClose": "Закрыть капот",
+    "cmdHoodStop": "Остановить капот",
+    "cmdClimatePower": "Питание климата",
+    "cmdClimateTemp": "Установить температуру",
+    "cmdClimateFan": "Скорость вентилятора",
+    "cmdClimateMode": "Режим обдува",
+    "cmdClimateCycle": "Рециркуляция воздуха",
+    "cmdClimateDefrostF": "Передний обогрев",
+    "cmdClimateDefrostR": "Задний обогрев",
+    "cmdClimateCompressor": "Компрессор кондиционера",
+    "cmdClimateMaxHot": "Максимум тепла",
+    "cmdClimateMaxCool": "Максимум холода",
+    "cmdClimateComfortMode": "Комфортный режим",
+    "cmdClimateRearLock": "Блокировка заднего климата",
+    "cmdComfortMassage": "Массаж",
+    "cmdComfortFragOn": "Аромат вкл",
+    "cmdComfortFragOff": "Аромат выкл",
+    "cmdComfortAtmos": "Атмосферная подсветка",
+    "cmdWindowFlOpen": "Открыть окно водителя",
+    "cmdWindowFlClose": "Закрыть окно водителя",
+    "cmdWindowFlStop": "Остановить окно водителя",
+    "cmdWindowFlDown": "Опустить окно водителя",
+    "cmdWindowFrOpen": "Открыть окно пассажира",
+    "cmdWindowFrClose": "Закрыть окно пассажира",
+    "cmdWindowFrStop": "Остановить окно пассажира",
+    "cmdWindowRlOpen": "Открыть заднее левое",
+    "cmdWindowRlClose": "Закрыть заднее левое",
+    "cmdWindowRlStop": "Остановить заднее левое",
+    "cmdWindowRrOpen": "Открыть заднее правое",
+    "cmdWindowRrClose": "Закрыть заднее правое",
+    "cmdWindowRrStop": "Остановить заднее правое",
+    "cmdWindowAllOpen": "Открыть все окна",
+    "cmdWindowAllClose": "Закрыть все окна",
+    "cmdSunroofOpen": "Открыть люк",
+    "cmdSunroofClose": "Закрыть люк",
+    "cmdSunroofTilt": "Откинуть люк",
+    "cmdSunroofStop": "Остановить люк",
+    "cmdSeatHeatDrv": "Подогрев сиденья водителя",
+    "cmdSeatHeatPass": "Подогрев сиденья пассажира",
+    "cmdSeatHeatRl": "Подогрев заднего левого",
+    "cmdSeatHeatRr": "Подогрев заднего правого",
+    "cmdSeatVentDrv": "Вентиляция сиденья водителя",
+    "cmdSeatVentPass": "Вентиляция сиденья пассажира",
+    "cmdSeatVentRl": "Вентиляция заднего левого",
+    "cmdSeatVentRr": "Вентиляция заднего правого",
+    "cmdLightHead": "Фары",
+    "cmdLightHeadOn": "Включить фары",
+    "cmdLightHeadOff": "Выключить фары",
+    "cmdLightFogF": "Передние ПТФ",
+    "cmdLightFogR": "Задние ПТФ",
+    "cmdLightTurnLeft": "Левый поворотник",
+    "cmdLightTurnRight": "Правый поворотник",
+    "cmdLightFlash": "Моргнуть фарами",
+    "cmdLightFindCar": "Найти авто",
+    "cmdRadioPlayByName": "Включить по названию",
+    "cmdRadioPlayStation": "Включить станцию",
+    "cmdRadioPause": "Поставить радио на паузу",
+    "cmdRadioResume": "Возобновить радио",
+    "cmdRadioStop": "Остановить радио",
+    "cmdRadioNextFav": "Следующая избранная станция",
+    "cmdCarStatus": "Статус автомобиля",
+    "profileSectionSecurity": "БЕЗОПАСНОСТЬ",
+    "profilePinEnableLabel": "Включить блокировку PIN",
+    "profilePinEnableSub": "Требовать 4-значный PIN перед открытием Профиля.",
+    "profilePinChangeLabel": "Изменить PIN",
+    "pinLockTitle": "Введите PIN",
+    "pinLockSubtitle": "Введите 4-значный PIN для доступа к Профилю",
+    "pinLockWrong": "Неверный PIN — попробуйте снова",
+    "pinLockForgotCta": "Забыли PIN?",
+    "pinLockForgotTitle": "Сброс PIN",
+    "pinLockForgotBody": "Если вы забыли PIN этого устройства, очистите хранилище приложения в настройках Android. Это также удалит локальные настройки и данные приложения.",
+    "pinSetupEnterTitle": "Установите 4-значный PIN",
+    "pinSetupEnterSubtitle": "Этот PIN потребуется для открытия Профиля.",
+    "pinSetupConfirmTitle": "Подтвердите PIN",
+    "pinSetupConfirmSubtitle": "Введите те же 4 цифры повторно.",
+    "pinSetupMismatch": "PIN не совпали — начните заново",
+    "pinSetupSavedSnack": "PIN включён",
+    "pinDisabledSnack": "PIN отключён",
+    "onboardingTitle": "Добро пожаловать в iLINK",
+    "onboardingSubtitle": "Выберите функции, которые приложение может использовать. Их можно изменить позже в Настройках.",
+    "onboardingLocaleLabel": "Язык",
+    "onboardingPermissionLocationTitle": "Местоположение",
+    "onboardingPermissionLocationReason": "Чтобы AI-ассистент давал контекстную помощь — местная погода, ближайшие места, навигационные подсказки.",
+    "onboardingPermissionMicrophoneTitle": "Голосовой ассистент",
+    "onboardingPermissionMicrophoneReason": "Позволяет нажать микрофон, чтобы запирать двери, настраивать климат, задавать вопросы и многое другое — функция Premier. Её можно отключить в любой момент в Настройки → Оформление.",
+    "onboardingPermissionNotificationsTitle": "Уведомления",
+    "onboardingPermissionNotificationsReason": "Чтобы воспроизведение радио отображалось в панели уведомлений автомобиля.",
+    "onboardingPermissionGranted": "Разрешено",
+    "onboardingPermissionDenied": "Отказано",
+    "onboardingPermissionSkipped": "Пропущено",
+    "onboardingPermissionUnavailable": "Управляется браузером",
+    "onboardingWebBanner": "В вебе ваш браузер запрашивает разрешения, когда вы используете функцию. Ваш выбор ниже сохранится как настройка для установки приложения на реальное устройство.",
+    "onboardingContinue": "Начать",
+    "onboardingFinishing": "Настройка…",
+    "onboardingRemoteHelpHint": "Нужно, чтобы ассистент удалённо что-то исправил? Откройте его из Профиль → Удалённая помощь. Вы запускаете сессию и можете остановить её в любой момент.",
+    "sessionEndedDismiss": "Закрыть",
+    "miniAppsTabStore": "Магазин",
+    "miniAppsTabInstalled": "Мои приложения",
+    "miniAppsTabFlightTest": "Лётные испытания",
+    "miniAppsTabNativeApps": "Приложения",
+    "nativeAppsLoadError": "Не удалось загрузить приложения. Потяните, чтобы обновить.",
+    "nativeAppsEmpty": "Пока нет доступных приложений.",
+    "nativeAppsInstall": "Установить",
+    "nativeAppsUpdate": "Обновить",
+    "nativeAppsConsentNote": "Сторонние приложения устанавливаются с вашего подтверждения. iLINK проверяет каждое приложение перед установкой.",
+    "nativeAppsInstalling": "Завершите установку {app} в системном окне.",
+    "nativeAppsInstallError": "Не удалось установить {app}: {error}",
+    "nativeAppsUninstallConfirm": "Удалить {app} с этого автомобиля? Вы можете переустановить его из магазина.",
+    "nativeAppsUninstalled": "{app} удалено.",
+    "nativeAppsUninstallFailed": "Не удалось удалить {app}.",
+    "miniAppsFlightTestEmptyTitle": "Нет активных лётных испытаний",
+    "miniAppsFlightTestEmptyBody": "Когда разработчик пригласит вас в бета-сборку, она появится здесь. Спросите разработчика приглашение или прочтите руководство по лётным испытаниям.",
+    "miniAppsFlightTestEmptyCta": "Прочитать руководство",
+    "miniAppsFlightTestEmptyOpenDocsFailed": "Не удалось открыть документацию. Откройте github.com/i99dev/ilink в браузере.",
+    "miniAppsInstall": "Установить",
+    "miniAppsUninstall": "Удалить",
+    "miniAppsEmptyStore": "Приложений пока нет. Потяните для обновления.",
+    "miniAppsEmptyInstalled": "Приложения ещё не установлены. Загляните в Магазин, чтобы добавить.",
+    "favoritesTitle": "ИЗБРАННОЕ",
+    "favoritesEmptyHint": "Удерживайте мини-приложение и нажмите «Добавить в избранное», чтобы закрепить его здесь.",
+    "miniAppsLoadError": "Не удалось загрузить каталог. Потяните для обновления.",
+    "miniAppsSafeWhileDrivingBadge": "Безопасно во время движения",
+    "miniAppsDrivingBlockedOk": "ОК",
+    "miniAppsCouldNotOpen": "Не удалось открыть это мини-приложение.",
+    "miniAppsAddToHomeScreen": "Добавить на главный экран",
+    "miniAppsAddToHomeScreenSuccess": "{name} добавлено на главный экран",
+    "@miniAppsAddToHomeScreenSuccess": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "miniAppsAddToHomeScreenPartial": "{name} добавлено со значком по умолчанию",
+    "@miniAppsAddToHomeScreenPartial": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "miniAppsAddToHomeScreenRefused": "Лаунчер отклонил ярлык",
+    "miniAppsAddToHomeScreenError": "Не удалось добавить мини-приложение на главный экран",
+    "miniAppsDeepLinkUnknownApp": "Это мини-приложение больше недоступно",
+    "miniAppsBetaBadge": "БЕТА",
+    "miniAppsBetaSheetTitle": "Бета-приложение",
+    "miniAppsBetaSheetBody": "Это бета-версия от разработчика. Она не проверена iLINK и может вести себя неожиданно. Привилегированные действия ограничены теми, что уже одобрены в публичной версии.",
+    "miniAppsBetaSheetReleaseNotesLabel": "Заметки о выпуске",
+    "miniAppsBetaSheetContinue": "Продолжить",
+    "miniAppsFlightTestBadge": "ЛЁТНЫЙ ТЕСТ",
+    "miniAppsPrivilegedBadge": "ПРИВИЛЕГИРОВАННОЕ",
+    "miniAppsFlightTestReleaseNotesTitle": "Что нового в этом лётном тесте",
+    "miniAppsBuildIdentifier": "v{version} · сборка {bundleShaPrefix}",
+    "@miniAppsBuildIdentifier": {
+        "placeholders": {
+            "version": {
+                "type": "String"
+            },
+            "bundleShaPrefix": {
+                "type": "String"
+            }
+        }
+    },
+    "otaUpdateAvailableTitle": "Доступно обновление",
+    "otaUpdateRequiredTitle": "Требуется обновление",
+    "otaInstallNow": "Установить",
+    "otaLater": "Позже",
+    "otaExitApp": "Выйти",
+    "otaDownloadFailed": "Загрузка не удалась. Нажмите «Установить» для повтора.",
+    "homeTabAppsLabel": "Приложения",
+    "homeTabMiniappsLabel": "Mini Apps",
+    "installedAppsTitle": "ПРИЛОЖЕНИЯ",
+    "installedAppsEmptyHint": "На этом авто нет установленных приложений.",
+    "installedAppsLaunchFailed": "Не удалось запустить это приложение.",
+    "toolsNetworkLabel": "Сеть",
+    "toolsNetworkRefresh": "Обновить",
+    "toolsNetworkWifi": "WiFi",
+    "toolsNetworkWifiOnNoSsid": "Вкл",
+    "toolsNetworkWifiOff": "Выкл",
+    "toolsNetworkCellular": "Мобильные данные",
+    "toolsNetworkCellularOn": "Вкл",
+    "toolsNetworkCellularOff": "Выкл",
+    "toolsNetworkRoaming": "Роуминг",
+    "toolsNetworkRoamingOn": "Вкл",
+    "toolsNetworkRoamingOff": "Выкл",
+    "toolsNetworkBluetooth": "Bluetooth",
+    "toolsNetworkBluetoothOnNoDevice": "Вкл",
+    "toolsNetworkBluetoothOff": "Выкл",
+    "toolsNetworkHotspot": "Точка доступа",
+    "toolsNetworkHotspotOn": "Вкл",
+    "toolsNetworkHotspotOff": "Выкл",
+    "toolsDoctorLabel": "Доктор",
+    "toolsFabLabel": "Кнопки",
+    "toolsNavHudLabel": "Нав-HUD",
+    "toolsWorkflowLabel": "Автоматизация",
+    "toolsDoctorTitle": "Доктор панели",
+    "doctorSubtitle": "Быстрые исправления для медленной или зависшей панели.",
+    "doctorCloseAppsLabel": "Закрыть другие приложения",
+    "doctorCloseAppsWhy": "Принудительно останавливает другие приложения, освобождая память и оживляя зависший блок. iLINK продолжает работать.",
+    "doctorClearClusterLabel": "Очистить приборную панель",
+    "doctorClearClusterWhy": "Очищает зависшие или оставшиеся приложения с дисплея приборной панели.",
+    "doctorWakeDaemonLabel": "Разбудить службу авто",
+    "doctorWakeDaemonWhy": "Будит службу управления авто, чтобы работали голосовые команды — используйте, если голосовое действие не работает сразу после запуска.",
+    "doctorRunning": "Выполняется…",
+    "doctorActionDone": "Готово",
+    "doctorActionFailed": "Не удалось выполнить",
+    "doctorCloseAppsResult": "Закрыто приложений: {count}",
+    "appActionsSheetTitle": "Управление",
+    "appActionEnable": "Включить",
+    "appActionDisable": "Отключить",
+    "appActionDisableConfirmTitle": "Отключить {label}?",
+    "@appActionDisableConfirmTitle": {
+        "placeholders": {
+            "label": {}
+        }
+    },
+    "appActionDisableConfirmBody": "Это приложение перестанет показываться в лаунчере и не будет автозапускаться. Вы можете включить его в любой момент.",
+    "appActionUninstall": "Удалить",
+    "appActionUninstallConfirmTitle": "Удалить {label}?",
+    "@appActionUninstallConfirmTitle": {
+        "placeholders": {
+            "label": {}
+        }
+    },
+    "appActionUninstallConfirmBody": "Удаление этого приложения уничтожит его локальные данные. Переустановка их не вернёт. Введите слово UNINSTALL для подтверждения.",
+    "appActionUninstallTokenHint": "Введите UNINSTALL (по-английски, заглавными)",
+    "appActionTransfer": "Переместить",
+    "appActionForceStop": "Принудительно остановить",
+    "appActionClearData": "Очистить данные",
+    "appActionClearDataConfirmTitle": "Очистить данные {label}?",
+    "@appActionClearDataConfirmTitle": {
+        "placeholders": {
+            "label": {}
+        }
+    },
+    "appActionClearDataConfirmBody": "Все локальные данные — аккаунты, настройки, кэш — будут стёрты. Само приложение останется.",
+    "appActionClearDataTokenHint": "Введите CLEAR (по-английски, заглавными)",
+    "appActionWhitelist": "Белый список",
+    "appActionConfirm": "Подтвердить",
+    "appActionCancel": "Отмена",
+    "appActionToastOk": "Готово",
+    "appActionToastFailed": "Не удалось применить",
+    "homeRunningAppStop": "Остановить приложение",
+    "homeRunningAppForceStopSub": "Принудительно остановить {label}",
+    "@homeRunningAppForceStopSub": {
+        "placeholders": {
+            "label": {
+                "type": "String"
+            }
+        }
+    },
+    "voiceAccessOpenSettings": "Открыть настройки",
+    "voiceAccessMicPermissionBody": "Голосовому ассистенту нужен доступ к микрофону, чтобы слушать.",
+    "voiceAccessMicTitle": "Доступ к микрофону отключён",
+    "voiceAccessMicPermanentlyDeniedBody": "Вы ранее отклонили доступ к микрофону. Откройте настройки, чтобы предоставить его.",
+    "actionClose": "Закрыть",
+    "actionDismiss": "Закрыть",
+    "miniAppActionsUpdateAvailable": "Доступно обновление",
+    "miniAppActionsReinstallToUpgrade": "Переустановите для обновления",
+    "miniAppActionsUpdated": "Обновлено: {name}",
+    "@miniAppActionsUpdated": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "miniAppActionsOpenHere": "Открыть здесь",
+    "miniAppActionsOnThisScreen": "На этом экране",
+    "miniAppActionsOpening": "Открываем {name} на {target}…",
+    "@miniAppActionsOpening": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            },
+            "target": {
+                "type": "String"
+            }
+        }
+    },
+    "miniAppActionsFailed": "Ошибка: {code}",
+    "@miniAppActionsFailed": {
+        "placeholders": {
+            "code": {
+                "type": "String"
+            }
+        }
+    },
+    "miniAppStoreUpdatesFailed": "Ошибка: {error}",
+    "@miniAppStoreUpdatesFailed": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "miniAppStoreUpToDate": "Все приложения обновлены",
+    "miniAppStoreUpdatesList": "Обновления: {names}",
+    "@miniAppStoreUpdatesList": {
+        "placeholders": {
+            "names": {
+                "type": "String"
+            }
+        }
+    },
+    "miniAppStoreUpdatesAvailableTitle": "Доступны обновления",
+    "miniAppStoreUpdatesTip": "Нажмите «Переустановить» в Моих приложениях для обновления",
+    "aboutOpenDiagnostics": "Открыть диагностику",
+    "vehicleSupportLabel": "Поддержка автомобиля",
+    "vehicleSupportTierFull": "Полная интеграция",
+    "vehicleSupportTierStock": "Только системные API",
+    "vehicleSupportTierUnsupported": "Не поддерживается",
+    "vehicleSupportQuirksHeading": "Известные особенности этого автомобиля",
+    "vehicleSupportNoQuirks": "Нет известных особенностей для этого автомобиля.",
+    "vehicleSupportHuVendorRow": "Магнитола",
+    "vehicleSupportVariantRow": "Автомобиль",
+    "launcherBydLockedTitle": "BYD блокирует выбор главного экрана",
+    "launcherBydLockedBody": "Прошивка BYD не позволяет Android изменить приложение главного экрана на любое, кроме BYD MyCar. Алиас iLINK зарегистрирован корректно, но на стандартной прошивке система молча отклоняет запрос. Обходные пути: (1) установка на BYD с root, (2) кастомная прошивка, или (3) ручное отключение com.byd.mycar через adb (продвинутый уровень)."
+}

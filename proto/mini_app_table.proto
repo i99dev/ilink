@@ -1,0 +1,198 @@
+syntax = "proto3";
+
+// MiniAppTable: source of truth for every native-capability route the
+// mini-app runtime exposes. Mirrors car_table.proto's pattern — checked-in
+// textproto, compiled to binary protobuf, AES-GCM encrypted with the
+// release key, shipped as assets/mini_app_table.pb.enc.
+//
+// Goal: an attacker who decompiles the release APK gets the dispatcher
+// shell only. Family ids ("pkg", "boot", "surface", …), op ids
+// ("pkg.launch", "surface.create", …), intent action strings, AIDL
+// descriptors, system-service names, and settings.global keys all live
+// in the encrypted blob — none of them appear in classes.dex.
+//
+// Phase 0+1 ships the schema + loader + dispatcher shell; the family
+// handlers keep their hardcoded constants until Phase 2 migrates them
+// one family at a time.
+
+package com.i99dev.ilink.miniapps;
+
+option java_package = "com.i99dev.ilink.miniapps";
+option java_outer_classname = "MiniAppTableProto";
+option java_multiple_files = false;
+
+// Single top-level message loaded once at boot. Flat — no nested groups —
+// so the parser is trivial and every field can be zeroed on shutdown.
+message MiniAppTable {
+  // Family registry. One entry per native-capability family
+  // ("pkg", "boot", "surface", "display", "cursor", "gesture", …).
+  repeated FamilyRoute families = 1;
+
+  // Op registry. (family_id, op_id) -> native binding metadata.
+  // Keyed by `op_token` (sha256-derived 16-hex truncate) so the Dart
+  // side can pass tokens instead of plaintext op names.
+  repeated OpRoute ops = 2;
+
+  // AIDL descriptors / service tokens / transaction codes — used by
+  // surface, display, cursor families. Same shape as CarTable.BinderRoute
+  // but lives in a separate table so each family's binder lookups stay
+  // independent of the car's.
+  repeated BinderRouteSpec binder_routes = 3;
+
+  // Intent action constants (e.g. "android.intent.action.MAIN",
+  // "android.intent.action.BOOT_COMPLETED") used by pkg + boot.
+  // Keyed by logical name; the dispatcher dereferences the name from
+  // OpRoute.intent_ref into the actual action string at runtime.
+  repeated IntentActionSpec intent_actions = 4;
+
+  // settings.global keys (e.g. cursor visibility flag, gesture toggle).
+  // Same dereferencing pattern as intent_actions.
+  repeated SettingsKeySpec settings_keys = 5;
+
+  // ContentProvider URIs for read-only family snapshots, mirroring
+  // CarTable.ContentProviderUri. Kept here (not in CarTable) when the
+  // provider is mini-app-specific (e.g. an app's own private CP).
+  repeated ContentProviderUriSpec content_provider_uris = 6;
+
+  // "literal-v1" / "encrypted-1.0.0" / etc. Surfaces through
+  // MiniAppTableSource.version() for log + telemetry traceability.
+  string version = 99;
+}
+
+// One family entry. The dispatcher uses (family_id) to scope
+// op lookups; `display_label` is for diagnostic logs only.
+message FamilyRoute {
+  // Logical family namespace ("pkg", "boot", "surface", …). Matches
+  // the namespace the SDK uses on the wire.
+  string family_id = 1;
+  // Human-readable label for diagnostic logs. Never crosses the
+  // platform-channel boundary; safe to be descriptive.
+  string display_label = 2;
+  // Required scope id (mini-app-side; matches manifest declarations).
+  // Empty = no scope required (rare; only true for read-only ops the
+  // host wants every mini-app to be able to call).
+  string required_scope = 3;
+}
+
+// One op entry. The dispatcher consults the route to decide WHICH
+// native call to make (kind), HOW to build the args (arg_template),
+// and WHICH scope is required (required_scope). All metadata that
+// would otherwise be hardcoded in the Kotlin family plugin lives here.
+message OpRoute {
+  // (family_id, op_id) compound key. Matches the SDK's wire format
+  // ("pkg.launch" -> family_id="pkg", op_id="launch").
+  string family_id = 1;
+  string op_id = 2;
+
+  // sha256("mini_app_op:" + family_id + "." + op_id) truncated to
+  // 16 hex chars. Generated at build time by encrypt_mini_app_table.dart;
+  // consumed by the Dart-side family_executor + the Kotlin dispatcher.
+  // Stable across builds (deterministic over the textproto inputs).
+  string op_token = 3;
+
+  // What native call shape this op resolves to. The dispatcher dispatches
+  // on this enum to pick the right local native handler.
+  NativeKind kind = 4;
+
+  // Argv template for kind=AM_START / SETTINGS_PUT, or arg-name list
+  // for kind=BINDER / SERVICE_CALL. {key:default} tokens follow the
+  // same syntax as CarTable.UnitAction.arg_template.
+  repeated string arg_template = 5;
+
+  // Required mini-app scope (matches manifest's family-list).
+  // Empty = no scope required.
+  string required_scope = 6;
+
+  // Logical reference into one of the auxiliary tables. The dispatcher
+  // dereferences these at runtime:
+  //   * intent_ref  -> IntentActionSpec.name
+  //   * binder_ref  -> BinderRouteSpec.route_id
+  //   * settings_ref-> SettingsKeySpec.name
+  //   * cp_ref      -> ContentProviderUriSpec.family
+  string intent_ref = 7;
+  string binder_ref = 8;
+  string settings_ref = 9;
+  string cp_ref = 10;
+
+  // Whether the op may run while the car is moving. The mini-app gate
+  // already enforces driver-safety on a separate axis; this is a second
+  // belt-and-braces flag for ops that should NEVER run in motion (e.g.
+  // installing an app, granting accessibility).
+  bool requires_stationary = 11;
+
+  // Model gate. Empty = matches every model (the default; use for ops
+  // that work uniformly across the BYD F-series). Non-empty = matches
+  // only when ModelDetector.modelId is in the list.
+  //
+  // Selection rule on the Kotlin side: when multiple OpRoutes share the
+  // same op_token, the dispatcher prefers the most-specific match
+  // (longest non-empty model_match wins) and falls back to an unscoped
+  // route if present. Returns null when nothing matches — caller
+  // handles "unsupported on this model" gracefully.
+  //
+  // Known values today (see lib/core/device/model_detector.dart):
+  //   "l8"       — Leopard 8, Di5.1, Huawei ADAS
+  //   "l5l"      — Leopard 5L, Di5.1, BYD ADAS (com.byd.naviauto)
+  //   "5f"       — F-series, Di5.0, no multi-display
+  //   "di5.1"    — any Di5.1 trim (use as a coarse fallback)
+  //   "di5.0"    — any Di5.0 trim
+  //
+  // Combine values with OR semantics: ["l8","l5l"] = "either L8 or L5L."
+  repeated string model_match = 12;
+}
+
+// AIDL descriptor / service token / transaction code — used by surface,
+// display, cursor families. Mirrors CarTable.BinderRoute exactly so the
+// CryptoUtils + parse path can stay symmetric.
+message BinderRouteSpec {
+  string route_id = 1;        // logical name ("surface.create", "display.list")
+  string service_token = 2;   // system service name (e.g. "window")
+  string aidl_descriptor = 3; // AIDL interface descriptor
+  int32 transaction_code = 4; // op code
+}
+
+// Intent action / extras-key constants. The dispatcher reads
+// IntentActionSpec.action when building Intent objects for AM_START /
+// INTENT kinds.
+message IntentActionSpec {
+  string name = 1;             // logical key ("boot_completed", "launch_main")
+  string action = 2;           // actual action string (e.g. "android.intent.action.MAIN")
+  string category = 3;         // optional intent category
+  int32 flags = 4;             // FLAG_ACTIVITY_* OR-mask (0 = none)
+}
+
+// settings.global keys for cursor visibility, gesture-mode toggles, etc.
+message SettingsKeySpec {
+  string name = 1;             // logical key
+  string namespace = 2;        // "global" | "secure" | "system"
+  string key = 3;              // actual settings key string
+}
+
+// ContentProvider URI for mini-app-specific read-only snapshots.
+// Kept structurally identical to CarTable.ContentProviderUri so the
+// reader can be shared between the car + mini-apps tables.
+message ContentProviderUriSpec {
+  string family = 1;
+  string authority = 2;
+  string path = 3;
+  repeated string projection = 4;
+  string selection = 5;
+  map<string, string> column_to_field = 6;
+}
+
+// Native call shape. Field numbers stable; APPEND ONLY when adding
+// new shapes — renumbering breaks every shipped APK that decrypts
+// an older table.
+enum NativeKind {
+  NATIVE_KIND_UNSPECIFIED = 0;
+  AM_START = 1;        // `am start --user N --display N <component>`
+  INTENT = 2;          // Context.startActivity(Intent) on the default display
+  BINDER = 3;          // ServiceManager.getService + AIDL transact
+  SERVICE_CALL = 4;    // `service call <name> <code> <args>` shell
+  CP_QUERY = 5;        // ContentResolver.query
+  SETTINGS_PUT = 6;    // Settings.<ns>.putString / putInt
+  SETTINGS_GET = 7;    // Settings.<ns>.getString / getInt
+  PM_LIST = 8;         // PackageManager.getInstalledPackages
+  PM_FOREGROUND = 9;   // ActivityManager.getRunningTasks(1) / UsageStatsManager
+  ACCESSIBILITY = 10;  // gesture.dispatch via host's AccessibilityService
+}

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Configuration for RemoteControlAccessibilityService — the gesture
+  dispatch path for non-system apps targeting the cluster.
+
+  canPerformGestures="true" is the line that lets dispatchGesture()
+  reach a non-default display (combined with the API-30+
+  GestureDescription.Builder().setDisplayId() call). Without it, the
+  service can be enabled but dispatchGesture rejects.
+
+  canRetrieveWindowContent="true" + flagRetrieveInteractiveWindows
+  unlock the windows-tree path used by `dispatchSetText` /
+  `dispatchDeleteLastChar` — without content retrieval,
+  `getWindows()` returns metadata only and `.root` /
+  `findFocus(FOCUS_INPUT)` are null, so the keyboard couldn't reach
+  the cluster's EditText (`input -d N text` fails because
+  WindowManager has no per-display focus on XDJA virtual displays).
+
+  packageNames is omitted so the service can dispatch into apps it
+  doesn't own (com.byd.cluster, com.example.amapservice etc.).
+  notificationTimeout=100 ms is the recommended floor; lower values
+  drop events.
+
+  canRequestFilterKeyEvents="true" + flagRequestFilterKeyEvents unlock
+  onKeyEvent(), where WheelVoiceController swallows the ROM-declared
+  steering-wheel voice key (resolved dynamically — AUTO_MEDIA_VOICE /
+  VOICE_ASSIST / ASSIST, scancode discovered per-car from
+  /system/usr/keylayout) and fires our AI voice instead of BYD's
+  com.byd.autovoice. Reusing this already-granted service means the
+  override needs no additional accessibility prompt; non-matching keys
+  pass straight through (onKeyEvent returns false).
+-->
+<accessibility-service
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:accessibilityEventTypes="typeWindowStateChanged|typeWindowsChanged|typeViewFocused|typeWindowContentChanged"
+    android:accessibilityFeedbackType="feedbackGeneric"
+    android:accessibilityFlags="flagRetrieveInteractiveWindows|flagReportViewIds|flagRequestMultiFingerGestures|flagRequestFilterKeyEvents"
+    android:canPerformGestures="true"
+    android:canRequestFilterKeyEvents="true"
+    android:canRetrieveWindowContent="true"
+    android:description="@string/a11y_remote_control_description"
+    android:notificationTimeout="100"
+    android:summary="@string/a11y_remote_control_summary"/>

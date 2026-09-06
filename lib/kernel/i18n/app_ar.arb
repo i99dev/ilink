@@ -1,0 +1,572 @@
+{
+    "@@locale": "ar",
+    "vehicle": "السيارة",
+    "battery": "البطارية",
+    "interior": "الداخل",
+    "mode": "النمط",
+    "network": "الشبكة",
+    "daemon": "الخدمة",
+    "km": "كم",
+    "climate": "المناخ",
+    "fan": "المروحة",
+    "face": "الوجه",
+    "feet": "القدمين",
+    "defrost": "إزالة الضباب",
+    "on": "تشغيل",
+    "off": "إيقاف",
+    "windows": "النوافذ",
+    "windowDriver": "السائق",
+    "windowPassenger": "الراكب",
+    "windowRearLeft": "خلفي يسار",
+    "windowRearRight": "خلفي يمين",
+    "windowSunroof": "الفتحة العلوية",
+    "quickActions": "إجراءات سريعة",
+    "unlock": "فتح",
+    "lock": "إقفال",
+    "trunk": "الصندوق",
+    "headlights": "الأضواء",
+    "massage": "المساج",
+    "seatHeat": "تدفئة المقعد",
+    "seatVent": "تهوية المقعد",
+    "fragrance": "العطر",
+    "ambient": "الإضاءة المحيطة",
+    "lights": "الأضواء",
+    "screenHome": "الرئيسية",
+    "screenRadio": "راديو",
+    "screenMiniApps": "التطبيقات",
+    "screenTv": "تلفاز",
+    "railDriverMassage": "مساج السائق",
+    "railDriverHeat": "تدفئة السائق",
+    "railDriverVent": "تهوية السائق",
+    "railAmbientLight": "الإضاءة المحيطة",
+    "railExterior": "الإضاءة الخارجية",
+    "levelMode1": "نمط ١",
+    "levelMode2": "نمط ٢",
+    "levelMode3": "نمط ٣",
+    "levelLight": "خفيف",
+    "levelMid": "متوسط",
+    "levelDense": "كثيف",
+    "levelDim": "خافت",
+    "levelHigh": "عالي",
+    "levelHead": "الأمامي",
+    "levelFogFront": "ضباب أمامي",
+    "levelFogRear": "ضباب خلفي",
+    "assistantListening": "أستمع…",
+    "assistantThinking": "أفكر…",
+    "settingsTitle": "الإعدادات",
+    "welcome": "مرحباً بك في داش",
+    "welcomeHint": "اربط داش بالخادم والسيارة قبل المتابعة.",
+    "save": "حفظ",
+    "required": "مطلوب",
+    "language": "اللغة",
+    "actionCancel": "إلغاء",
+    "actionDone": "تم",
+    "actionRun": "تشغيل",
+    "actionGotIt": "حسناً",
+    "actionRefresh": "تحديث",
+    "actionSoon": "قريباً",
+    "valueUnknown": "(غير معروف)",
+    "valueYes": "نعم",
+    "valueNo": "لا",
+    "sectionModelsTitle": "الأوامر الصوتية",
+    "sectionModelsSubtitleShort": "التعرّف على الكلام على الجهاز",
+    "sectionLanguageTitle": "اللغة",
+    "sectionLanguageSubtitleShort": "لغة التطبيق",
+    "sectionAppearanceTitle": "المظهر",
+    "sectionAppearanceSubtitleShort": "المظهر وجهة السائق",
+    "appearanceSystem": "النظام",
+    "appearanceSystemHelp": "اتبع إعداد الجهاز الفاتح أو الداكن.",
+    "appearanceLight": "فاتح",
+    "appearanceLightHelp": "استخدم دائمًا اللوحة الفاتحة.",
+    "appearanceDark": "داكن",
+    "appearanceDarkHelp": "استخدم دائمًا لوحة لوحة القيادة الداكنة — مُعدّة للقيادة الليلية.",
+    "appearanceDriverSideTitle": "جهة السائق",
+    "appearanceDriverSideLeft": "يسار",
+    "appearanceDriverSideLeftHelp": "يلتصق المايكروفون بالجهة السفلية اليسرى — لأسواق القيادة من اليسار (الولايات المتحدة، أوروبا، الصين).",
+    "appearanceDriverSideRight": "يمين",
+    "appearanceDriverSideRightHelp": "يلتصق المايكروفون بالجهة السفلية اليمنى — لأسواق القيادة من اليمين (المملكة المتحدة، أستراليا، اليابان، الهند).",
+    "appearanceVoiceSectionTitle": "المساعد الصوتي",
+    "appearanceVoiceEnabledLabel": "إظهار المساعد",
+    "appearanceVoiceEnabledHelp": "الإيقاف يخفي كل مواضع المايكروفون ويوقف التحكّم الصوتي. أعد التشغيل متى أردت التحكّم الصوتي.",
+    "sectionThemesTitle": "السمات",
+    "sectionThemesSubtitleShort": "اختر مظهرًا للوحة القيادة",
+    "themesGalleryHeader": "اختر سمة لإعادة تصميم لوحة القيادة بالكامل. السمات المدمجة تعمل دون اتصال؛ ويمكن إضافة المزيد من المتجر.",
+    "themesBuiltInLabel": "مدمجة",
+    "themesActiveLabel": "نشطة",
+    "themesApplyButton": "تطبيق",
+    "themesBetaLabel": "تجريبي",
+    "themesEmpty": "لا توجد سمات متاحة",
+    "themesLoadError": "تعذّر تحميل السمات",
+    "sectionPrivacyTitle": "الخصوصية",
+    "sectionPrivacySubtitleShort": "ما تشاركه السيارة",
+    "sectionClusterTitle": "تطبيقات اللوحة",
+    "sectionClusterSubtitleShort": "تطبيقات تُفتح من جديد على لوحة السائق",
+    "clusterSectionHeader": "بعض التطبيقات لا يمكن نقلها إلى لوحة السائق أثناء تشغيلها — فهي تُعاد أو تتعطّل عند تغيّر الشاشة. لذلك يفتحها النظام من جديد على اللوحة (نسخة جديدة). تُكتشف تطبيقات ReVanced تلقائيًا؛ أضِف أي تطبيق آخر رأيته يرتدّ أو يتعطّل.",
+    "clusterSectionSearchHint": "ابحث عن التطبيقات",
+    "clusterSectionAuto": "تلقائي",
+    "clusterSectionAutoHelp": "يُفتح دائمًا من جديد على اللوحة (مبني على ReVanced)",
+    "clusterSectionToggleHelp": "افتح هذا التطبيق من جديد على اللوحة بدل نقله",
+    "clusterSectionEmpty": "لا توجد تطبيقات",
+    "clusterSectionError": "تعذّر تحميل التطبيقات",
+    "sectionAboutTitle": "حول",
+    "sectionAboutSubtitleShort": "الإصدار ومعلومات البناء",
+    "aboutAppName": "التطبيق",
+    "aboutVersion": "الإصدار",
+    "aboutPackage": "الحزمة",
+    "aboutDevelopedBy": "تطوير",
+    "aboutDevelopedByValue": "CubeTek",
+    "aboutSponsoredBy": "برعاية",
+    "aboutSponsoredByValue": "QEV",
+    "aboutCopy": "نسخ",
+    "aboutCopied": "تم النسخ",
+    "aboutCheckForUpdates": "التحقق من التحديثات",
+    "aboutCheckUpToDate": "لم يتم العثور على تحديث. قد يكون مصدر التحديثات غير متاح.",
+    "devFlightTestModeLabel": "وضع الاختبار التجريبي",
+    "devFlightTestModeSub": "إظهار تبويب مخصّص للاختبار التجريبي على شاشة التطبيقات المصغّرة يحتوي الإصدارات التجريبية المدعو لاختبارها. مغلق افتراضياً؛ فعّله بعد أن يدعوك مطوّر.",
+    "modelsSubtitle": "يعمل التعرّف على الكلام على هذا الجهاز. اختر نموذج الكلام من إعدادات المظهر.",
+    "diagnosticsTitle": "التشخيصات",
+    "diagnosticsAppCard": "التطبيق",
+    "diagnosticsMaintenanceCard": "الصيانة",
+    "diagnosticsKvVersion": "الإصدار",
+    "diagnosticsKvPackage": "الحزمة",
+    "diagnosticsKvName": "الاسم",
+    "diagnosticsExportLogs": "تصدير السجلات",
+    "diagnosticsExportLogsDesc": "قريباً — تخزين السجلات غير موصول بعد.",
+    "voiceConsentTitle": "تأكيد الإجراء",
+    "voiceConsentBody": "يريد المساعد {action}.",
+    "@voiceConsentBody": {
+        "placeholders": {
+            "action": {
+                "type": "String"
+            }
+        }
+    },
+    "voiceConsentAllow": "السماح",
+    "voiceConsentDeny": "رفض",
+    "voiceShortcutsFavoritesTitle": "المفضّلة",
+    "voiceShortcutsBrowseRadio": "تصفّح",
+    "voiceShortcutsFavoritesEmpty": "لا توجد مفضّلة بعد. افتح الراديو واضغط ♡ على محطة لتثبيتها هنا.",
+    "voiceShortcutsFavoritesError": "تعذّر تحميل المفضّلة — اسحب للتحديث.",
+    "integrityCheckFailedTitle": "فشل فحص النزاهة",
+    "integrityCheckFailedBody": "أوامر السيارة موقوفة حتى الفحص النظيف التالي.",
+    "settingsErrorPrefix": "خطأ في الإعدادات: {error}",
+    "@settingsErrorPrefix": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "saveBarUnsaved": "تغييرات غير محفوظة",
+    "saveBarSaved": "كل التغييرات محفوظة",
+    "radioCategoryFavorites": "المفضّلة",
+    "radioFailedToLoad": "فشل تحميل المحطات:\n{error}",
+    "@radioFailedToLoad": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "radioNoStations": "لا توجد محطات",
+    "radioNoStationsHint": "اسحب للأسفل للتحديث، أو افتح الإعدادات ← التشخيص ← تحديث قائمة الراديو.",
+    "radioNoResults": "لا نتائج لـ \"{query}\"",
+    "@radioNoResults": {
+        "placeholders": {
+            "query": {
+                "type": "String"
+            }
+        }
+    },
+    "radioLoading": "جاري تحميل {name}…",
+    "@radioLoading": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "radioPlaying": "يُشغّل {name}",
+    "@radioPlaying": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "radioPaused": "متوقّف — {name}",
+    "@radioPaused": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "radioError": "خطأ: {message}",
+    "@radioError": {
+        "placeholders": {
+            "message": {
+                "type": "String"
+            }
+        }
+    },
+    "compatCardProbes": "الفحوص",
+    "compatCardProbesSub": "حالة الخدمة، هويّة السيارة، والقراءة المباشرة من readStatus.",
+    "compatCardScan": "مسح",
+    "compatCardManualPress": "ضغط يدوي",
+    "compatCardManualPressSub": "اضغط بطاقة لإطلاق الأمر، ثم سجّل النتيجة.",
+    "compatCardFastActions": "إجراءات سريعة",
+    "compatCardFastActionsSub": "نفّذ كل إجراء بمعطيات صريحة. يُسجَّل رمز إرجاع الخدمة في التقرير.",
+    "compatCardBinderProbes": "فحوص AIDL Binder",
+    "compatCardBinderProbesSub": "استدعاءات service.method جاهزة. مفيدة عندما يكون الإجراء غير معروف للخدمة بينما الـ Binder يعمل.",
+    "compatCardReport": "تقرير",
+    "compatProbeDaemonAdb": "الخدمة + ADB",
+    "compatProbeCarIdentity": "هوية السيارة",
+    "compatProbeLiveTelemetry": "قياس مباشر (readStatus)",
+    "compatProbeReread": "إعادة القراءة",
+    "compatBenchActionsLoaded": "تم تحميل {count} إجراءً من جدول التشغيل.",
+    "@compatBenchActionsLoaded": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "compatBenchPending": "قيد الانتظار — حدّث الفحوص لتحميل الإجراءات المعروفة.",
+    "compatBenchOk": "ناجح",
+    "compatBenchFail": "فاشل",
+    "compatBenchErr": "خطأ",
+    "compatBenchTotal": "إجمالي {total} تنفيذ",
+    "@compatBenchTotal": {
+        "placeholders": {
+            "total": {
+                "type": "int"
+            }
+        }
+    },
+    "compatNothingToReport": "لا يوجد ما يُرسَل بعد — شغّل فحصاً أو نفّذ إجراءً أوّلاً.",
+    "compatKvBenchRuns": "تنفيذات الإجراءات",
+    "compatKvBinderProbes": "فحوص Binder",
+    "compatScanning": "جاري المسح…",
+    "compatScanButton": "مسح",
+    "compatStatReachable": "قابل للوصول",
+    "compatStatUnknown": "مجهول",
+    "compatStatInactive": "غير نشط",
+    "compatNotesLabel": "ملاحظات (اختياري)",
+    "compatNotesHint": "ماذا أيضاً يجب أن يعرف الخادم عن هذه السيارة؟",
+    "compatConfirmDangerTitle": "تشغيل \"{label}\"؟",
+    "@compatConfirmDangerTitle": {
+        "placeholders": {
+            "label": {
+                "type": "String"
+            }
+        }
+    },
+    "compatConfirmDangerBody": "هذا الأمر يحرّك الأجهزة ولا يجب استخدامه إلا والسيارة متوقّفة. متابعة؟",
+    "compatKvVinHash": "تجزئة معرّف الجهاز",
+    "compatKvWithheld": "(محجوب)",
+    "compatKvDevice": "الجهاز",
+    "compatKvDilink": "تلميح DiLink",
+    "compatKvDaemonOnline": "الخادم متصل",
+    "compatKvCommandsProbed": "الأوامر المفحوصة",
+    "compatKvVerdictsRecorded": "النتائج المسجّلة",
+    "cmdDoorLock": "إقفال الأبواب",
+    "cmdDoorUnlock": "فتح الأبواب",
+    "cmdDoorTrunkOpen": "فتح الصندوق",
+    "cmdDoorTrunkClose": "إغلاق الصندوق",
+    "cmdHoodOpen": "فتح غطاء المحرك",
+    "cmdHoodClose": "إغلاق غطاء المحرك",
+    "cmdHoodStop": "إيقاف غطاء المحرك",
+    "cmdClimatePower": "تشغيل المناخ",
+    "cmdClimateTemp": "ضبط الحرارة",
+    "cmdClimateFan": "سرعة المروحة",
+    "cmdClimateMode": "وضع الهواء",
+    "cmdClimateCycle": "تدوير الهواء",
+    "cmdClimateDefrostF": "إزالة الضباب الأمامي",
+    "cmdClimateDefrostR": "إزالة الضباب الخلفي",
+    "cmdClimateCompressor": "ضاغط التكييف",
+    "cmdClimateMaxHot": "حرارة قصوى",
+    "cmdClimateMaxCool": "تبريد أقصى",
+    "cmdClimateComfortMode": "وضع الراحة",
+    "cmdClimateRearLock": "قفل مناخ الخلف",
+    "cmdComfortMassage": "المساج",
+    "cmdComfortFragOn": "تشغيل العطر",
+    "cmdComfortFragOff": "إيقاف العطر",
+    "cmdComfortAtmos": "الإضاءة المحيطة",
+    "cmdWindowFlOpen": "فتح نافذة السائق",
+    "cmdWindowFlClose": "إغلاق نافذة السائق",
+    "cmdWindowFlStop": "إيقاف نافذة السائق",
+    "cmdWindowFlDown": "إنزال نافذة السائق",
+    "cmdWindowFrOpen": "فتح نافذة الراكب",
+    "cmdWindowFrClose": "إغلاق نافذة الراكب",
+    "cmdWindowFrStop": "إيقاف نافذة الراكب",
+    "cmdWindowRlOpen": "فتح النافذة الخلفية اليسرى",
+    "cmdWindowRlClose": "إغلاق النافذة الخلفية اليسرى",
+    "cmdWindowRlStop": "إيقاف النافذة الخلفية اليسرى",
+    "cmdWindowRrOpen": "فتح النافذة الخلفية اليمنى",
+    "cmdWindowRrClose": "إغلاق النافذة الخلفية اليمنى",
+    "cmdWindowRrStop": "إيقاف النافذة الخلفية اليمنى",
+    "cmdWindowAllOpen": "فتح جميع النوافذ",
+    "cmdWindowAllClose": "إغلاق جميع النوافذ",
+    "cmdSunroofOpen": "فتح الفتحة العلوية",
+    "cmdSunroofClose": "إغلاق الفتحة العلوية",
+    "cmdSunroofTilt": "إمالة الفتحة العلوية",
+    "cmdSunroofStop": "إيقاف الفتحة العلوية",
+    "cmdSeatHeatDrv": "تدفئة مقعد السائق",
+    "cmdSeatHeatPass": "تدفئة مقعد الراكب",
+    "cmdSeatHeatRl": "تدفئة المقعد الخلفي الأيسر",
+    "cmdSeatHeatRr": "تدفئة المقعد الخلفي الأيمن",
+    "cmdSeatVentDrv": "تهوية مقعد السائق",
+    "cmdSeatVentPass": "تهوية مقعد الراكب",
+    "cmdSeatVentRl": "تهوية المقعد الخلفي الأيسر",
+    "cmdSeatVentRr": "تهوية المقعد الخلفي الأيمن",
+    "cmdLightHead": "الأضواء الأمامية",
+    "cmdLightHeadOn": "تشغيل الأضواء الأمامية",
+    "cmdLightHeadOff": "إطفاء الأضواء الأمامية",
+    "cmdLightFogF": "أضواء الضباب الأمامية",
+    "cmdLightFogR": "أضواء الضباب الخلفية",
+    "cmdLightTurnLeft": "إشارة اليسار",
+    "cmdLightTurnRight": "إشارة اليمين",
+    "cmdLightFlash": "وميض الأضواء",
+    "cmdLightFindCar": "العثور على السيارة",
+    "cmdRadioPlayByName": "تشغيل بالاسم",
+    "cmdRadioPlayStation": "تشغيل المحطة",
+    "cmdRadioPause": "إيقاف الراديو مؤقتاً",
+    "cmdRadioResume": "متابعة الراديو",
+    "cmdRadioStop": "إيقاف الراديو",
+    "cmdRadioNextFav": "المحطة المفضّلة التالية",
+    "cmdCarStatus": "حالة السيارة",
+    "profileSectionSecurity": "الأمان",
+    "profilePinEnableLabel": "تمكين قفل الرمز السرّي",
+    "profilePinEnableSub": "يطلب رمزاً سرّياً من ٤ أرقام قبل فتح الملف الشخصي.",
+    "profilePinChangeLabel": "تغيير الرمز السرّي",
+    "pinLockTitle": "أدخل الرمز السرّي",
+    "pinLockSubtitle": "أدخل رمزك السرّي المكوّن من ٤ أرقام للوصول إلى الملف الشخصي",
+    "pinLockWrong": "رمز خاطئ — حاول مجدّداً",
+    "pinLockForgotCta": "نسيت الرمز؟",
+    "pinLockForgotTitle": "إعادة تعيين الرمز",
+    "pinLockForgotBody": "إذا نسيت الرمز السرّي لهذا الجهاز، امسح بيانات التطبيق من إعدادات أندرويد. سيؤدي ذلك أيضاً إلى حذف إعداداتك وبيانات التطبيق المحلية.",
+    "pinSetupEnterTitle": "اضبط رمزاً سرّياً من ٤ أرقام",
+    "pinSetupEnterSubtitle": "ستحتاج هذا الرمز لفتح الملف الشخصي.",
+    "pinSetupConfirmTitle": "أكّد الرمز",
+    "pinSetupConfirmSubtitle": "أعد إدخال الأرقام الأربعة نفسها.",
+    "pinSetupMismatch": "الرمزان مختلفان — أعد المحاولة",
+    "pinSetupSavedSnack": "تم تمكين الرمز السرّي",
+    "pinDisabledSnack": "تم تعطيل الرمز السرّي",
+    "onboardingTitle": "مرحباً بك في iLINK",
+    "onboardingSubtitle": "اختر الميزات التي يمكن للتطبيق استخدامها. يمكنك تغيير ذلك لاحقاً من الإعدادات.",
+    "onboardingLocaleLabel": "اللغة",
+    "onboardingPermissionLocationTitle": "الموقع",
+    "onboardingPermissionLocationReason": "لكي يقدّم المساعد الذكي مساعدة مرتبطة بمكانك — الطقس المحلي، الأماكن القريبة، وإرشادات التنقّل.",
+    "onboardingPermissionMicrophoneTitle": "المساعد الصوتي",
+    "onboardingPermissionMicrophoneReason": "اضغط على المايكروفون لقفل الأبواب، ضبط المناخ، طرح الأسئلة، والمزيد — ميزة بريمير. يمكنك إيقافها متى أردت من الإعدادات ← المظهر.",
+    "onboardingPermissionNotificationsTitle": "الإشعارات",
+    "onboardingPermissionNotificationsReason": "لإظهار تشغيل الراديو في لوحة إشعارات السيارة.",
+    "onboardingPermissionGranted": "مُمنوح",
+    "onboardingPermissionDenied": "مرفوض",
+    "onboardingPermissionSkipped": "تم التخطّي",
+    "onboardingPermissionUnavailable": "يديره المتصفّح",
+    "onboardingWebBanner": "على الويب، يسألك المتصفّح عن الأذونات عند استخدام كلّ ميزة. اختياراتك أدناه ستُحفظ كتفضيلات عندما تثبّت التطبيق على جهاز حقيقي.",
+    "onboardingContinue": "ابدأ",
+    "onboardingFinishing": "جارٍ الإعداد…",
+    "onboardingRemoteHelpHint": "تحتاج المساعد ليتولى أمراً لك عن بُعد؟ افتحه من الملف الشخصي ← المساعدة عن بُعد. أنت تبدأ الجلسة، وتوقفها متى شئت.",
+    "sessionEndedDismiss": "إخفاء",
+    "miniAppsTabStore": "المتجر",
+    "miniAppsTabInstalled": "تطبيقاتي",
+    "miniAppsTabFlightTest": "الاختبار التجريبي",
+    "miniAppsTabNativeApps": "تطبيقات أصلية",
+    "nativeAppsLoadError": "تعذّر تحميل التطبيقات. اسحب للتحديث.",
+    "nativeAppsEmpty": "لا توجد تطبيقات متاحة بعد.",
+    "nativeAppsInstall": "تثبيت",
+    "nativeAppsUpdate": "تحديث",
+    "nativeAppsConsentNote": "تُثبَّت تطبيقات الجهات الخارجية بموافقتك. يتحقق iLINK من كل تطبيق قبل التثبيت.",
+    "nativeAppsInstalling": "أكمل تثبيت {app} عبر نافذة النظام.",
+    "nativeAppsInstallError": "تعذّر تثبيت {app}: {error}",
+    "nativeAppsUninstallConfirm": "إزالة {app} من هذه السيارة؟ يمكنك إعادة تثبيته من المتجر.",
+    "nativeAppsUninstalled": "تمت إزالة {app}.",
+    "nativeAppsUninstallFailed": "تعذّرت إزالة {app}.",
+    "miniAppsFlightTestEmptyTitle": "لا اختبارات تجريبية نشطة",
+    "miniAppsFlightTestEmptyBody": "عندما يدعوك مطوّر إلى نسخة تجريبية، ستظهر هنا. اطلب من مطوّر دعوتك أو اطّلع على دليل الاختبار التجريبي.",
+    "miniAppsFlightTestEmptyCta": "اقرأ دليل الاختبار التجريبي",
+    "miniAppsFlightTestEmptyOpenDocsFailed": "تعذّر فتح المستندات. زر github.com/i99dev/ilink في المتصفّح.",
+    "miniAppsInstall": "تثبيت",
+    "miniAppsUninstall": "إلغاء التثبيت",
+    "miniAppsEmptyStore": "لا توجد تطبيقات متاحة بعد. اسحب للتحديث.",
+    "miniAppsEmptyInstalled": "لم تقم بتثبيت أي تطبيقات بعد. تصفّح المتجر لإضافة بعضها.",
+    "favoritesTitle": "المفضّلة",
+    "favoritesEmptyHint": "اضغط مطوّلاً على أيّ تطبيق مصغّر واختر «إضافة إلى المفضّلة» لتثبيته هنا.",
+    "miniAppsLoadError": "تعذّر تحميل الكتالوج. اسحب للتحديث.",
+    "miniAppsSafeWhileDrivingBadge": "آمن أثناء القيادة",
+    "miniAppsDrivingBlockedOk": "حسناً",
+    "miniAppsCouldNotOpen": "تعذّر فتح هذا التطبيق المصغّر.",
+    "miniAppsAddToHomeScreen": "إضافة إلى الشاشة الرئيسية",
+    "miniAppsAddToHomeScreenSuccess": "تمت إضافة {name} إلى شاشتك الرئيسية",
+    "miniAppsAddToHomeScreenPartial": "تمت إضافة {name} بأيقونة افتراضية",
+    "miniAppsAddToHomeScreenRefused": "رفضت واجهة المشغّل إنشاء الاختصار",
+    "miniAppsAddToHomeScreenError": "تعذّرت إضافة هذا التطبيق المصغّر إلى الشاشة الرئيسية",
+    "miniAppsDeepLinkUnknownApp": "هذا التطبيق المصغّر لم يعد متاحاً",
+    "miniAppsBetaBadge": "تجريبي",
+    "miniAppsBetaSheetTitle": "تطبيق تجريبي",
+    "miniAppsBetaSheetBody": "هذا التطبيق نسخة تجريبية مقدَّمة من المطوّر. لم تُراجعه iLINK وقد يتصرّف بشكل غير متوقّع. الإجراءات المميّزة مقيّدة بما أُقرّ مسبقاً على النسخة العامة.",
+    "miniAppsBetaSheetReleaseNotesLabel": "ملاحظات الإصدار",
+    "miniAppsBetaSheetContinue": "متابعة",
+    "miniAppsFlightTestBadge": "اختبار طيران",
+    "miniAppsPrivilegedBadge": "ذو صلاحيات خاصة",
+    "miniAppsFlightTestReleaseNotesTitle": "ما الجديد في هذا الاختبار",
+    "miniAppsBuildIdentifier": "إصدار {version} · بناء {bundleShaPrefix}",
+    "otaUpdateAvailableTitle": "تحديث متاح",
+    "otaUpdateRequiredTitle": "تحديث مطلوب",
+    "otaInstallNow": "تثبيت الآن",
+    "otaLater": "لاحقاً",
+    "otaExitApp": "إغلاق التطبيق",
+    "otaDownloadFailed": "فشل التنزيل. انقر على \"تثبيت الآن\" للمحاولة مجدداً.",
+    "homeTabAppsLabel": "التطبيقات",
+    "homeTabMiniappsLabel": "التطبيقات المصغّرة",
+    "installedAppsTitle": "التطبيقات",
+    "installedAppsEmptyHint": "لا توجد تطبيقات مثبّتة على هذه السيارة.",
+    "installedAppsLaunchFailed": "تعذّر تشغيل هذا التطبيق.",
+    "toolsNetworkLabel": "الشبكة",
+    "toolsNetworkRefresh": "تحديث",
+    "toolsNetworkWifi": "واي‑فاي",
+    "toolsNetworkWifiOnNoSsid": "تشغيل",
+    "toolsNetworkWifiOff": "إيقاف",
+    "toolsNetworkCellular": "بيانات شبكة الجوال",
+    "toolsNetworkCellularOn": "تشغيل",
+    "toolsNetworkCellularOff": "إيقاف",
+    "toolsNetworkRoaming": "تجوال البيانات",
+    "toolsNetworkRoamingOn": "تشغيل",
+    "toolsNetworkRoamingOff": "إيقاف",
+    "toolsNetworkBluetooth": "بلوتوث",
+    "toolsNetworkBluetoothOnNoDevice": "تشغيل",
+    "toolsNetworkBluetoothOff": "إيقاف",
+    "toolsNetworkHotspot": "نقطة اتصال",
+    "toolsNetworkHotspotOn": "تشغيل",
+    "toolsNetworkHotspotOff": "إيقاف",
+    "toolsDoctorLabel": "الطبيب",
+    "toolsFabLabel": "الأزرار",
+    "toolsNavHudLabel": "الملاحة",
+    "toolsWorkflowLabel": "الأتمتة",
+    "toolsDoctorTitle": "طبيب لوحة القيادة",
+    "doctorSubtitle": "إصلاحات بنقرة واحدة للوحة بطيئة أو غير مستجيبة.",
+    "doctorCloseAppsLabel": "إغلاق التطبيقات الأخرى",
+    "doctorCloseAppsWhy": "يوقف التطبيقات الأخرى لتحرير الذاكرة واستعادة استجابة الوحدة. يبقى iLINK يعمل.",
+    "doctorClearClusterLabel": "مسح شاشة العدادات",
+    "doctorClearClusterWhy": "يمسح التطبيقات المتجمدة أو المتبقية من شاشة العدادات.",
+    "doctorWakeDaemonLabel": "تنشيط خدمة السيارة",
+    "doctorWakeDaemonWhy": "ينشّط خدمة التحكم بالسيارة لتعمل الأوامر الصوتية — استخدمه إذا لم يعمل أمر صوتي بعد التشغيل مباشرة.",
+    "doctorRunning": "جارٍ التنفيذ…",
+    "doctorActionDone": "تم",
+    "doctorActionFailed": "تعذّر الإكمال",
+    "doctorCloseAppsResult": "تم إغلاق {count} تطبيقات",
+    "appActionsSheetTitle": "الإدارة",
+    "appActionEnable": "تفعيل",
+    "appActionDisable": "تعطيل",
+    "appActionDisableConfirmTitle": "تعطيل {label}؟",
+    "@appActionDisableConfirmTitle": {
+        "placeholders": {
+            "label": {}
+        }
+    },
+    "appActionDisableConfirmBody": "سيتوقف هذا التطبيق عن الظهور في القائمة ولن يبدأ تلقائياً. يمكنك إعادة تفعيله في أي وقت.",
+    "appActionUninstall": "إلغاء التثبيت",
+    "appActionUninstallConfirmTitle": "إلغاء تثبيت {label}؟",
+    "@appActionUninstallConfirmTitle": {
+        "placeholders": {
+            "label": {}
+        }
+    },
+    "appActionUninstallConfirmBody": "إزالة هذا التطبيق ستحذف بياناته المحلية. إعادة التثبيت لن تستعيدها. اكتب الكلمة UNINSTALL للتأكيد.",
+    "appActionUninstallTokenHint": "اكتب UNINSTALL (بالإنجليزية، حروف كبيرة)",
+    "appActionTransfer": "نقل",
+    "appActionForceStop": "إيقاف قسري",
+    "appActionClearData": "مسح البيانات",
+    "appActionClearDataConfirmTitle": "مسح بيانات {label}؟",
+    "@appActionClearDataConfirmTitle": {
+        "placeholders": {
+            "label": {}
+        }
+    },
+    "appActionClearDataConfirmBody": "ستُمحى جميع البيانات المحلية — الحسابات والإعدادات والذاكرة المؤقتة. سيظل التطبيق مثبتاً.",
+    "appActionClearDataTokenHint": "اكتب CLEAR (بالإنجليزية، حروف كبيرة)",
+    "appActionWhitelist": "القائمة البيضاء",
+    "appActionConfirm": "تأكيد",
+    "appActionCancel": "إلغاء",
+    "appActionToastOk": "تم",
+    "appActionToastFailed": "تعذّر التطبيق",
+    "homeRunningAppStop": "إيقاف التطبيق",
+    "homeRunningAppForceStopSub": "إيقاف قسري لـ {label}",
+    "@homeRunningAppForceStopSub": {
+        "placeholders": {
+            "label": {
+                "type": "String"
+            }
+        }
+    },
+    "voiceAccessOpenSettings": "فتح الإعدادات",
+    "voiceAccessMicPermissionBody": "يحتاج المساعد الصوتي إلى إذن الميكروفون للاستماع.",
+    "voiceAccessMicTitle": "إذن الميكروفون غير مفعّل",
+    "voiceAccessMicPermanentlyDeniedBody": "لقد رفضت سابقاً إذن الميكروفون. افتح الإعدادات لمنحه.",
+    "actionClose": "إغلاق",
+    "actionDismiss": "تجاهل",
+    "miniAppActionsUpdateAvailable": "تحديث متوفر",
+    "miniAppActionsReinstallToUpgrade": "أعد التثبيت للترقية",
+    "miniAppActionsUpdated": "تم تحديث {name}",
+    "@miniAppActionsUpdated": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "miniAppActionsOpenHere": "فتح هنا",
+    "miniAppActionsOnThisScreen": "على هذه الشاشة",
+    "miniAppActionsOpening": "جارٍ فتح {name} على {target}…",
+    "@miniAppActionsOpening": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            },
+            "target": {
+                "type": "String"
+            }
+        }
+    },
+    "miniAppActionsFailed": "فشل: {code}",
+    "@miniAppActionsFailed": {
+        "placeholders": {
+            "code": {
+                "type": "String"
+            }
+        }
+    },
+    "miniAppStoreUpdatesFailed": "فشل: {error}",
+    "@miniAppStoreUpdatesFailed": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "miniAppStoreUpToDate": "جميع التطبيقات محدّثة",
+    "miniAppStoreUpdatesList": "تحديثات: {names}",
+    "@miniAppStoreUpdatesList": {
+        "placeholders": {
+            "names": {
+                "type": "String"
+            }
+        }
+    },
+    "miniAppStoreUpdatesAvailableTitle": "تحديثات متوفرة",
+    "miniAppStoreUpdatesTip": "اضغط \"إعادة التثبيت\" في تطبيقاتي للتحديث",
+    "aboutOpenDiagnostics": "فتح التشخيص",
+    "vehicleSupportLabel": "دعم المركبة",
+    "vehicleSupportTierFull": "تكامل كامل",
+    "vehicleSupportTierStock": "واجهات النظام فقط",
+    "vehicleSupportTierUnsupported": "غير مدعوم",
+    "vehicleSupportQuirksHeading": "ملاحظات معروفة على هذه المركبة",
+    "vehicleSupportNoQuirks": "لا توجد ملاحظات معروفة لهذه المركبة.",
+    "vehicleSupportHuVendorRow": "وحدة الرأس",
+    "vehicleSupportVariantRow": "المركبة",
+    "launcherBydLockedTitle": "BYD يقفل الشاشة الرئيسية الافتراضية",
+    "launcherBydLockedBody": "نظام BYD المخصص يمنع Android من تغيير تطبيق الشاشة الرئيسية الافتراضية إلى أي تطبيق غير BYD MyCar. اسم iLINK مسجل في النظام بشكل صحيح، لكن النظام يرفض الطلب بصمت على الإصدارات الأصلية. الحلول: (1) التثبيت على وحدة رأس BYD مفتوحة الجذر، (2) استخدام نظام تشغيل مخصص، أو (3) تعطيل com.byd.mycar يدويًا عبر adb (متقدم)."
+}

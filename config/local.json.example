@@ -1,0 +1,4 @@
+{
+  "_comment": "Copy to config/local.json and override any keys from dev.json for per-developer settings. Passed AFTER dev.json so it wins.",
+  "MOCK_CAR": false
+}

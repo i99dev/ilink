@@ -1,0 +1,114 @@
+[
+  {
+    "id": "battery-analyzer",
+    "name": {
+      "ar": "محلل البطارية",
+      "en": "Battery Analyzer"
+    },
+    "description": {
+      "ar": "تشخيص حالة البطارية والشحن المباشر. حالة الشحن، توازن جهد الخلايا، التوازن الحراري، تدفق الطاقة المستردة، قوة الشحن، والإحصائيات مدى الحياة — مع شرح بسيط ومؤشرات تنبيه.",
+      "en": "Live battery health + charging diagnostics. State-of-charge, cell-voltage balance, thermal balance, regen flow, charging power, and lifetime stats — each surfaced with plain-English explanations and warning indicators."
+    },
+    "version": "0.5.11",
+    "category": "vehicle",
+    "minHostVersion": "0.0.2",
+    "safeWhileDriving": true,
+    "icon": "",
+    "url": "",
+    "bundleUrl": "asset:///assets/offline/mini_apps/battery-analyzer.tar.gz",
+    "bundleSha256": "fdd5be43ae61be6e28ac2ee3644bf4e6e983d982803273f080674f2cde67d19e",
+    "permissions": [],
+    "network": [],
+    "requires": {
+      "dilink": null,
+      "schema": 1,
+      "minBridge": "2.0.0",
+      "modernWebview": null,
+      "vehicleCapabilities": null
+    }
+  },
+  {
+    "id": "islam-prayer",
+    "name": {
+      "ar": "مواقيت الصلاة",
+      "en": "Prayer Times"
+    },
+    "description": {
+      "ar": "رفيق الصلاة الإسلامي على لوحة القيادة. الصلوات الخمس مع تظليل القادمة وعدّاد تنازلي مباشر، بوصلة قبلة باتجاه الحركة تشير إلى الكعبة بالنسبة لاتجاه سيارتك (دون الحاجة إلى التدوير الذهني)، التاريخ الهجري في الترويسة، ودعاء يتبدّل تلقائياً حسب الوقت. الحسابات محلية — بدون حساب، بدون تتبّع، ولا تحتاج إنترنتاً بعد التحميل الأول. يعمل بالعربية والإنجليزية ويتبع لغة لوحة القيادة تلقائياً.",
+      "en": "Glanceable Islamic prayer companion built for the dashboard. Five daily prayers with the next one highlighted and a live countdown, a heading-up Qibla compass that points to the Kaaba relative to your car (no mental rotation needed), the Hijri date in the header, and a rotating supplication that changes through the day. Calculations are local — no account, no tracking, no internet required after first load. Works in English and Arabic; switches automatically with the head-unit locale."
+    },
+    "version": "0.7.4",
+    "category": "lifestyle",
+    "minHostVersion": "0.0.2",
+    "safeWhileDriving": true,
+    "icon": "",
+    "url": "",
+    "bundleUrl": "asset:///assets/offline/mini_apps/islam-prayer.tar.gz",
+    "bundleSha256": "d0e0068de11ec20ed547aca4f7c64acaa78cb6cc9bbe4b579fbbe254b64f23c5",
+    "permissions": [
+      "location.read"
+    ],
+    "network": [
+      "https://api.aladhan.com"
+    ],
+    "requires": null
+  },
+  {
+    "id": "quran-player",
+    "name": {
+      "ar": "مُشغّل القرآن",
+      "en": "Quran Player"
+    },
+    "description": {
+      "ar": "مُشغّل قرآن كريم صوتي مصمَّم خصيصاً للوحة القيادة — آمن تماماً أثناء القيادة. تصفّح السور الـ 114، واختر من قائمة مختارة من أشهر القرّاء في العالم، واستمع إلى التلاوة آية بآية بشكل متواصل. يُحفَظ موضعك تلقائياً لتستأنف من حيث توقّفت في كل مرة.",
+      "en": "Audio-only Quran recitation player built for the dashboard — completely safe while driving. Browse all 114 surahs, pick from a curated selection of world-renowned reciters, and enjoy continuous ayah-by-ayah playback. Your position is saved automatically so you resume exactly where you left off on every launch."
+    },
+    "version": "0.5.1",
+    "category": "lifestyle",
+    "minHostVersion": "0.0.2",
+    "safeWhileDriving": true,
+    "icon": "",
+    "url": "",
+    "bundleUrl": "asset:///assets/offline/mini_apps/quran-player.tar.gz",
+    "bundleSha256": "bf6095429e8fc1ccfefb81b55360b340ab1703be1a39ffc85c321b990501d86d",
+    "permissions": [],
+    "network": [
+      "https://everyayah.com"
+    ],
+    "requires": null
+  },
+  {
+    "id": "workflow-canvas",
+    "name": {
+      "ar": "لوحة الأتمتة",
+      "en": "Workflow Canvas"
+    },
+    "description": {
+      "ar": "أنشئ أتمتة سيارتك الخاصة. اسحب العُقد إلى اللوحة — عندما تتجاوز إشارة حدًّا معيّنًا، تحقّق من شرط اختياري، ثم نفّذ أوامر السيارة — اربطها واحفظها. تعمل الأتمتة على السيارة حتى عند إغلاق هذا المحرّر.",
+      "en": "Build your own car automations. Drag nodes onto the canvas — when a signal crosses a threshold, optionally check a condition, then run car commands — connect them, and save. The automation runs natively on the car even when this editor is closed. Dangerous actions are badged; editing is locked while driving."
+    },
+    "version": "0.1.31",
+    "category": "vehicle",
+    "minHostVersion": "0.0.2",
+    "safeWhileDriving": false,
+    "icon": "",
+    "url": "",
+    "bundleUrl": "asset:///assets/offline/mini_apps/workflow-canvas.tar.gz",
+    "bundleSha256": "1339d5df026dea450fb7e479e893bd192a9d4e6473fa1f5cf6457a62210b3de0",
+    "permissions": [
+      "car.read",
+      "workflow.read",
+      "workflow.write"
+    ],
+    "network": [
+      "https://tile.openstreetmap.org"
+    ],
+    "requires": {
+      "dilink": null,
+      "schema": 1,
+      "minBridge": "2.0.0",
+      "modernWebview": null,
+      "vehicleCapabilities": null
+    }
+  }
+]

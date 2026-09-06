@@ -1,0 +1,34 @@
+name: Build Flutter APK
+description: Build a standalone APK using local configuration and the existing release signer.
+inputs:
+  dart-define-file:
+    description: Local build configuration.
+    required: false
+    default: config/prod.json
+  flutter-build-mode:
+    description: apk or appbundle.
+    required: false
+    default: apk
+outputs:
+  apk-path:
+    description: Built release package.
+    value: ${{ steps.build.outputs.apk-path }}
+runs:
+  using: composite
+  steps:
+    - name: Build
+      id: build
+      shell: bash
+      env:
+        BUILD_MODE: ${{ inputs.flutter-build-mode }}
+        DEFINE_FILE: ${{ inputs.dart-define-file }}
+      run: |
+        test -f "$DEFINE_FILE"
+        test "$BUILD_MODE" = apk || test "$BUILD_MODE" = appbundle
+        flutter pub get
+        flutter build "$BUILD_MODE" --release --dart-define-from-file="$DEFINE_FILE" --dart-define=GITHUB_RELEASE_REPOSITORY="${{ github.repository }}"
+        if [ "$BUILD_MODE" = appbundle ]; then
+          echo "apk-path=build/app/outputs/bundle/release/app-release.aab" >> "$GITHUB_OUTPUT"
+        else
+          echo "apk-path=build/app/outputs/flutter-apk/app-release.apk" >> "$GITHUB_OUTPUT"
+        fi
