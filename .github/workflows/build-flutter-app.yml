@@ -110,7 +110,7 @@ jobs:
       # runner image happens to ship, so this gate behaves the same here as it
       # does locally (`uv run --python 3.12 scripts/ci/check-release-version.py`).
       - name: Set up uv
-        uses: astral-sh/setup-uv@v6
+        uses: astral-sh/setup-uv@v7
         with:
           python-version: '3.12'
 
