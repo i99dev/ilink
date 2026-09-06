@@ -17,6 +17,9 @@ jobs:
       - uses: ./.github/actions/setup-flutter
       - run: flutter pub get
       - run: dart format --set-exit-if-changed .
+      - name: TEMP show formatter diff
+        if: failure()
+        run: git --no-pager diff
       - run: flutter analyze
       - run: flutter test
 
