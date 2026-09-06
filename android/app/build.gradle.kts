@@ -380,7 +380,7 @@ dependencies {
     //   ARSCLib  — robust binary AndroidManifest (AXML) editing, no aapt.
     //   apksig   — Google's APK v2/v3 signer (own versioning; 2.3.0 is
     //              the current Maven Central release, NOT an AGP version).
-    implementation("io.github.reandroid:ARSCLib:1.3.5")
+    implementation("io.github.reandroid:ARSCLib:1.4.0")
     implementation("com.android.tools.build:apksig:2.3.0")
 
     // Unit-test scaffolding. Runs on local JVM (not instrumented) —
