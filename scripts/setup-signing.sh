@@ -94,7 +94,9 @@ echo
 if [ -f "$KEYSTORE" ]; then
   echo "Keystore already exists — reusing it (no new key is generated)."
   read -r -s -p "Store password: " STORE_PW; echo
-  read -r -s -p "Key password  : " KEY_PW; echo
+  read -r -s -p "Key password (blank if same): " KEY_PW; echo
+  [ -n "$KEY_PW" ] || KEY_PW="$STORE_PW"
+  export STORE_PW KEY_PW
 else
   echo "Creating a new keystore. Choose a strong password and store it in a"
   echo "password manager — losing it means no future build can ever update an"
@@ -106,6 +108,11 @@ else
   [ ${#STORE_PW} -ge 12 ] || { echo "Use at least 12 characters." >&2; exit 1; }
   # One password for both is normal for a release keystore and keeps Gradle simple.
   KEY_PW="$STORE_PW"
+  # Must be exported BEFORE keytool runs: `-storepass:env NAME` reads the
+  # variable out of keytool's own environment, so a plain shell variable is
+  # invisible to it and it aborts with "Cannot find environment variable".
+  # Passing the password as -storepass would leak it into the process list.
+  export STORE_PW KEY_PW
 
   "$KEYTOOL" -genkeypair -v \
     -keystore "$KEYSTORE" \
