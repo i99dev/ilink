@@ -77,6 +77,7 @@ flutter analyze
 flutter test
 dart run tool/audit_hex.dart          # vehicle feature IDs must stay in the dispatch table
 dart run tool/validate_prod_config.dart
+uv run --python 3.12 scripts/ci/check_release_version_test.py   # release gate (needs uv)
 ```
 
 For native changes, also run the JVM tests from `android/`:

@@ -20,6 +20,18 @@ jobs:
       - run: flutter analyze
       - run: flutter test
 
+      # The release gate is Python, so it is not covered by `flutter test`.
+      # It decides whether a versionCode may ship, and a regression there
+      # either blocks every release or lets a non-increasing code through —
+      # which Android then refuses on install. uv pins the interpreter so this
+      # behaves the same locally and on the runner.
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          python-version: '3.12'
+      - name: Test the release versionCode gate
+        run: uv run --python 3.12 scripts/ci/check_release_version_test.py
+
       # Hex-literal audit. Fails the PR if any 0x[0-9a-fA-F]{4,} that
       # looks like a feature ID lives outside the bundled dispatch
       # table (android/app/src/main/assets/offline/car_table.textproto). Color literals,

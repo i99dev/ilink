@@ -18,6 +18,7 @@ Use a focused branch such as `fix/local-model-loading`, `feat/radio-search` or `
 
 ## Flutter and Android setup
 
+- Install [uv](https://docs.astral.sh/uv/) for the one Python gate: `uv run --python 3.12 scripts/ci/check_release_version_test.py`. uv fetches the interpreter itself, so no separate Python install is needed.
 - Install **Flutter 3.47.2 stable**, which includes Dart. Use the version pinned in the [setup action](.github/actions/setup-flutter/action.yml).
 - Install Android Studio or the Android command-line tools, an Android SDK and platform tools, and a **JDK 17** environment for Gradle.
 - Install Android SDK Platform **36**, **NDK 28.2.13676358** and **CMake 3.22.1** through the SDK Manager. Compile SDK follows the pinned Flutter SDK; NDK/CMake and Java versions are set in [Android build configuration](android/app/build.gradle.kts).
@@ -55,6 +56,7 @@ flutter analyze
 flutter test
 dart run tool/audit_hex.dart
 dart run tool/validate_prod_config.dart
+uv run --python 3.12 scripts/ci/check_release_version_test.py
 ```
 
 The format command can update files and reports failure when changes were necessary; review those changes and run it again. The hex audit checks that vehicle feature IDs remain in their approved table locations. The configuration validator checks the production definitions without connecting to a backend. Do not weaken either check to hide a failure.

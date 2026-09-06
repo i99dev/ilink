@@ -106,10 +106,18 @@ jobs:
       - name: Derive Android versionCode from the release versionName
         run: dart run tool/set_version_code.dart
 
+      # uv pins the interpreter instead of inheriting whatever python3 the
+      # runner image happens to ship, so this gate behaves the same here as it
+      # does locally (`uv run --python 3.12 scripts/ci/check-release-version.py`).
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          python-version: '3.12'
+
       - name: Guard versionCode against published releases
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: python3 scripts/ci/check-release-version.py
+        run: uv run --python 3.12 scripts/ci/check-release-version.py
 
       - name: Restore the existing release keystore outside the checkout
         env:
