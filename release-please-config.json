@@ -5,6 +5,7 @@
       "release-type": "dart",
       "package-name": "ilink",
       "include-v-in-tag": true,
+      "include-component-in-tag": false,
       "bump-minor-pre-major": false,
       "changelog-path": "CHANGELOG.md",
       "changelog-sections": [
