@@ -345,7 +345,7 @@ dependencies {
     // steering-wheel media buttons (MEDIA_PREVIOUS/NEXT) system-wide,
     // so the voice toggle works even when the Activity is backgrounded
     // or has lost focus (common on BYD multi-user head units).
-    implementation("androidx.media:media:1.7.1")
+    implementation("androidx.media:media:1.8.0")
     // media3 ExoPlayer — powers PassengerPlayerActivity, the standalone
     // (:tvpassenger process) live-TV player on the passenger display.
     // video_player can't render to a secondary display, and a second
