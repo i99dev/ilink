@@ -389,7 +389,7 @@ dependencies {
     // AmStackParser). Instrumented tests would need Robolectric or
     // a device; out of scope for the first scaffold.
     testImplementation("junit:junit:4.13.2")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:2.3.21")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:2.4.20")
     // Real org.json on the unit-test classpath. android.jar ships only a
     // STUB org.json; with testOptions.returnDefaultValues=true its methods
     // return null/0, so any code that parses/builds JSON (PatchRegistry)
